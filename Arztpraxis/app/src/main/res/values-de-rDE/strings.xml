@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Arztpraxis</string>
+    <string name="menu_appointment">Termine</string>
+    <string name="menu_prescription">Rezepte</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="birthdate">Geburtsdatum</string>
+    <string name="gender">Geschlecht</string>
+    <string name="health_insurance">Krankenkasse</string>
+    <string name="name">Name</string>
+    <string name="personnel_number">Personalnummer</string>
+    <string name="emergencylevel">Dringlichkeit</string>
+    <string name="low">gering</string>
+    <string name="medium">mittel</string>
+    <string name="high">hoch</string>
+    <string name="annotation">Anmerkungen</string>
+    <string name="request">Anfragen</string>
+    <string name="appointment_annotation">Beschreiben Sie Ihre Beschwerden...</string>
+</resources>
