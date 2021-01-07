@@ -14,20 +14,20 @@ public class Patient implements Serializable {
 
 	private long id;
 
-	private int ssn;
+	private int SSN;
 	
-	private int person_id;
+	private int person;
 	
-	private int health_insurance_id;
+	private int healthInsurance;
 
 	public Patient() {
 	}
 
-	public Patient(long id, int ssn, int person_id, int health_insurance_id) {
+	public Patient(long id, int SSN, int person, int healthInsurance) {
 		this.id = id;
-		this.ssn = ssn;
-		this.person_id = person_id;
-		this.health_insurance_id = health_insurance_id;
+		this.SSN = SSN;
+		this.person = person;
+		this.healthInsurance = healthInsurance;
 	}
 
 	//@Id
@@ -43,43 +43,43 @@ public class Patient implements Serializable {
 	
 	//@Column(name = "versicherungsnr")
 	public int getSSN() {
-	    return ssn;
+	    return SSN;
 	}
 
-	public void setSSN(int ssn) {
-	    this.ssn = ssn;
+	public void setSSN(int SSN) {
+	    this.SSN = SSN;
 	}
 	
 	
 	//@Column(name = "personid")
     public int getPerson() {
-        return person_id;
+        return person;
     }
 
-    public void setPerson(int person_id) {
-        this.person_id = person_id;
+    public void setPerson(int person) {
+        this.person = person;
     }
     
     //@Column(name = "krankenkasseid")
     public int getHealthInsurance() {
-        return health_insurance_id;
+        return healthInsurance;
     }
 
-    public void setHealthInsurance(int health_insurance_id) {
-        this.health_insurance_id = health_insurance_id;
+    public void setHealthInsurance(int healthInsurance) {
+        this.healthInsurance = healthInsurance;
     }
 		
 	
 	public void copyData(Patient copy) {
 	  this.id = copy.id;
-      this.ssn = copy.ssn;
-      this.person_id = copy.person_id;
-      this.health_insurance_id = copy.health_insurance_id;
+      this.SSN = copy.SSN;
+      this.person = copy.person;
+      this.healthInsurance = copy.healthInsurance;
 	}
 
 	@Override
 	public String toString() {
-		return "Patient [id=" + id + ", ssn=" + ssn + ", person_id=" + person_id + ", health_insurance_id=" + health_insurance_id + "]";
+		return "Patient [id=" + id + ", ssn=" + SSN + ", person_id=" + person + ", health_insurance_id=" + healthInsurance + "]";
 	}
 
 }

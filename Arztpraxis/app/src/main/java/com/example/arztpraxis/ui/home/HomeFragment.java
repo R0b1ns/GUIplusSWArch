@@ -14,14 +14,23 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.arztpraxis.R;
+import com.example.arztpraxis.model.HealthInsurance;
+import com.example.arztpraxis.model.Patient;
 import com.example.arztpraxis.model.Person;
 import com.example.arztpraxis.ws.InfrastructureWebservice;
 import com.example.arztpraxis.ws.NoSuchRowException;
+import com.example.arztpraxis.helper.helper;
+
+import java.text.SimpleDateFormat;
 
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
     private TextView tvName;
+    private TextView tvBirthday;
+    private TextView tvGender;
+    private TextView tvHealthInsurance;
+    private TextView tvHealthInsuranceNumber;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -63,19 +72,32 @@ public class HomeFragment extends Fragment {
         protected Void doInBackground(View... views) {
             View view=views[0];
             tvName=view.findViewById(R.id.textViewName);
+            tvBirthday=view.findViewById(R.id.textViewBirthdate);
+            tvGender=view.findViewById(R.id.textViewGender);
+            tvHealthInsurance=view.findViewById(R.id.textViewHealthInsurance);
+            tvHealthInsuranceNumber=view.findViewById(R.id.textViewHealthInsuranceNumber);
             InfrastructureWebservice service = null;
             service = new InfrastructureWebservice();
             Person person;
+            Patient patient;
+            HealthInsurance healthInsurance;
             try {
-                person = service.getPerson(1);
-                System.out.println("Status: in try");
+                patient = service.getPatient(1);
+                //System.out.println(patient.toString());
+                person = service.getPerson(patient.getPerson());
+                //System.out.println(person.toString());
+                healthInsurance = service.getHealthInsurance(patient.getHealthInsurance());
+                //System.out.println(healthInsurance.toString());
                 if (person != null){
-                    System.out.println("Status: in person!=null");
+                    //System.out.println("Status: in person!=null");
                     tvName.setText(person.getFirstName()+" "+person.getLastName());
+                    tvBirthday.setText(helper.formatDateTime(person.getBirthday(),false));
+                    tvGender.setText(helper.getGender(person.getGender()));
+                    tvHealthInsurance.setText(healthInsurance.getName());
+                    tvHealthInsuranceNumber.setText(String.valueOf(patient.getSSN()));
                 }
             } catch (NoSuchRowException e) {
                 tvName.setText("Keine Person gefunden");
-                System.out.println("Status: in catch");
             }
             return null;
         }

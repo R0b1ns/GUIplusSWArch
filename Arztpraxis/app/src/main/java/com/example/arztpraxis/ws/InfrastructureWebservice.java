@@ -1,5 +1,7 @@
 package com.example.arztpraxis.ws;
 
+import com.example.arztpraxis.model.HealthInsurance;
+import com.example.arztpraxis.model.Patient;
 import com.example.arztpraxis.model.Person;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -23,13 +25,12 @@ import okhttp3.Response;
 
 public class InfrastructureWebservice {
     private static final String URL
-           // = "http://YOUR_WILDFLY_URL:8080/BuildingREST/rest/building";
-           // = "http://192.168.2.103:8080/BuildingREST/rest/building";
             //unten ist die richtige adresse, muss aber nach jedem reconnect geändert werden!
+            //141.87.68.X mit X= aktuelle IP, andere Teile bleiben gleich!
             = "http://141.87.68.248:8080/BuildingREST2/rest/app";
 
 
-    private GsonBuilder gsonBuilder = new GsonBuilder().setDateFormat("EEE,yyyy MM dd");
+    private GsonBuilder gsonBuilder = new GsonBuilder().setDateFormat("EEE,yyyy MM dd");//führt evtl später zu Problemen
     private Gson gson = gsonBuilder.create();
 
     private URL url;
@@ -206,7 +207,7 @@ public class InfrastructureWebservice {
     }
 
     public Person getPerson(long id) throws NoSuchRowException {
-        System.out.println("Status: in getPerson("+id+")");
+        //System.out.println("Status: in getPerson("+id+")");
         urlString = URL + "/persons/" + id;
         Request request = new Request.Builder()
                 .url(urlString)
@@ -215,15 +216,73 @@ public class InfrastructureWebservice {
             Response response = client.newCall(request).execute();
             String output;
             Person person = null;
-            System.out.println("Status: in in request");
+            //System.out.println("Status: in in request");
             //System.out.println("Response-Body:"+response.body().string());
             if ((output = response.body().string()) != null) {
-              System.out.println("Status: in if");
+              //System.out.println("Status: in if");
                 person = gson.fromJson(output, Person.class);
             }
             //person=gson.fromJson(response.peekBody(2048).string(),Person.class);
-            System.out.println("Status: in request2");
+            //System.out.println("Status: in request2");
             return person;
+        } catch (IOException e) { // zu newCall(request).execute() und response.body().string();
+            e.printStackTrace();
+        } catch (com.google.gson.JsonSyntaxException e) {
+            throw new NoSuchRowException();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Patient getPatient(long id) throws NoSuchRowException {
+        //System.out.println("Status: in getPatient("+id+")");
+        urlString = URL + "/patients/" + id;
+        Request request = new Request.Builder()
+                .url(urlString)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            String output;
+            Patient patient= null;
+            //System.out.println("Status: in in request");
+            //System.out.println("Response-Body:"+response.body().string());
+            if ((output = response.body().string()) != null) {
+                //System.out.println("Status: in if");
+                patient = gson.fromJson(output, Patient.class);
+            }
+            //person=gson.fromJson(response.peekBody(2048).string(),Person.class);
+            //System.out.println("Status: in request2");
+            return patient;
+        } catch (IOException e) { // zu newCall(request).execute() und response.body().string();
+            e.printStackTrace();
+        } catch (com.google.gson.JsonSyntaxException e) {
+            throw new NoSuchRowException();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public HealthInsurance getHealthInsurance(long id) throws NoSuchRowException {
+        //System.out.println("Status: in getHealthInsurance("+id+")");
+        urlString = URL + "/healthinsurances/" + id;
+        Request request = new Request.Builder()
+                .url(urlString)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            String output;
+            HealthInsurance healthInsurance= null;
+            //System.out.println("Status: in in request");
+            //System.out.println("Response-Body:"+response.body().string());
+            if ((output = response.body().string()) != null) {
+                //System.out.println("Status: in if");
+                healthInsurance = gson.fromJson(output, HealthInsurance.class);
+            }
+
+            //System.out.println("Status: in request2");
+            return healthInsurance;
         } catch (IOException e) { // zu newCall(request).execute() und response.body().string();
             e.printStackTrace();
         } catch (com.google.gson.JsonSyntaxException e) {

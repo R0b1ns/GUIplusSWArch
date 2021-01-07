@@ -20,7 +20,7 @@ public class Person implements Serializable {
 
 	private Date birthday;
 	
-	private int adress_id;
+	private int adress;
 	
 	private String gender;
 
@@ -32,7 +32,7 @@ public class Person implements Serializable {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.birthday = birthday;
-		this.adress_id = adress_id;
+		this.adress = adress_id;
 		this.gender = gender;
 	}
 
@@ -75,11 +75,11 @@ public class Person implements Serializable {
 	
 	//@Column(name = "adresseid")
 	public int getAdress() {
-	    return adress_id;
+	    return adress;
 	}
 	
 	public void setAdress(int adress_id) {
-	    this.adress_id=adress_id;
+	    this.adress =adress_id;
 	}
 	
 	//@Column(name = "geschlecht")
@@ -96,13 +96,13 @@ public class Person implements Serializable {
       this.firstName = copy.firstName;
       this.lastName = copy.lastName;
       this.birthday = copy.birthday;
-      this.adress_id = copy.adress_id;
+      this.adress = copy.adress;
       this.gender = copy.gender;
 	}
 
 	@Override
 	public String toString() {
-		return "Person [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", birthday=" + birthday + ", adress_id=" + adress_id + ", gender=" + gender + "]";
+		return "Person [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", birthday=" + birthday + ", adress_id=" + adress + ", gender=" + gender + "]";
 	}
 
 }
