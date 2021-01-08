@@ -22,4 +22,10 @@
     <style name="Theme.Arztpraxis.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Arztpraxis.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Theme.Arztpraxis.Prescription">
+        <item name="android:background">
+            @drawable/customshape
+        </item>
+    </style>
 </resources>
