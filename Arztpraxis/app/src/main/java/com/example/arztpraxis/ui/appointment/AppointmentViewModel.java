@@ -1,19 +1,84 @@
 package com.example.arztpraxis.ui.appointment;
 
+import android.os.AsyncTask;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.arztpraxis.helper.helper;
+import com.example.arztpraxis.model.Schedule;
+import com.example.arztpraxis.model.Treatment;
+import com.example.arztpraxis.ws.InfrastructureWebservice;
+
+import java.util.Collection;
+
 public class AppointmentViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
+    private MutableLiveData<String[]>mSchedule;
 
     public AppointmentViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is gallery fragment");
+
+        mSchedule = new MutableLiveData<>();
+        mSchedule.setValue(new String[] {"no data found"});
+
+        new AsyncLoadSchedulePatient().execute();
     }
 
     public LiveData<String> getText() {
         return mText;
     }
+
+    public LiveData<String[]> getSchedule(){
+        return mSchedule;
+    }
+
+    private class AsyncLoadSchedulePatient extends AsyncTask<Void,Void,Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            String[] appointmentItems;
+
+//            appointmentItems[0] = "10.01.2021 - Generelle Untersuchung";
+//            appointmentItems[1] = "20.01.2021 - Operation";
+//            appointmentItems[2] = "01.02.2021 - Deportation";
+
+            InfrastructureWebservice service = null;
+            service = new InfrastructureWebservice();
+            Collection<Schedule> schedules;
+            try {
+                schedules = service.getSchedulePatient(1);
+                //System.out.println(schedules.toString());
+                if (schedules != null) {
+                    appointmentItems = new String[schedules.size()];
+                    //System.out.println("Status: in person!=null");
+                    Schedule[] schedulesArray = schedules.toArray(new Schedule[schedules.size()]);
+                    //System.out.println(schedulesArray[0]);
+                    for (int i = 0; i < schedules.size(); i++) {
+                        //System.out.println("im in the for")
+                        Treatment t = service.getTreatment(schedulesArray[i].getTreatmentId());
+                        appointmentItems[i]=
+                                helper.formatDateTime(schedulesArray[i].getDate(),false)+
+                                        " " +
+                                        helper.formatDateTime(schedulesArray[i].getDate(), true)+
+                                        " : "+t.getDescription();
+
+                        //System.out.println("im through " + i + 1 + " loop(s)");
+                    }
+                    mSchedule.postValue(appointmentItems);
+                }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+            return null;
+        }
+
+    }
 }
+

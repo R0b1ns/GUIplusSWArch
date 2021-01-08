@@ -4,6 +4,7 @@ import com.example.arztpraxis.model.HealthInsurance;
 import com.example.arztpraxis.model.Patient;
 import com.example.arztpraxis.model.Person;
 import com.example.arztpraxis.model.Schedule;
+import com.example.arztpraxis.model.Treatment;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -310,6 +311,35 @@ public class InfrastructureWebservice {
                 allSchedules.add(schedules[i]);
             return allSchedules;
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Treatment getTreatment(long id) throws NoSuchRowException {
+        //System.out.println("Status: in getHealthInsurance("+id+")");
+        urlString = URL + "/treatments/" + id;
+        Request request = new Request.Builder()
+                .url(urlString)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            String output;
+            Treatment treatment= null;
+            //System.out.println("Status: in in request");
+            //System.out.println("Response-Body:"+response.body().string());
+            if ((output = response.body().string()) != null) {
+                //System.out.println("Status: in if");
+                treatment = gson.fromJson(output, Treatment.class);
+            }
+
+            //System.out.println("Status: in request2");
+            return treatment;
+        } catch (IOException e) { // zu newCall(request).execute() und response.body().string();
+            e.printStackTrace();
+        } catch (com.google.gson.JsonSyntaxException e) {
+            throw new NoSuchRowException();
+        } catch (Exception e){
             e.printStackTrace();
         }
         return null;

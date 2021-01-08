@@ -38,4 +38,6 @@
     <string name="annotation">Annotation</string>
     <string name="request">Request</string>
     <string name="appointment_annotation">Describe your complaints...</string>
+    <!-- No connection Info-->
+    <string name="no_data_found">no data found</string>
 </resources>

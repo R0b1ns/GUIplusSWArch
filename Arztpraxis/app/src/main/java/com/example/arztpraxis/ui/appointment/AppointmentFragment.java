@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.arztpraxis.MainActivity;
@@ -67,8 +68,18 @@ public class AppointmentFragment extends Fragment {
 
         listView.setAdapter(model);
 
-        AsyncLoadSchedulePatient myAsync = new AsyncLoadSchedulePatient();
-        myAsync.execute();
+//        AsyncLoadSchedulePatient myAsync = new AsyncLoadSchedulePatient();
+//        myAsync.execute();
+        appointmentViewModel.getSchedule().observe(getViewLifecycleOwner(), new Observer<String[]>() {
+            @Override
+            public void onChanged(String[] strings) {
+                model.clear();
+                for (int i=0; i<strings.length;i++) {
+                    model.add(strings[i]);
+                }
+                model.notifyDataSetChanged();
+            }
+        });
 
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -106,64 +117,4 @@ public class AppointmentFragment extends Fragment {
         });
         return root;
     }
-
-    //doesnt work, do runOnUiThread again?
-    private void addToModel(String s){
-
-
-
-        getActivity().runOnUiThread(new Runnable(){
-            @Override
-            public void run() {
-                model.add(s);
-                model.notifyDataSetChanged();
-            }
-        });
-    }
-
-    private class AsyncLoadSchedulePatient extends AsyncTask<Void,Void,String[]> {
-        @Override
-        protected String[] doInBackground(Void...voids) {
-            String[] appointmentItems=new String[1];
-
-//            appointmentItems[0] = "10.01.2021 - Generelle Untersuchung";
-//            appointmentItems[1] = "20.01.2021 - Operation";
-//            appointmentItems[2] = "01.02.2021 - Deportation";
-
-            InfrastructureWebservice service = null;
-            service = new InfrastructureWebservice();
-            Collection <Schedule> schedules;
-            try {
-                schedules = service.getSchedulePatient(1);
-                //System.out.println(schedules.toString());
-                if (schedules != null){
-                    appointmentItems = new String[schedules.size()];
-                    //System.out.println("Status: in person!=null");
-                    Schedule[] schedulesArray =  schedules.toArray(new Schedule[schedules.size()]);
-                    System.out.println(schedulesArray[0]);
-                    for (int i=0; i<schedules.size(); i++) {
-                        //System.out.println("im in the for")
-                        addToModel(
-                                helper.formatDateTime(schedulesArray[i].getDate(),
-                                        false)+
-                                " "+helper.formatDateTime(schedulesArray[i].getDate(),true));
-                        //System.out.println("im through " + i + 1 + " loop(s)");
-                    }
-                }
-
-
-            } catch (Exception e) {
-                addToModel("Keine Termine gefunden");
-                //e.printStackTrace();
-            }
-
-
-
-            return appointmentItems;
-        }
-
-
-
-    }
-
 }
