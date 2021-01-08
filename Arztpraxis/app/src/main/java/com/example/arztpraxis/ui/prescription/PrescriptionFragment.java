@@ -38,8 +38,8 @@ public class PrescriptionFragment extends Fragment {
         );
 
         listView.setAdapter(listViewAdapter);
-        
 
+        
         //final TextView textView = root.findViewById(R.id.text_slideshow);
         prescriptionViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
