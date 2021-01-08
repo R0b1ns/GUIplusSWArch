@@ -1,5 +1,6 @@
 package com.example.arztpraxis.ws;
 
+import com.example.arztpraxis.model.Employee;
 import com.example.arztpraxis.model.HealthInsurance;
 import com.example.arztpraxis.model.Patient;
 import com.example.arztpraxis.model.Person;
@@ -29,7 +30,7 @@ public class InfrastructureWebservice {
     private static final String URL
             //unten ist die richtige adresse, muss aber nach jedem reconnect geändert werden!
             //141.87.68.X mit X= aktuelle IP, andere Teile bleiben gleich!
-            = "http://141.87.68.17:8080/BuildingREST2/rest/app";
+            = "http://141.87.68.225:8080/BuildingREST2/rest/app";
 
 
     private GsonBuilder gsonBuilder = new GsonBuilder().setDateFormat("EEE,yyyy MM dd");//führt evtl später zu Problemen
@@ -335,6 +336,64 @@ public class InfrastructureWebservice {
 
             //System.out.println("Status: in request2");
             return treatment;
+        } catch (IOException e) { // zu newCall(request).execute() und response.body().string();
+            e.printStackTrace();
+        } catch (com.google.gson.JsonSyntaxException e) {
+            throw new NoSuchRowException();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Schedule getSchedule(long id) throws NoSuchRowException {
+        //System.out.println("Status: in getHealthInsurance("+id+")");
+        urlString = URL + "/schedule/" + id;
+        Request request = new Request.Builder()
+                .url(urlString)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            String output;
+            Schedule schedule= null;
+            //System.out.println("Status: in in request");
+            //System.out.println("Response-Body:"+response.body().string());
+            if ((output = response.body().string()) != null) {
+                //System.out.println("Status: in if");
+                schedule = gson.fromJson(output, Schedule.class);
+            }
+
+            //System.out.println("Status: in request2");
+            return schedule;
+        } catch (IOException e) { // zu newCall(request).execute() und response.body().string();
+            e.printStackTrace();
+        } catch (com.google.gson.JsonSyntaxException e) {
+            throw new NoSuchRowException();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Employee getEmployee(long id) throws NoSuchRowException {
+        //System.out.println("Status: in getHealthInsurance("+id+")");
+        urlString = URL + "/employees/" + id;
+        Request request = new Request.Builder()
+                .url(urlString)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            String output;
+            Employee employee= null;
+            //System.out.println("Status: in in request");
+            //System.out.println("Response-Body:"+response.body().string());
+            if ((output = response.body().string()) != null) {
+                //System.out.println("Status: in if");
+                employee = gson.fromJson(output, Employee.class);
+            }
+
+            //System.out.println("Status: in request2");
+            return employee;
         } catch (IOException e) { // zu newCall(request).execute() und response.body().string();
             e.printStackTrace();
         } catch (com.google.gson.JsonSyntaxException e) {

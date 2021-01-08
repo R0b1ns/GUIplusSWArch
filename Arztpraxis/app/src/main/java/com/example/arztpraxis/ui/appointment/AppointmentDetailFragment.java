@@ -1,5 +1,6 @@
 package com.example.arztpraxis.ui.appointment;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,6 +11,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.arztpraxis.R;
+import com.example.arztpraxis.helper.Helper;
+import com.example.arztpraxis.model.Employee;
+import com.example.arztpraxis.model.Patient;
+import com.example.arztpraxis.model.Person;
+import com.example.arztpraxis.model.Schedule;
+import com.example.arztpraxis.model.Treatment;
+import com.example.arztpraxis.ws.InfrastructureWebservice;
+
+import java.util.Collection;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -63,10 +73,71 @@ public class AppointmentDetailFragment extends Fragment {
 
         //Fill data
         title.setText("Lade Termin mit ID: "+mParam1);
-        datetime.setText("01.01.2021 - 15:00:00");
-        doctor.setText("Dr. Tor");
-        annotation.setText("Bitte lade Informationen via XHR");
+        datetime.setText("no data found");
+        doctor.setText("no data found");
+        annotation.setText("no data found");
+
+        new AsyncLoadScheduleAppointment().execute(root);
 
         return root;
+    }
+
+    private class AsyncLoadScheduleAppointment extends AsyncTask<View,Void,Void> {
+        @Override
+        protected Void doInBackground(View... views) {
+            View root = views[0];
+            InfrastructureWebservice service = new InfrastructureWebservice();
+            Schedule schedule;
+            Employee employee;
+            Treatment treatment;
+            Person person;
+            String employee_title;
+
+            final TextView title = root.findViewById(R.id.appointmentTitle);
+            final TextView datetime = root.findViewById(R.id.datetime);
+            final TextView doctor = root.findViewById(R.id.doctor);
+            final TextView annotation = root.findViewById(R.id.annotation);
+
+            title.setText("Lade Termin mit ID: "+mParam1);
+
+            try{
+                schedule=service.getSchedule(mParam1);
+                if (schedule!=null){
+                    employee=service.getEmployee(schedule.getEmployeeId());
+                    treatment=service.getTreatment(schedule.getTreatmentId());
+                    if (employee!=null){
+                        person=service.getPerson(employee.getPersonId());
+
+                        datetime.setText(Helper.formatDateTime(schedule.getDate(),false)+
+                                " "+Helper.formatDateTime(schedule.getDate(),true));
+                        if (employee.getPosition()==1){
+                            employee_title="Doctor";
+                        }else{
+                            switch(person.getGender()){
+                                case "m":
+                                    employee_title="Mr.";
+                                    break;
+                                case "w":
+                                    employee_title="Ms.";
+                                    break;
+                                default:
+                                    employee_title="Mx.";
+                            }
+                        }
+                        doctor.setText(employee_title+" "+person.getFirstName()+" "+person.getLastName());
+                        annotation.setText(treatment.getDescription());
+                    }
+
+                }
+
+            }catch (Exception e){
+                datetime.setText("no data found");
+                doctor.setText("no data found");
+                annotation.setText("no data found");
+                e.printStackTrace();
+            }
+
+            return null;
+        }
     }
 }

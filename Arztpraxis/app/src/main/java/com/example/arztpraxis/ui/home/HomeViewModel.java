@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.arztpraxis.helper.helper;
+import com.example.arztpraxis.helper.Helper;
 import com.example.arztpraxis.model.HealthInsurance;
 import com.example.arztpraxis.model.Patient;
 import com.example.arztpraxis.model.Person;
@@ -87,8 +87,8 @@ public class HomeViewModel extends ViewModel {
                     if (person != null && healthInsurance!=null){
                         //System.out.println("Status: in person!=null");
                         mName.postValue(person.getFirstName()+" "+person.getLastName());
-                        mBirthday.postValue(helper.formatDateTime(person.getBirthday(),false));
-                        mGender.postValue(helper.getGender(person.getGender()));
+                        mBirthday.postValue(Helper.formatDateTime(person.getBirthday(),false));
+                        mGender.postValue(Helper.getGender(person.getGender()));
                         mHealthInsurance.postValue(healthInsurance.getName());
                         mHealthInsuranceNumber.postValue(String.valueOf(patient.getSSN()));
                     }

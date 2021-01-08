@@ -3,7 +3,7 @@ package com.example.arztpraxis.helper;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 
-public class helper {
+public class Helper {
      public static String formatDateTime(Date date,boolean returnTime){
         SimpleDateFormat sdf;
         if (returnTime){
