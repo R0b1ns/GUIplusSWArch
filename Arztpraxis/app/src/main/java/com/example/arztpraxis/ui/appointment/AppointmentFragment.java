@@ -88,17 +88,17 @@ public class AppointmentFragment extends Fragment {
             }
         });
 
-        appointmentViewModel.getAppointments().observe(getViewLifecycleOwner(), new Observer<String[]>() {
-            @Override
-            public void onChanged(@Nullable String[] appointmentItems) {
-                ArrayAdapter<String> listViewAdapter = new ArrayAdapter<>(
-                        getActivity(),
-                        android.R.layout.simple_list_item_1,
-                        appointmentItems
-                );
-                listView.setAdapter(listViewAdapter);
-            }
-        });
+//        appointmentViewModel.getAppointments().observe(getViewLifecycleOwner(), new Observer<String[]>() {
+//            @Override
+//            public void onChanged(@Nullable String[] appointmentItems) {
+//                ArrayAdapter<String> listViewAdapter = new ArrayAdapter<>(
+//                        getActivity(),
+//                        android.R.layout.simple_list_item_1,
+//                        appointmentItems
+//                );
+//                listView.setAdapter(listViewAdapter);
+//            }
+//        });
 
         FloatingActionButton addAppointmentBtn = root.findViewById(R.id.addAppointmentBtn);
         addAppointmentBtn.setOnClickListener(new View.OnClickListener() {
