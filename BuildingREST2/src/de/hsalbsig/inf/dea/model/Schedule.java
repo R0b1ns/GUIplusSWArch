@@ -1,7 +1,7 @@
 package de.hsalbsig.inf.dea.model;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 
 import javax.persistence.*;
