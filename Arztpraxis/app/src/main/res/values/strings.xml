@@ -45,4 +45,6 @@
     <string name="settings_personalinfo">settings_personalinfo</string>
     <string name="login">Login</string>
     <string name="menu_patient">Patients</string>
+    <!-- No connection Info-->
+    <string name="no_data_found">no data found</string>
 </resources>
