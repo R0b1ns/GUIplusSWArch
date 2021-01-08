@@ -14,23 +14,23 @@ public class Schedule implements Serializable {
 	
 	private long id;
 
-	private int patient_id;
+	private int patientId;
 
-	private int employee_id;
+	private int employeeId;
 
 	private Date date;
 
-	private int treatment_id;
+	private int treatmentId;
 
 	public Schedule() {
 	}
 
 	public Schedule(long id, int patient_id,int employee_id,Date date,int treatment_id) {
 	    this.id = id;
-		this.patient_id = patient_id;
-		this.employee_id = employee_id;
+		this.patientId = patient_id;
+		this.employeeId = employee_id;
 		this.date = date;
-		this.treatment_id = treatment_id;
+		this.treatmentId = treatment_id;
 	}
 
 	
@@ -46,20 +46,20 @@ public class Schedule implements Serializable {
 	
 	//@Column(name = "patientid")
 	public int getPatientId() {
-		return patient_id;
+		return patientId;
 	}
 
 	public void setPatientId(int patient_id) {
-		this.patient_id = patient_id;
+		this.patientId = patient_id;
 	}
 
 	//@Column(name = "mitarbeiterid")
     public int getEmployeeId() {
-        return employee_id;
+        return employeeId;
     }
 
     public void setEmployeeId(int employee_id) {
-        this.employee_id = employee_id;
+        this.employeeId = employee_id;
     }
     
     //@Column(name = "datum")
@@ -73,24 +73,24 @@ public class Schedule implements Serializable {
     
     //@Column(name = "behandlungid")
     public int getTreatmentId() {
-        return treatment_id;
+        return treatmentId;
     }
 
     public void setTreatmentId(int treatment_id) {
-        this.treatment_id = treatment_id;
+        this.treatmentId = treatment_id;
     }
 	
 
 	public void copyData(Schedule copy) {
-		this.patient_id = copy.patient_id;
-		this.employee_id = copy.employee_id;
+		this.patientId = copy.patientId;
+		this.employeeId = copy.employeeId;
 		this.date = copy.date;
-		this.treatment_id = copy.treatment_id;
+		this.treatmentId = copy.treatmentId;
 	}
 
 	@Override
 	public String toString() {
-		return "Schedule [patient_id=" + patient_id + ", employee_id=" + employee_id + ", date=" + date + ", treatment_id=" + treatment_id + "]";
+		return "Schedule [patient_id=" + patientId + ", employee_id=" + employeeId + ", date=" + date + ", treatment_id=" + treatmentId + "]";
 	}
 
 }
