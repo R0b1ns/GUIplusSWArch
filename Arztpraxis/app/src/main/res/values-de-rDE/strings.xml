@@ -16,4 +16,8 @@
     <string name="annotation">Anmerkungen</string>
     <string name="request">Anfragen</string>
     <string name="appointment_annotation">Beschreiben Sie Ihre Beschwerden...</string>
+    <string name="attending_doctor">Betreuender Arzt</string>
+    <string name="settings_personalinfo">Geben Sie Ihre Personal informationen ein</string>
+    <string name="menu_patient">Patienten</string>
+    <string name="login">Anmelden</string>
 </resources>

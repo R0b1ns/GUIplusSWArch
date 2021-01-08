@@ -61,7 +61,7 @@ public class HomeFragment extends Fragment {
 //            System.out.println("in catch");
 //        }
 
-        new AsyncLoadPerson().execute(root);
+        //new AsyncLoadPerson().execute(root);
         //tvName.setText("lel");
 
         return root;
@@ -83,6 +83,7 @@ public class HomeFragment extends Fragment {
             HealthInsurance healthInsurance;
             try {
                 patient = service.getPatient(1);
+
                 //System.out.println(patient.toString());
                 person = service.getPerson(patient.getPerson());
                 //System.out.println(person.toString());

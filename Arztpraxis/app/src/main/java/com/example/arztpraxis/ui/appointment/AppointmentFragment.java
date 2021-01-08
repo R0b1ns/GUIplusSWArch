@@ -27,35 +27,32 @@ public class AppointmentFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        appointmentViewModel =
-                new ViewModelProvider(this).get(AppointmentViewModel.class);
+        appointmentViewModel = new ViewModelProvider(this).get(AppointmentViewModel.class);
         View root = inflater.inflate(R.layout.fragment_appointments, container, false);
-        //final TextView textView = root.findViewById(R.id.text_gallery);
-
-        //Preload via Database / XHRequest
-        String[] appointmentItems = {"10.01.2021 - Generelle Untersuchung", "20.01.2021 - Operation", "01.02.2021 - Deportation"};
 
         final ListView listView = root.findViewById(R.id.listView);
-
-        ArrayAdapter<String> listViewAdapter = new ArrayAdapter<>(
-                getActivity(),
-                android.R.layout.simple_list_item_1,
-                appointmentItems
-        );
-
-        listView.setAdapter(listViewAdapter);
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Snackbar.make(view, "Open List View Element with id: "+id, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                appointmentDetailFragment = new AppointmentDetailFragment();
+                appointmentDetailFragment = AppointmentDetailFragment.newInstance(id);
                 FragmentTransaction ft = getParentFragmentManager().beginTransaction();
-                ft.replace(R.id.nav_host_fragment, appointmentNewFragment);
+                ft.replace(R.id.nav_host_fragment, appointmentDetailFragment);
+                ft.addToBackStack("appointmentDetail");
+                ft.commit();
             }
         });
 
+        appointmentViewModel.getAppointments().observe(getViewLifecycleOwner(), new Observer<String[]>() {
+            @Override
+            public void onChanged(@Nullable String[] appointmentItems) {
+                ArrayAdapter<String> listViewAdapter = new ArrayAdapter<>(
+                        getActivity(),
+                        android.R.layout.simple_list_item_1,
+                        appointmentItems
+                );
+                listView.setAdapter(listViewAdapter);
+            }
+        });
 
         FloatingActionButton addAppointmentBtn = root.findViewById(R.id.addAppointmentBtn);
         addAppointmentBtn.setOnClickListener(new View.OnClickListener() {
@@ -66,18 +63,12 @@ public class AppointmentFragment extends Fragment {
                 //getLayoutInflater().inflate(R.layout.fragment_appointment_new, container);
                 appointmentNewFragment = new AppointmentNewFragment();
                 FragmentTransaction ft = getParentFragmentManager().beginTransaction();
-                ft.replace(R.id.nav_host_fragment, appointmentNewFragment);
+                ft.replace(R.id.nav_host_fragment, appointmentNewFragment, "appointmentNew");
+                ft.addToBackStack("appointmentNew");
                 ft.commit();
             }
         });
 
-        appointmentViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-
-                //textView.setText(s);
-            }
-        });
         return root;
     }
 }
