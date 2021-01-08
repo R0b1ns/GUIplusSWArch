@@ -47,4 +47,14 @@
     <string name="menu_patient">Patients</string>
     <!-- No connection Info-->
     <string name="no_data_found">no data found</string>
+    <string name="firstname">Firstname</string>
+    <string name="lastname">Lastname</string>
+    <string name="male">male</string>
+    <string name="female">female</string>
+    <string name="health_insurance_name">health_insurance_name</string>
+    <string name="health_insurance_number">health_insurance_number</string>
+    <string name="create_patient">create_patient</string>
+    <string name="undefined">undefined</string>
+    <string name="create_appointment">create_appointment</string>
+    <string name="create_prescription">create_prescription</string>
 </resources>

@@ -20,4 +20,13 @@
     <string name="settings_personalinfo">Geben Sie Ihre Personal informationen ein</string>
     <string name="menu_patient">Patienten</string>
     <string name="login">Anmelden</string>
+    <string name="firstname">Vorname</string>
+    <string name="lastname">Nachname</string>
+    <string name="male">männlich</string>
+    <string name="female">weiblich</string>
+    <string name="health_insurance_name">Krankenkassenname</string>
+    <string name="health_insurance_number">Krankenversicherungsnummer</string>
+    <string name="create_patient">Patient anlegen</string>
+    <string name="create_appointment">Neuer Termin</string>
+    <string name="create_prescription">Rezept ausstellen</string>
 </resources>
