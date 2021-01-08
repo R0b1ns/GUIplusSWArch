@@ -1,6 +1,5 @@
 package com.example.arztpraxis.ui.home;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,22 +7,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.arztpraxis.R;
 import com.example.arztpraxis.helper.MyApplication;
-import com.example.arztpraxis.model.HealthInsurance;
-import com.example.arztpraxis.model.Patient;
-import com.example.arztpraxis.model.Person;
-import com.example.arztpraxis.ws.InfrastructureWebservice;
-import com.example.arztpraxis.ws.NoSuchRowException;
-import com.example.arztpraxis.helper.helper;
-import com.google.gson.internal.$Gson$Preconditions;
-
-import java.text.SimpleDateFormat;
 
 public class HomeFragment extends Fragment {
 

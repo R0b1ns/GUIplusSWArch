@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.arztpraxis.helper.helper;
+import com.example.arztpraxis.helper.Helper;
 import com.example.arztpraxis.model.Schedule;
 import com.example.arztpraxis.model.Treatment;
 import com.example.arztpraxis.ws.InfrastructureWebservice;
@@ -17,6 +17,7 @@ public class AppointmentViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
     private MutableLiveData<String[]>mSchedule;
+    private MutableLiveData<long[]>mScheduleId;
 
     public AppointmentViewModel() {
         mText = new MutableLiveData<>();
@@ -25,7 +26,10 @@ public class AppointmentViewModel extends ViewModel {
         mSchedule = new MutableLiveData<>();
         mSchedule.setValue(new String[] {"no data found"});
 
-        new AsyncLoadSchedulePatient().execute();
+        mScheduleId = new MutableLiveData<>();
+        mScheduleId.setValue(new long[] {0});
+
+        new AsyncLoadScheduleAppointment().execute();
     }
 
     public LiveData<String> getText() {
@@ -36,7 +40,11 @@ public class AppointmentViewModel extends ViewModel {
         return mSchedule;
     }
 
-    private class AsyncLoadSchedulePatient extends AsyncTask<Void,Void,Void> {
+    public LiveData<long[]> getScheduleId(){
+        return mScheduleId;
+    }
+
+    private class AsyncLoadScheduleAppointment extends AsyncTask<Void,Void,Void> {
         @Override
         protected Void doInBackground(Void... voids) {
             String[] appointmentItems;
@@ -53,21 +61,24 @@ public class AppointmentViewModel extends ViewModel {
                 //System.out.println(schedules.toString());
                 if (schedules != null) {
                     appointmentItems = new String[schedules.size()];
+                    long[] appointmentIds = new long[schedules.size()];
                     //System.out.println("Status: in person!=null");
                     Schedule[] schedulesArray = schedules.toArray(new Schedule[schedules.size()]);
                     //System.out.println(schedulesArray[0]);
                     for (int i = 0; i < schedules.size(); i++) {
                         //System.out.println("im in the for")
                         Treatment t = service.getTreatment(schedulesArray[i].getTreatmentId());
+                        appointmentIds[i]=schedulesArray[i].getId();
                         appointmentItems[i]=
-                                helper.formatDateTime(schedulesArray[i].getDate(),false)+
+                                Helper.formatDateTime(schedulesArray[i].getDate(),false)+
                                         " " +
-                                        helper.formatDateTime(schedulesArray[i].getDate(), true)+
+                                        Helper.formatDateTime(schedulesArray[i].getDate(), true)+
                                         " : "+t.getDescription();
 
                         //System.out.println("im through " + i + 1 + " loop(s)");
                     }
                     mSchedule.postValue(appointmentItems);
+                    mScheduleId.postValue(appointmentIds);
                 }
 
 

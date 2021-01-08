@@ -13,20 +13,20 @@ public class Employee implements Serializable {
 
 	private long id;
 
-	private int position_id;
+	private int position;
 	
 	private int personnalnumber;
 	
-	private int person_id;
+	private int personId;
 
 	public Employee() {
 	}
 
 	public Employee(long id, int position_id, int personnalnumber, int person_id) {
 		this.id = id;
-		this.position_id = position_id;
+		this.position = position_id;
 		this.personnalnumber = personnalnumber;
-		this.person_id = person_id;
+		this.personId = person_id;
 	}
 
 	//@Id
@@ -42,11 +42,11 @@ public class Employee implements Serializable {
 	
 	//@Column(name = "pos_id")
 	public int getPosition(){
-	    return position_id;
+	    return position;
 	}
 	
 	public void setPosition(int position_id) {
-	    this.position_id = position_id;
+	    this.position = position_id;
 	}
 	
 	//@Column(name = "personalnummer")
@@ -60,23 +60,23 @@ public class Employee implements Serializable {
     
     //@Column(name = "personid")
     public int getPersonId(){
-        return person_id;
+        return personId;
     }
     
     public void setPersonId(int person_id) {
-        this.person_id = person_id;
+        this.personId = person_id;
     }
 
 	public void copyData(Employee copy) {
 	  this.id = copy.id;
-      this.position_id = copy.position_id;
+      this.position = copy.position;
       this.personnalnumber = copy.personnalnumber;
-      this.person_id = copy.person_id;
+      this.personId = copy.personId;
 	}
 
 	@Override
 	public String toString() {
-		return "Employee [id=" + id + ", position_id=" + position_id + ", personnalnumber=" + personnalnumber + ", person_id=" + person_id + "]";
+		return "Employee [id=" + id + ", position_id=" + position + ", personnalnumber=" + personnalnumber + ", person_id=" + personId + "]";
 	}
 
 }
