@@ -10,10 +10,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:theme="@style/Theme.Arztpraxis"
+        android:usesCleartextTraffic="true">
+        <meta-data
+            android:name="com.google.android.actions"
+            android:resource="@xml/customshape" />
 
-        android:usesCleartextTraffic="true"
-
-        android:theme="@style/Theme.Arztpraxis">
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
