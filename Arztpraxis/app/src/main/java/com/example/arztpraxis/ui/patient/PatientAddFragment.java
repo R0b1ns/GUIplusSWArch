@@ -7,8 +7,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.example.arztpraxis.R;
+import com.google.android.material.snackbar.Snackbar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,6 +66,36 @@ public class PatientAddFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_patient_add, container, false);
+        View root = inflater.inflate(R.layout.fragment_patient_add, container, false);
+
+        Button patientAddSubmit = root.findViewById(R.id.patientAddSubmit);
+        patientAddSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText patientFirstname = root.findViewById(R.id.patientFirstname);
+                EditText patientLastname = root.findViewById(R.id.patientLastname);
+                EditText patientBirthdate = root.findViewById(R.id.patientBirthdate);
+
+                EditText patientHealthInsuranceName = root.findViewById(R.id.patientHealthInsuranceName);
+                EditText patientHealthInsuranceNumber = root.findViewById(R.id.patientHealthInsuranceNumber);
+
+                RadioGroup patientGenderRadio = root.findViewById(R.id.patientGender);
+                RadioButton selectedPatientGender = root.findViewById(patientGenderRadio.getCheckedRadioButtonId());
+
+                //Send request to server with this data
+                patientFirstname.getText();
+                patientLastname.getText();
+                patientBirthdate.getText();
+                patientHealthInsuranceName.getText();
+                patientHealthInsuranceNumber.getText();
+                selectedPatientGender.getText();
+
+                //if sent successful
+                Snackbar.make(v, "Patient was created successfully", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+        return root;
     }
 }

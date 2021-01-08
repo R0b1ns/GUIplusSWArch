@@ -3,12 +3,16 @@ package com.example.arztpraxis.ui.patient;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.arztpraxis.R;
+import com.example.arztpraxis.ui.appointment.AppointmentNewFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,14 +21,9 @@ import com.example.arztpraxis.R;
  */
 public class PatientDetailFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private long mParam1;
 
     public PatientDetailFragment() {
         // Required empty public constructor
@@ -35,15 +34,13 @@ public class PatientDetailFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment PatientDetailFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static PatientDetailFragment newInstance(String param1, String param2) {
+    public static PatientDetailFragment newInstance(long param1) {
         PatientDetailFragment fragment = new PatientDetailFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putLong(ARG_PARAM1, param1);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,8 +49,7 @@ public class PatientDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mParam1 = getArguments().getLong(ARG_PARAM1);
         }
     }
 
@@ -61,6 +57,32 @@ public class PatientDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_patient_detail, container, false);
+        View root = inflater.inflate(R.layout.fragment_patient_detail, container, false);
+
+        Button patientCreateAppointment = root.findViewById(R.id.patientCreateAppointment);
+        patientCreateAppointment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*appointmentCreateFragment = AppointmentCreateFragment.newInstance(mParam1);
+                FragmentTransaction ft = getParentFragmentManager().beginTransaction();
+                ft.replace(R.id.nav_host_fragment, appointmentCreateFragment, "appointmentCreate");
+                ft.addToBackStack("appointmentCreate");
+                ft.commit();*/
+            }
+        });
+
+        Button patientCreatePrescription = root.findViewById(R.id.patientCreatePrescription);
+        patientCreatePrescription.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*prescriptionCreateFragment = PrescriptionCreateFragment.newInstance(mParam1);
+                FragmentTransaction ft = getParentFragmentManager().beginTransaction();
+                ft.replace(R.id.nav_host_fragment, prescriptionCreateFragment, "prescriptionCreate");
+                ft.addToBackStack("prescriptionCreate");
+                ft.commit();*/
+            }
+        });
+
+        return root;
     }
 }
