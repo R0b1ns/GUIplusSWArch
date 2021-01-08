@@ -3,12 +3,19 @@ package com.example.arztpraxis.ui.appointment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.example.arztpraxis.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,6 +68,26 @@ public class AppointmentNewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_appointment_new, container, false);
+        View root = inflater.inflate(R.layout.fragment_appointment_new, container, false);
+
+        Button appointmentNewSubmit = root.findViewById(R.id.appointmentNewSubmit);
+        appointmentNewSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RadioGroup appointmentNewPressure = root.findViewById(R.id.appointmentNewPressure);
+                RadioButton selectedPressure = root.findViewById(appointmentNewPressure.getCheckedRadioButtonId());
+                EditText appointmentNewAnnotation = root.findViewById(R.id.appointmentNewAnnotation);
+
+                //Send request to server with this data
+                appointmentNewAnnotation.getText();
+                selectedPressure.getText();
+
+                //if sent successful
+                    Snackbar.make(v, "Appointment was requested successfully", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+        return root;
     }
 }

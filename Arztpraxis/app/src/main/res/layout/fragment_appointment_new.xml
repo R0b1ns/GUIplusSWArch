@@ -16,6 +16,7 @@
         android:text="@string/emergencylevel" />
 
     <RadioGroup
+        android:id="@+id/appointmentNewPressure"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -23,7 +24,7 @@
         android:orientation="horizontal" >
 
         <RadioButton
-            android:id="@+id/radioButton"
+            android:id="@+id/appointmentNewPressureLow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -31,14 +32,14 @@
             android:text="@string/low" />
 
         <RadioButton
-            android:id="@+id/radioButton2"
+            android:id="@+id/appointmentNewPressureMedium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/medium" />
 
         <RadioButton
-            android:id="@+id/radioButton3"
+            android:id="@+id/appointmentNewPressureHigh"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -54,7 +55,7 @@
         android:text="@string/annotation" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/appointmentNewAnnotation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -68,7 +69,7 @@
         android:hint="@string/appointment_annotation" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/appointmentNewSubmit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

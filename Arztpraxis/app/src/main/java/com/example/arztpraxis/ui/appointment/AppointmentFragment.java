@@ -58,9 +58,6 @@ public class AppointmentFragment extends Fragment {
         addAppointmentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Snackbar.make(view, "Open AppointmentNewFragment", Snackbar.LENGTH_LONG)
-                //        .setAction("Action", null).show();
-                //getLayoutInflater().inflate(R.layout.fragment_appointment_new, container);
                 appointmentNewFragment = new AppointmentNewFragment();
                 FragmentTransaction ft = getParentFragmentManager().beginTransaction();
                 ft.replace(R.id.nav_host_fragment, appointmentNewFragment, "appointmentNew");
