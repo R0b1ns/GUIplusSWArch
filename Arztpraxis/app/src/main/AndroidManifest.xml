@@ -15,7 +15,7 @@
         android:usesCleartextTraffic="true">
         <meta-data
             android:name="com.google.android.actions"
-            android:resource="@xml/customshape" />
+            android:resource="@drawable/customshape" />
 
         <activity
             android:name=".MainActivity"
