@@ -342,6 +342,36 @@ public class InfrastructureWebservice {
         }
         return 0;
     }
+
+    public long getPatientOfName(String firstName, String lastName) throws NoSuchRowException {
+        //System.out.println("Status: in getHealthInsurance("+id+")");
+        urlString = URL + "/patients/name?firstName=" + firstName + "&lastName=" + lastName;
+        Request request = new Request.Builder()
+                .url(urlString)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            String output;
+            long id= 0;
+            //System.out.println("Status: in in request");
+            //System.out.println("Response-Body:"+response.body().string());
+            if ((output = response.body().string()) != null) {
+                //System.out.println("Status: in if");
+                id = Long.parseLong(output);
+            }
+
+            //System.out.println("Status: in request2");
+            return id;
+        } catch (IOException e) { // zu newCall(request).execute() und response.body().string();
+            e.printStackTrace();
+        } catch (com.google.gson.JsonSyntaxException e) {
+            throw new NoSuchRowException();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     public Collection<Patient> getAllPatients() {
         urlString = URL + "/patients";
         Request request = new Request.Builder()
@@ -585,6 +615,71 @@ public class InfrastructureWebservice {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public Collection<Drug> getAllDrugs() {
+        urlString = URL + "/drugs";
+        Request request = new Request.Builder()
+                .url(urlString)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            String output;
+            Drug[] drugs= null;
+            if ((output = response.body().string()) != null)
+                drugs = gson.fromJson(output, Drug[].class);
+            Collection<Drug> allDrugs = new ArrayList<Drug>();
+            for (int i = 0; i < drugs.length; i++)
+                allDrugs.add(drugs[i]);
+            return allDrugs;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Collection<Disease> getAllDiseases() {
+        urlString = URL + "/diseases";
+        Request request = new Request.Builder()
+                .url(urlString)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            String output;
+            Disease[] diseases= null;
+            if ((output = response.body().string()) != null)
+                diseases = gson.fromJson(output, Disease[].class);
+            Collection<Disease> allDiseases = new ArrayList<Disease>();
+            for (int i = 0; i < diseases.length; i++)
+                allDiseases.add(diseases[i]);
+            return allDiseases;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void createPrescription(Prescription prescription) throws IllegalCreateException {
+        urlString = URL + "/prescriptions";
+        OkHttpClient client = new OkHttpClient();
+
+        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),
+                gsonOtherDate.toJson(prescription));
+        //System.out.println(body);
+        Request request = new Request.Builder()
+                .url(urlString)
+                .post(body)
+                .build();
+        System.out.println(gsonOtherDate.toJson(prescription).toString());
+        Response response = null;
+        try {
+            response = client.newCall(request).execute();
+            String responseString = response.body().string();
+            if (responseString.compareTo("{\"status\":\"success\"}") != 0)
+                throw new IllegalCreateException();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 

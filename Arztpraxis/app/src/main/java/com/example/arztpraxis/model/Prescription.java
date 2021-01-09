@@ -1,7 +1,7 @@
 package com.example.arztpraxis.model;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 //import javax.persistence.*;
 
 // @SuppressWarnings("serial")

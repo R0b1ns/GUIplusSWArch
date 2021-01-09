@@ -233,6 +233,15 @@ public class BuildingService implements java.io.Serializable {
 	}
 	
 	@GET
+    @Path("/patients/name")
+    public long getPatientOfName(@QueryParam("firstName") String firstName,@QueryParam("lastName") String lastName) throws NoSuchRowException {
+      System.out.println("\n\n---------------------------------");
+      System.out.println("App :: GET getPatientOfName("+firstName+" "+lastName+")");
+      System.out.println("\n\n---------------------------------");
+      return infrastructureRemote.getPatientOfName(firstName,lastName);
+    }
+	
+	@GET
 	@Path("/patients/{id}")
 	public Patient getPatientInfo(@PathParam("id") long id) throws NoSuchRowException {
 	  System.out.println("\n\n---------------------------------");
