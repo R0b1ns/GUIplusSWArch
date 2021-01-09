@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.arztpraxis.helper.helper;
+import com.example.arztpraxis.helper.Helper;
 import com.example.arztpraxis.model.ScheduleRequest;
 import com.example.arztpraxis.model.Employee;
 import com.example.arztpraxis.model.Patient;
