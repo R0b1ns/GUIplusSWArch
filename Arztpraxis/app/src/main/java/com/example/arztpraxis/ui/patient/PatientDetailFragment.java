@@ -11,7 +11,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.arztpraxis.R;
+import com.example.arztpraxis.ui.appointment.AppointmentCreateFragment;
 import com.example.arztpraxis.ui.appointment.AppointmentNewFragment;
+import com.example.arztpraxis.ui.prescription.PrescriptionCreateFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /**
@@ -22,6 +24,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class PatientDetailFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
+    private AppointmentCreateFragment appointmentCreateFragment;
+    private PrescriptionCreateFragment prescriptionCreateFragment;
 
     private long mParam1;
 
@@ -63,11 +67,11 @@ public class PatientDetailFragment extends Fragment {
         patientCreateAppointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*appointmentCreateFragment = AppointmentCreateFragment.newInstance(mParam1);
+                appointmentCreateFragment = AppointmentCreateFragment.newInstance("mParam1", "param2"); //Param1 = mParam1 ~ Should be information about patient
                 FragmentTransaction ft = getParentFragmentManager().beginTransaction();
                 ft.replace(R.id.nav_host_fragment, appointmentCreateFragment, "appointmentCreate");
                 ft.addToBackStack("appointmentCreate");
-                ft.commit();*/
+                ft.commit();
             }
         });
 
@@ -75,11 +79,11 @@ public class PatientDetailFragment extends Fragment {
         patientCreatePrescription.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*prescriptionCreateFragment = PrescriptionCreateFragment.newInstance(mParam1);
+                prescriptionCreateFragment = PrescriptionCreateFragment.newInstance("mParam1", "param2"); //Param1 = mParam1 ~ Should be information about patient
                 FragmentTransaction ft = getParentFragmentManager().beginTransaction();
                 ft.replace(R.id.nav_host_fragment, prescriptionCreateFragment, "prescriptionCreate");
                 ft.addToBackStack("prescriptionCreate");
-                ft.commit();*/
+                ft.commit();
             }
         });
 

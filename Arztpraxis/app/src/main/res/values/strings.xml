@@ -57,4 +57,8 @@
     <string name="undefined">undefined</string>
     <string name="create_appointment">create_appointment</string>
     <string name="create_prescription">create_prescription</string>
+    <string name="patient">Patient</string>
+    <string name="prescribed_drug">prescribed_drug</string>
+    <string name="diagnosed_disease">Diagnosed disease</string>
+    <string name="date_of_issue">Date of issue</string>
 </resources>

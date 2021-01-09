@@ -29,4 +29,8 @@
     <string name="create_patient">Patient anlegen</string>
     <string name="create_appointment">Neuer Termin</string>
     <string name="create_prescription">Rezept ausstellen</string>
+    <string name="prescribed_drug">Verschriebenes Medikament</string>
+    <string name="patient">Patient</string>
+    <string name="diagnosed_disease">Diagnostizierte Krankheit</string>
+    <string name="date_of_issue">Ausstellungsdatum</string>
 </resources>
