@@ -286,6 +286,15 @@ public class BuildingService implements java.io.Serializable {
 	}
 	
 	@GET
+    @Path("/prescriptions/employee/{id}")
+    public Collection<Prescription> getPrescriptionFrom(@PathParam("id")String id){
+      System.out.println("\n\n---------------------------------");
+      System.out.println("App :: GET getPrescriptionFrom("+id+")");
+      System.out.println("\n\n---------------------------------");
+      return infrastructureRemote.getPrescriptionFrom(id);
+    }
+	
+	@GET
 	@Path("/schedule/requests/")
 	public Collection<ScheduleRequest> getScheduleRequests(){
 	  System.out.println("\n\n---------------------------------");

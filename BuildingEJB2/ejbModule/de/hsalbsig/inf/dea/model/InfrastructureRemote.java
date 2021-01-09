@@ -71,6 +71,8 @@ public interface InfrastructureRemote {
     
     public Collection<Prescription> getPrescriptionOf(String id);
     
+    public Collection<Prescription> getPrescriptionFrom(String id);
+    
     public Collection<ScheduleRequest> getScheduleRequests();
     
     public Position getPosition(long id) throws NoSuchRowException; 

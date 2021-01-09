@@ -70,6 +70,8 @@ public interface InfrastructureRemote {
 	public String login(String type, String firstName, String lastName, int number);
 	
 	public Collection<Prescription> getPrescriptionOf(String id);
+	
+	public Collection<Prescription> getPrescriptionFrom(String id);
 
     public Collection<ScheduleRequest> getScheduleRequests();
  

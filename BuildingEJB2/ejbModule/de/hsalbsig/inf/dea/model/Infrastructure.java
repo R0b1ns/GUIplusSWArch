@@ -261,6 +261,12 @@ public class Infrastructure implements InfrastructureRemote {
 	
 	@SuppressWarnings("unchecked")
     @Override
+    public Collection<Prescription> getPrescriptionFrom(String id) {
+        return em.createQuery("SELECT p FROM Prescription p WHERE p.employeeId="+id).getResultList();
+    }
+	
+	@SuppressWarnings("unchecked")
+    @Override
     public Collection<ScheduleRequest> getScheduleRequests() {
         return em.createQuery("SELECT r FROM ScheduleRequest r").getResultList();
     }
