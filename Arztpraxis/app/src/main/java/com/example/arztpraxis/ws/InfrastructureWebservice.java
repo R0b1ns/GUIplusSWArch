@@ -20,9 +20,9 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.example.arztpraxis.model.Building;
+
 import com.example.arztpraxis.model.Drug;
-import com.example.arztpraxis.model.Room;
+
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -54,150 +54,6 @@ public class InfrastructureWebservice {
 
     private String urlString;
 
-    public int getCountRooms() {
-        //urlString = URL + "/count";
-        urlString = URL + "/patients";
-        Request request = new Request.Builder()
-                .url(urlString)
-                .build();
-        System.out.println( "reauest = " + request);
-        try {
-            Response response = client.newCall(request).execute();
-            System.out.println( "response = " + response);
-            return Integer.parseInt(response.body().string());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
-    public Collection<Room> getRooms() {
-        urlString = URL + "/rooms";
-        Request request = new Request.Builder()
-                .url(urlString)
-                .build();
-        try {
-            Response response = client.newCall(request).execute();
-            String output;
-            Room[] rooms = null;
-            if ((output = response.body().string()) != null)
-                rooms = gson.fromJson(output, Room[].class);
-            Collection<Room> allRooms = new ArrayList<Room>();
-            for (int i = 0; i < rooms.length; i++)
-                allRooms.add(rooms[i]);
-            return allRooms;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public Collection<Building> getBuildings() {
-        urlString = URL + "/buildings";
-        Request request = new Request.Builder()
-                .url(urlString)
-                .build();
-        try {
-            Response response = client.newCall(request).execute();
-            String output;
-            Building[] buildings = null;
-            if ((output = response.body().string()) != null)
-                buildings = gson.fromJson(output, Building[].class);
-            Collection<Building> allBuildings = new ArrayList<Building>();
-            for (int i = 0; i < buildings.length; i++)
-                allBuildings.add(buildings[i]);
-            return allBuildings;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public Room getRoom(long id) throws NoSuchRowException {
-        urlString = URL + "/rooms/" + id;
-        Request request = new Request.Builder()
-                .url(urlString)
-                .build();
-        try {
-            Response response = client.newCall(request).execute();
-            String output;
-            Room room = null;
-            if ((output = response.body().string()) != null) {
-                room = gson.fromJson(output, Room.class);
-                // zugegebene Vergewaltigung der JsonSyntaxException hinsichtlich
-                // NoSuchRowException ...
-            }
-            return room;
-        } catch (IOException e) { // zu newCall(request).execute() und response.body().string();
-            e.printStackTrace();
-        } catch (com.google.gson.JsonSyntaxException e) {
-            throw new NoSuchRowException();
-        }
-        return null;
-    }
-
-    public Building getBuilding(long id) throws NoSuchRowException {
-        urlString = URL + "/buildings/" + id;
-        Request request = new Request.Builder()
-                .url(urlString)
-                .build();
-        try {
-            Response response = client.newCall(request).execute();
-            String output;
-            Building building = null;
-            if ((output = response.body().string()) != null) {
-                building = gson.fromJson(output, Building.class);
-                // zugegebene Vergewaltigung der JsonException hinsichtlich
-                // NoSuchRowException ...
-            }
-            return building;
-        } catch (IOException e) { // zu newCall(request).execute() und response.body().string();
-            e.printStackTrace();
-        } catch (com.google.gson.JsonSyntaxException e) {
-            throw new NoSuchRowException();
-        }
-        return null;
-    }
-
-    public void removeBuilding(long id) throws NoSuchRowException {
-        urlString = URL + "/buildings/" + id;
-        Request request = new Request.Builder()
-                .url(urlString)
-                .delete()
-                .build();
-        try {
-            Response response = client.newCall(request).execute();
-            String responseString = response.body().string();
-            if (responseString.compareTo("{\"status\":\"success\"}") != 0)
-                throw new NoSuchRowException();
-        } catch (IOException e) { // zu newCall(request).execute() und response.body().string();
-            e.printStackTrace();
-        }
-    }
-
-    public void createBuilding(Building building) throws IllegalCreateException {
-        urlString = URL + "/buildings/";
-        OkHttpClient client = new OkHttpClient();
-
-        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),
-                gson.toJson(building));
-        Request request = new Request.Builder()
-                .url(urlString)
-                .post(body)
-                .build();
-        Response response = null;
-        try {
-            response = client.newCall(request).execute();
-            String responseString = response.body().string();
-            if (responseString.compareTo("{\"status\":\"success\"}") != 0)
-                throw new IllegalCreateException();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    //##########################eigener Code#####################################
-    //########################## GET ID #########################################
     public Drug getDrug(long id) throws NoSuchRowException {
         urlString = URL + "/drugs/" + id;
         Request request = new Request.Builder()

@@ -88,7 +88,7 @@ public class ScheduleRequest implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Building [id=" + id + ", number=" + priority + ", street=" + note + "]";
+		return "ScheduleRequest [id=" + id + ", priority=" + priority + ", note=" + note + "]";
 	}
 
 }
