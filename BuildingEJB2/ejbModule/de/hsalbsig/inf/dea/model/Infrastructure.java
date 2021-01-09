@@ -152,7 +152,7 @@ public class Infrastructure implements InfrastructureRemote {
     @SuppressWarnings("unchecked")
     @Override
     public Collection<ScheduleRequest> getAllScheduleRequests() {
-        return em.createQuery("SELECT s FROM ScheduleRequest s").getResultList();
+        return em.createQuery("SELECT s FROM ScheduleRequest s ORDER BY s.priority").getResultList();
     }
 	
 	//get[specific id in Table]
