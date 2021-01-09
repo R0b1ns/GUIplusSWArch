@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.arztpraxis.R;
 import com.example.arztpraxis.helper.MyApplication;
+import com.example.arztpraxis.model.Patient;
 
 public class HomeFragment extends Fragment {
 
@@ -80,6 +81,14 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChanged(String s) {
                 tvHealthInsuranceNumber.setText(s);
+            }
+        });
+
+        homeViewModel.getPatient().observe(getViewLifecycleOwner(), new Observer<Patient>() {
+            @Override
+            public void onChanged(Patient patient) {
+                ((MyApplication)getActivity().getApplication()).setPatient(patient);
+                ((MyApplication)getActivity().getApplication()).setLoggedIn(patient!=null);
             }
         });
         return root;

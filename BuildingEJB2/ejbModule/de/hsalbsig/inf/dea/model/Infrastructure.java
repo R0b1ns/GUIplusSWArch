@@ -167,6 +167,12 @@ public class Infrastructure implements InfrastructureRemote {
     public Collection<Schedule> getScheduleOfEmployee(String id) {
         return em.createQuery("SELECT s FROM Schedule s where s.employeeId="+id).getResultList();
     }
+	
+	
+	@Override
+	public long getEmployeeOfName(String firstName, String lastName) {
+	  return (long) em.createQuery("SELECT e.id FROM Employee e WHERE e.personId=(SELECT p.id FROM Person p WHERE p.firstName='"+firstName+"' AND p.lastName='"+lastName+"')").getSingleResult();
+	}
 
 	@Override
     public Patient getPatientInfo(long id) throws NoSuchRowException {

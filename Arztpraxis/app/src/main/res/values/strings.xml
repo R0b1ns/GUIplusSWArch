@@ -41,7 +41,8 @@
     <string name="title">Title</string>
     <string name="datetime">datetime</string>
     <string name="attending_doctor">Attending doctor</string>
-    <string name="doctor">doctor</string>
+    <string name="requested_doctor">Requested doctor (FirstName LastName)</string>
+    <string name="doctor">Doctor</string>
     <string name="settings_personalinfo">settings_personalinfo</string>
     <string name="login">Login</string>
     <string name="menu_patient">Patients</string>

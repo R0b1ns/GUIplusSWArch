@@ -15,6 +15,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.example.arztpraxis.R;
+import com.example.arztpraxis.helper.MyApplication;
 import com.example.arztpraxis.model.ScheduleRequest;
 import com.example.arztpraxis.ws.InfrastructureWebservice;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -79,19 +80,26 @@ public class AppointmentNewFragment extends Fragment {
             public void onClick(View v) {
                 RadioGroup appointmentNewPressure = root.findViewById(R.id.appointmentNewPressure);
                 RadioButton selectedPressure = root.findViewById(appointmentNewPressure.getCheckedRadioButtonId());
+                EditText requestedDoctor = root.findViewById(R.id.requestedDoctor);
                 EditText appointmentNewAnnotation = root.findViewById(R.id.appointmentNewAnnotation);
 
                 //Send request to server with this data
-                appointmentNewAnnotation.getText();
-                selectedPressure.getText();
+                //appointmentNewAnnotation.getText();
+                //selectedPressure.getText();
 
+//                AsyncSendScheduleAppointment myAsyncTask= new AsyncSendScheduleAppointment();
+//                myAsyncTask.execute(new String[]{appointmentNewAnnotation.getText().toString(),
+//                        requestedDoctor.getText().toString(),
+//                        selectedPressure.getText().toString()});
                 new AsyncSendScheduleAppointment().execute(
                         new String[]{appointmentNewAnnotation.getText().toString(),
+                                requestedDoctor.getText().toString(),
                                 selectedPressure.getText().toString()});
 
+
                 //if sent successful
-                    Snackbar.make(v, "Appointment was requested successfully", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                    Snackbar.make(v, "Appointment was requested successfully", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
             }
         });
 
@@ -102,7 +110,9 @@ public class AppointmentNewFragment extends Fragment {
         @Override
         protected Void doInBackground(String[]... strings) {
             String s_annotation=strings[0][0];
-            String s_pressure=strings[0][1];
+            String[] s_doctor=strings[0][1].split(" ");
+            String s_pressure=strings[0][2];
+
 
             switch (s_pressure){
                 case "low":
@@ -113,22 +123,39 @@ public class AppointmentNewFragment extends Fragment {
                     break;
                 case "high":
                     s_pressure="hoch";
+                    break;
+                default:
+                    s_pressure="niedrig";
+                    break;
             }
 
-
-            InfrastructureWebservice service = new InfrastructureWebservice();
-            ScheduleRequest scheduleRequest;
-            int scheduleRequestLength;
+            if (s_doctor.length==2) {
 
 
-            try {
-                    scheduleRequestLength=service.getAllScheduleRequests().size();
+                InfrastructureWebservice service = new InfrastructureWebservice();
+                ScheduleRequest scheduleRequest;
+                int scheduleRequestLength;
+
+
+                try {
+                    scheduleRequestLength = service.getAllScheduleRequests().size();
                     // last two values should be changed to something different, called with method
-                    scheduleRequest= new ScheduleRequest(scheduleRequestLength+1,s_pressure,s_annotation,1,1);
+                    scheduleRequest = new ScheduleRequest(scheduleRequestLength + 1,
+                            s_pressure, s_annotation,
+                            (int) ((MyApplication) getActivity().getApplication()).getUserId(),
+                            (int) service.getEmployeeOfName(s_doctor[0],s_doctor[1]));
                     service.createScheduleRequest(scheduleRequest);
+                    Snackbar.make(getView(), "Appointment was requested successfully", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
 
-            }catch (Exception e){
-                e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Snackbar.make(getView(), "Something went wrong, sorry!", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            }else{
+                Snackbar.make(getView(), "please enter a valid employee([First Name]SPACE[Last Name]", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
 
 

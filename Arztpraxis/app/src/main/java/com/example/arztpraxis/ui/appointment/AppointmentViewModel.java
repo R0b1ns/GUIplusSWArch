@@ -30,6 +30,8 @@ public class AppointmentViewModel extends ViewModel {
         mScheduleId.setValue(new long[] {0});
 
         new AsyncLoadScheduleAppointment().execute();
+
+
     }
 
     public LiveData<String> getText() {

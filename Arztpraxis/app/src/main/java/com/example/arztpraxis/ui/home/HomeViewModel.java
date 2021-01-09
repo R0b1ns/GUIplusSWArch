@@ -23,6 +23,7 @@ public class HomeViewModel extends ViewModel {
     private MutableLiveData<String> mGender;
     private MutableLiveData<String> mHealthInsurance;
     private MutableLiveData<String> mHealthInsuranceNumber;
+    private MutableLiveData<Patient> mPatient;
 
     public HomeViewModel() {
         mText = new MutableLiveData<>();
@@ -37,6 +38,8 @@ public class HomeViewModel extends ViewModel {
         mHealthInsurance.setValue("no data found");
         mHealthInsuranceNumber = new MutableLiveData<>();
         mHealthInsuranceNumber.setValue("no data found");
+        mPatient = new MutableLiveData<>();
+        mPatient.setValue(null);
 
         new AsyncLoadPerson().execute(this);
     }
@@ -63,6 +66,10 @@ public class HomeViewModel extends ViewModel {
 
     public LiveData<String> getHealthInsuranceNumber() {
         return mHealthInsuranceNumber;
+    }
+
+    public LiveData<Patient> getPatient(){
+        return mPatient;
     }
 
 
@@ -92,6 +99,7 @@ public class HomeViewModel extends ViewModel {
                         mGender.postValue(Helper.getGender(person.getGender()));
                         mHealthInsurance.postValue(healthInsurance.getName());
                         mHealthInsuranceNumber.postValue(String.valueOf(patient.getSSN()));
+                        mPatient.postValue(patient);
                     }
                 }
             } catch (NoSuchRowException e) {

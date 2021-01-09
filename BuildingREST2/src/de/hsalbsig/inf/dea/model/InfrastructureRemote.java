@@ -63,6 +63,8 @@ public interface InfrastructureRemote {
 	
 	public Employee getEmployeeInfo(long id) throws NoSuchRowException;
 	
+	public long getEmployeeOfName(String firstName, String lastName) throws NoSuchRowException;
+	
 	public long getLoginId(String type, String firstName, String lastName, int number);
 	
 	public String login(String type, String firstName, String lastName, int number);

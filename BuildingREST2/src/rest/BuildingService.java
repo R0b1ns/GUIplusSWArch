@@ -224,6 +224,15 @@ public class BuildingService implements java.io.Serializable {
     }
 	
 	@GET
+	@Path("/employees/name")
+	public long getEmployeeOfName(@QueryParam("firstName") String firstName,@QueryParam("lastName") String lastName) throws NoSuchRowException {
+	  System.out.println("\n\n---------------------------------");
+      System.out.println("App :: GET getEmployeeOfName("+firstName+" "+lastName+")");
+      System.out.println("\n\n---------------------------------");
+      return infrastructureRemote.getEmployeeOfName(firstName,lastName);
+	}
+	
+	@GET
 	@Path("/patients/{id}")
 	public Patient getPatientInfo(@PathParam("id") long id) throws NoSuchRowException {
 	  System.out.println("\n\n---------------------------------");
@@ -660,6 +669,14 @@ public class BuildingService implements java.io.Serializable {
       } catch (Exception e) {
           success = false;
       }
+      System.out.println("\n\n--------------------lel-------------");
+      System.out.println("App :: POST addScheduleRequest with id = " + scheduleRequest.getId());
+      System.out.println("App :: POST addScheduleRequest with employee_id = " + scheduleRequest.getEmployeeId());
+      System.out.println("App :: POST addScheduleRequest with note = " + scheduleRequest.getNote());
+      System.out.println("App :: POST addScheduleRequest with patient_id = " + scheduleRequest.getPatientId());
+      System.out.println("App :: POST addScheduleRequest with priority = " +scheduleRequest.getPriority());
+      System.out.println("\n\n--------------------lel-------------");  
+      
       System.out.println("App :: POST addScheduleRequest success = " + success);
       System.out.println("\n\n---------------------------------");
       StatusMessage msg = RestApplication.getReturnMessage(success);

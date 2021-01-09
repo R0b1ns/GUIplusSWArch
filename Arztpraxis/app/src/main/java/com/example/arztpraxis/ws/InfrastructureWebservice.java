@@ -31,7 +31,7 @@ public class InfrastructureWebservice {
     private static final String URL
             //unten ist die richtige adresse, muss aber nach jedem reconnect geändert werden!
             //141.87.68.X mit X= aktuelle IP, andere Teile bleiben gleich!
-            = "http://141.87.68.225:8080/BuildingREST2/rest/app";
+            = "http://141.87.68.40:8080/BuildingREST2/rest/app";
 
 
     private GsonBuilder gsonBuilder = new GsonBuilder().setDateFormat("EEE,yyyy MM dd");//führt evtl später zu Problemen
@@ -447,6 +447,35 @@ public class InfrastructureWebservice {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public long getEmployeeOfName(String firstName, String lastName) throws NoSuchRowException {
+        //System.out.println("Status: in getHealthInsurance("+id+")");
+        urlString = URL + "/employees/name?firstName=" + firstName + "&lastName=" + lastName;
+        Request request = new Request.Builder()
+                .url(urlString)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            String output;
+            long id= 0;
+            //System.out.println("Status: in in request");
+            //System.out.println("Response-Body:"+response.body().string());
+            if ((output = response.body().string()) != null) {
+                //System.out.println("Status: in if");
+                id = Long.parseLong(output);
+            }
+
+            //System.out.println("Status: in request2");
+            return id;
+        } catch (IOException e) { // zu newCall(request).execute() und response.body().string();
+            e.printStackTrace();
+        } catch (com.google.gson.JsonSyntaxException e) {
+            throw new NoSuchRowException();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return 0;
     }
 }
 
