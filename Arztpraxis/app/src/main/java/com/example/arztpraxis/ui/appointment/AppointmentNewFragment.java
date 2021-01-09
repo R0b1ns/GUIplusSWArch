@@ -1,5 +1,6 @@
 package com.example.arztpraxis.ui.appointment;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,6 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.arztpraxis.R;
+import com.example.arztpraxis.model.ScheduleRequest;
+import com.example.arztpraxis.ws.InfrastructureWebservice;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,6 +66,68 @@ public class AppointmentNewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_appointment_new, container, false);
+        View root = inflater.inflate(R.layout.fragment_appointment_new, container, false);
+
+        Button appointmentNewSubmit = root.findViewById(R.id.appointmentNewSubmit);
+        appointmentNewSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RadioGroup appointmentNewPressure = root.findViewById(R.id.appointmentNewPressure);
+                RadioButton selectedPressure = root.findViewById(appointmentNewPressure.getCheckedRadioButtonId());
+                EditText appointmentNewAnnotation = root.findViewById(R.id.appointmentNewAnnotation);
+
+                //Send request to server with this data
+                appointmentNewAnnotation.getText();
+                selectedPressure.getText();
+
+                new AsyncSendScheduleAppointment().execute(
+                        new String[]{appointmentNewAnnotation.getText().toString(),
+                                selectedPressure.getText().toString()});
+
+                //if sent successful
+                    Snackbar.make(v, "Appointment was requested successfully", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+        return root;
+    }
+
+    private class AsyncSendScheduleAppointment extends AsyncTask<String[],Void,Void> {
+        @Override
+        protected Void doInBackground(String[]... strings) {
+            String s_annotation=strings[0][0];
+            String s_pressure=strings[0][1];
+
+            switch (s_pressure){
+                case "low":
+                    s_pressure="niedrig";
+                    break;
+                case "medium":
+                    s_pressure="mittel";
+                    break;
+                case "high":
+                    s_pressure="hoch";
+            }
+
+
+            InfrastructureWebservice service = new InfrastructureWebservice();
+            ScheduleRequest scheduleRequest;
+            int scheduleRequestLength;
+
+
+            try {
+                    scheduleRequestLength=service.getAllScheduleRequests().size();
+                    // last two values should be changed to something different, called with method
+                    scheduleRequest= new ScheduleRequest(scheduleRequestLength+1,s_pressure,s_annotation,1,1);
+                    service.createScheduleRequest(scheduleRequest);
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+
+            return null;
+        }
     }
 }

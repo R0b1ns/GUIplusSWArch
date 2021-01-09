@@ -17,9 +17,9 @@ public class ScheduleRequest implements Serializable {
 
 	private String note;
 	
-	private int patient_id;
+	private int patientId;
 	
-	private int employee_id;
+	private int employeeId;
 
 	public ScheduleRequest() {
 	}
@@ -28,8 +28,8 @@ public class ScheduleRequest implements Serializable {
 		this.id = id;
 		this.priority = priority;
 		this.note = note;
-		this.patient_id = patient_id;
-		this.employee_id = employee_id;
+		this.patientId = patient_id;
+		this.employeeId = employee_id;
 	}
 
 	//@Id
@@ -62,28 +62,28 @@ public class ScheduleRequest implements Serializable {
 
 	//@Column(name = "patientid")
     public int getPatientId() {
-        return patient_id;
+        return patientId;
     }
 
     public void setPatientId(int patient_id) {
-        this.patient_id = patient_id;
+        this.patientId = patient_id;
     }
 
     //@Column(name = "mitarbeiterid")
     public int getEmployeeId() {
-        return employee_id;
+        return employeeId;
     }
 
     public void setEmployeeId(int employee_id) {
-        this.employee_id = employee_id;
+        this.employeeId = employee_id;
     }
     
     public void copyData(ScheduleRequest copy) {
       this.id = copy.id;
       this.priority = copy.priority;
       this.note = copy.note;
-      this.patient_id = copy.patient_id;
-      this.employee_id = copy.employee_id;
+      this.patientId = copy.patientId;
+      this.employeeId = copy.employeeId;
 	}
 
 	@Override
