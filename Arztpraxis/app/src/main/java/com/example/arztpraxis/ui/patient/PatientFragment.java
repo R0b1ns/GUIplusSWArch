@@ -28,6 +28,8 @@ public class PatientFragment extends Fragment {
     private PatientAddFragment patientAddFragment;
     private PatientDetailFragment patientDetailFragment;
 
+    private long[] patientId;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -38,11 +40,13 @@ public class PatientFragment extends Fragment {
         patientList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                patientDetailFragment = PatientDetailFragment.newInstance(id);
-                FragmentTransaction ft = getParentFragmentManager().beginTransaction();
-                ft.replace(R.id.nav_host_fragment, patientDetailFragment);
-                ft.addToBackStack("patientDetail");
-                ft.commit();
+                if (patientId[0]>0) {
+                    patientDetailFragment = PatientDetailFragment.newInstance(patientId[position]);
+                    FragmentTransaction ft = getParentFragmentManager().beginTransaction();
+                    ft.replace(R.id.nav_host_fragment, patientDetailFragment);
+                    ft.addToBackStack("patientDetail");
+                    ft.commit();
+                }
             }
         });
 
@@ -55,6 +59,13 @@ public class PatientFragment extends Fragment {
                         patientItems
                 );
                 patientList.setAdapter(listViewAdapter);
+            }
+        });
+
+        patientViewModel.getPatientId().observe(getViewLifecycleOwner(), new Observer<long[]>() {
+            @Override
+            public void onChanged(long[] longs) {
+                patientId=longs;
             }
         });
 

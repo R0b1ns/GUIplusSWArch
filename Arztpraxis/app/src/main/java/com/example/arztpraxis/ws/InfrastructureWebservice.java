@@ -21,6 +21,8 @@ import com.example.arztpraxis.model.Building;
 import com.example.arztpraxis.model.Drug;
 import com.example.arztpraxis.model.Room;
 
+import javax.xml.xpath.XPath;
+
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -476,6 +478,26 @@ public class InfrastructureWebservice {
             e.printStackTrace();
         }
         return 0;
+    }
+    public Collection<Patient> getAllPatients() {
+        urlString = URL + "/patients";
+        Request request = new Request.Builder()
+                .url(urlString)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            String output;
+            Patient[] patients = null;
+            if ((output = response.body().string()) != null)
+                patients = gson.fromJson(output, Patient[].class);
+            Collection<Patient> allPatients = new ArrayList<Patient>();
+            for (int i = 0; i < patients.length; i++)
+                allPatients.add(patients[i]);
+            return allPatients;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
 

@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.arztpraxis.R;
 import com.example.arztpraxis.helper.MyApplication;
+import com.example.arztpraxis.model.Employee;
 import com.example.arztpraxis.model.Patient;
 
 public class HomeFragment extends Fragment {
@@ -89,6 +90,8 @@ public class HomeFragment extends Fragment {
             public void onChanged(Patient patient) {
                 ((MyApplication)getActivity().getApplication()).setPatient(patient);
                 ((MyApplication)getActivity().getApplication()).setLoggedIn(patient!=null);
+                //TODO: remove below me in function
+                ((MyApplication)getActivity().getApplication()).setEmployee(new Employee(1,1,55568,1));//hans maier
             }
         });
         return root;

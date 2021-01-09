@@ -1,5 +1,6 @@
 package com.example.arztpraxis.ui.patient;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,11 +10,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.arztpraxis.R;
+import com.example.arztpraxis.helper.Helper;
+import com.example.arztpraxis.model.HealthInsurance;
+import com.example.arztpraxis.model.Patient;
+import com.example.arztpraxis.model.Person;
 import com.example.arztpraxis.ui.appointment.AppointmentCreateFragment;
 import com.example.arztpraxis.ui.appointment.AppointmentNewFragment;
 import com.example.arztpraxis.ui.prescription.PrescriptionCreateFragment;
+import com.example.arztpraxis.ws.InfrastructureWebservice;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /**
@@ -87,6 +94,45 @@ public class PatientDetailFragment extends Fragment {
             }
         });
 
+        new AsyncLoadPatient().execute();
+
         return root;
+    }
+
+    private class AsyncLoadPatient extends AsyncTask<Void,Void,Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            InfrastructureWebservice service = new InfrastructureWebservice();
+
+            TextView tvName= getView().findViewById(R.id.patientName);
+            TextView tvBirthday= getView().findViewById(R.id.patientBirthdate);
+            TextView tvGender= getView().findViewById(R.id.patientGender);
+            TextView tvHealthInsurance= getView().findViewById(R.id.patientHealthInsuranceName);
+            TextView tvHealthInsuranceNumber= getView().findViewById(R.id.patientHealthInsuranceNumber);
+
+
+            try {
+                Patient patient= service.getPatient(mParam1);
+                if (patient!=null){
+                    //System.out.println(patient.toString());
+                    Person person = service.getPerson(patient.getPerson());
+                    //System.out.println(person.toString());
+                    HealthInsurance healthInsurance = service.getHealthInsurance(patient.getHealthInsurance());
+                    //System.out.println(healthInsurance.toString());
+                    if (person != null && healthInsurance!=null){
+                        //System.out.println("Status: in person!=null");
+                        tvName.setText(person.getFirstName()+" "+person.getLastName());
+                        tvBirthday.setText(Helper.formatDateTime(person.getBirthday(),false));
+                        tvGender.setText(Helper.getGender(person.getGender()));
+                        tvHealthInsurance.setText(healthInsurance.getName());
+                        tvHealthInsuranceNumber.setText(String.valueOf(patient.getSSN()));
+                    }
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            return null;
+        }
     }
 }
