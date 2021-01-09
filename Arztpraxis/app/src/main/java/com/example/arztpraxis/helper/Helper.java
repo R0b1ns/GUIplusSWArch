@@ -20,6 +20,12 @@ public class Helper {
                  return "male";
              case "w":
                  return "female";
+             case "male":
+                 return "m";
+             case "female":
+                 return  "w";
+             case "other":
+                 return "d";
              default:
                  return "other";
          }

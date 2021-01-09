@@ -567,7 +567,7 @@ public class BuildingService implements java.io.Serializable {
       System.out.println("App :: POST addAdress with id = " + adress.getId());
       System.out.println("App :: POST addAdress with city = " + adress.getCity());
       System.out.println("App :: POST addAdress with number = " + adress.getNumber());
-      System.out.println("App :: POST addAdress with plz = " + adress.getPLZ());
+      System.out.println("App :: POST addAdress with plz = " + adress.getPlz());
       System.out.println("App :: POST addAdress with street = " +adress.getStreet());
       System.out.println("\n\n---------------------------------");  
       

@@ -1,5 +1,6 @@
 package com.example.arztpraxis.ui.patient;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,7 +14,18 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.example.arztpraxis.R;
+import com.example.arztpraxis.helper.Helper;
+import com.example.arztpraxis.model.Adress;
+import com.example.arztpraxis.model.HealthInsurance;
+import com.example.arztpraxis.model.Patient;
+import com.example.arztpraxis.model.Person;
+import com.example.arztpraxis.ws.InfrastructureWebservice;
 import com.google.android.material.snackbar.Snackbar;
+
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -82,20 +94,105 @@ public class PatientAddFragment extends Fragment {
                 RadioGroup patientGenderRadio = root.findViewById(R.id.patientGender);
                 RadioButton selectedPatientGender = root.findViewById(patientGenderRadio.getCheckedRadioButtonId());
 
+                EditText patientAddressPLZ = root.findViewById(R.id.patientAddressPLZ);
+                EditText patientAddressCity = root.findViewById(R.id.patientAddressCity);
+                EditText patientAddressStreet = root.findViewById(R.id.patientAddressStreet);
+                EditText patientAddressNumber = root.findViewById(R.id.patientAddressNumber);
+
                 //Send request to server with this data
-                patientFirstname.getText();
-                patientLastname.getText();
-                patientBirthdate.getText();
-                patientHealthInsuranceName.getText();
-                patientHealthInsuranceNumber.getText();
-                selectedPatientGender.getText();
+//                patientFirstname.getText();
+//                patientLastname.getText();
+//                patientBirthdate.getText();
+//                selectedPatientGender.getText();
+//                patientHealthInsuranceName.getText();
+//                patientHealthInsuranceNumber.getText();
+
+                new AsyncCreatePatient().execute(
+                        patientFirstname.getText().toString(),
+                        patientLastname.getText().toString(),
+                        patientBirthdate.getText().toString(),
+                        selectedPatientGender.getText().toString(),
+                        patientHealthInsuranceName.getText().toString(),
+                        patientHealthInsuranceNumber.getText().toString(),
+                        patientAddressPLZ.getText().toString(),
+                        patientAddressCity.getText().toString(),
+                        patientAddressStreet.getText().toString(),
+                        patientAddressNumber.getText().toString()
+                );
+
 
                 //if sent successful
-                Snackbar.make(v, "Patient was created successfully", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                //Snackbar.make(v, "Patient was created successfully", Snackbar.LENGTH_LONG)
+                  //      .setAction("Action", null).show();
             }
         });
 
         return root;
+    }
+
+    private class AsyncCreatePatient extends AsyncTask<String, Void, Void> {
+        @Override
+        protected Void doInBackground(String... string) {
+            InfrastructureWebservice service = new InfrastructureWebservice();
+            String firstName = string[0];
+            String lastName = string[1];
+            DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+            try {
+                Date birthday = format.parse(string[2]);
+                String gender = Helper.getGender(string[3]);
+                String healthInsuranceName=string[4];
+                int ssn=Integer.parseInt(string[5]);
+                int address_plz=Integer.parseInt(string[6]);
+                String address_city=string[7];
+                String address_street=string[8];
+                String address_number=string[9];
+                boolean validHealthInsurance=false;
+                int healthInsuranceId=0;
+                for (HealthInsurance healthInsurance: service.getAllHealthInsurances()){
+                    //System.out.println("db-value:"+healthInsurance.getName());
+                    //System.out.println("test-value"+healthInsuranceName);
+                    if(healthInsurance.getName().equals(healthInsuranceName)){
+                        validHealthInsurance=true;
+                        healthInsuranceId=(int)healthInsurance.getId();
+                        break;
+                    }
+                }
+                if(!validHealthInsurance){
+                    Snackbar.make(getView(), "Please enter valid Health-Insurance", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    return null;
+                }
+
+                long newAddressId=service.getAllAdresses().size()+1;
+                long newPersonId=service.getAllPersons().size()+1;
+                long newPatientId=service.getAllPatients().size()+1;
+
+                Adress adress = new Adress(newAddressId,
+                        address_plz,address_city,address_street,address_number);
+                service.createAdress(adress);
+
+                Person person = new Person(newPersonId,firstName,lastName,
+                        new java.sql.Date(birthday.getTime()),(int)newAddressId,gender);
+                service.createPerson(person);
+
+                Patient patient = new Patient(newPatientId,ssn,(int)newPersonId,healthInsuranceId);
+                service.createPatient(patient);
+
+
+                Snackbar.make(getView(), "Patient was created successfully", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
+
+            } catch (ParseException e) {
+                Snackbar.make(getView(), "Please enter Date as dd.mm.yyyy", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }catch (NumberFormatException e){
+                Snackbar.make(getView(), "Please enter valid SSN and PLZ", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return null;
+        }
     }
 }

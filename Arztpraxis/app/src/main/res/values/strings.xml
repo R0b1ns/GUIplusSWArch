@@ -52,8 +52,14 @@
     <string name="lastname">Lastname</string>
     <string name="male">male</string>
     <string name="female">female</string>
+    <string name="other">other</string>
     <string name="health_insurance_name">health_insurance_name</string>
     <string name="health_insurance_number">health_insurance_number</string>
+    <string name="address">Address</string>
+    <string name="address_plz">PLZ</string>
+    <string name="address_city">City</string>
+    <string name="address_street">Street</string>
+    <string name="address_number">Number</string>
     <string name="create_patient">create_patient</string>
     <string name="undefined">undefined</string>
     <string name="create_appointment">create_appointment</string>

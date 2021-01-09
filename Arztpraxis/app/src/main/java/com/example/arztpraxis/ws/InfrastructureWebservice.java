@@ -1,5 +1,6 @@
 package com.example.arztpraxis.ws;
 
+import com.example.arztpraxis.model.Adress;
 import com.example.arztpraxis.model.Employee;
 import com.example.arztpraxis.model.HealthInsurance;
 import com.example.arztpraxis.model.Patient;
@@ -22,6 +23,7 @@ import com.example.arztpraxis.model.Drug;
 import com.example.arztpraxis.model.Room;
 
 import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -38,6 +40,9 @@ public class InfrastructureWebservice {
 
     private GsonBuilder gsonBuilder = new GsonBuilder().setDateFormat("EEE,yyyy MM dd");//führt evtl später zu Problemen
     private Gson gson = gsonBuilder.create();
+
+    private GsonBuilder gsonBuilderOtherDate = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z[UTC]'");
+    private Gson gsonOtherDate = gsonBuilderOtherDate.create();
 
     private URL url;
     private URLConnection connection;
@@ -498,6 +503,138 @@ public class InfrastructureWebservice {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void createPerson(Person person) throws IllegalCreateException {
+        urlString = URL + "/persons";
+        OkHttpClient client = new OkHttpClient();
+
+        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),
+                gsonOtherDate.toJson(person));
+        //System.out.println(body);
+        Request request = new Request.Builder()
+                .url(urlString)
+                .post(body)
+                .build();
+        //System.out.println(gsonOtherDate.toJson(person).toString());
+        Response response = null;
+        try {
+            response = client.newCall(request).execute();
+            String responseString = response.body().string();
+            if (responseString.compareTo("{\"status\":\"success\"}") != 0)
+                throw new IllegalCreateException();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Collection<Adress> getAllAdresses() {
+        urlString = URL + "/adresses";
+        Request request = new Request.Builder()
+                .url(urlString)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            String output;
+            Adress[] adresses = null;
+            if ((output = response.body().string()) != null)
+                adresses = gson.fromJson(output, Adress[].class);
+            Collection<Adress> allAdresses = new ArrayList<Adress>();
+            for (int i = 0; i < adresses.length; i++)
+                allAdresses.add(adresses[i]);
+            return allAdresses;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Collection<Person> getAllPersons() {
+        urlString = URL + "/persons";
+        Request request = new Request.Builder()
+                .url(urlString)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            String output;
+            Person[] persons = null;
+            if ((output = response.body().string()) != null)
+                persons = gson.fromJson(output, Person[].class);
+            Collection<Person> allPersons = new ArrayList<Person>();
+            for (int i = 0; i < persons.length; i++)
+                allPersons.add(persons[i]);
+            return allPersons;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Collection<HealthInsurance> getAllHealthInsurances() {
+        urlString = URL + "/healthinsurances";
+        Request request = new Request.Builder()
+                .url(urlString)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            String output;
+            HealthInsurance[] healthInsurances = null;
+            if ((output = response.body().string()) != null)
+                healthInsurances = gson.fromJson(output, HealthInsurance[].class);
+            Collection<HealthInsurance> allHealthInsurances = new ArrayList<HealthInsurance>();
+            for (int i = 0; i < healthInsurances.length; i++)
+                allHealthInsurances.add(healthInsurances[i]);
+            return allHealthInsurances;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void createPatient(Patient patient) throws IllegalCreateException {
+        urlString = URL + "/patients";
+        OkHttpClient client = new OkHttpClient();
+
+        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),
+                gson.toJson(patient));
+        //System.out.println(body);
+        Request request = new Request.Builder()
+                .url(urlString)
+                .post(body)
+                .build();
+        //System.out.println(gson.toJson(person).toString());
+        Response response = null;
+        try {
+            response = client.newCall(request).execute();
+            String responseString = response.body().string();
+            if (responseString.compareTo("{\"status\":\"success\"}") != 0)
+                throw new IllegalCreateException();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createAdress(Adress adress) throws IllegalCreateException {
+        urlString = URL + "/adresses";
+        OkHttpClient client = new OkHttpClient();
+
+        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),
+                gson.toJson(adress));
+        //System.out.println(body);
+        Request request = new Request.Builder()
+                .url(urlString)
+                .post(body)
+                .build();
+        //System.out.println(gson.toJson(adress).toString());
+        Response response = null;
+        try {
+            response = client.newCall(request).execute();
+            String responseString = response.body().string();
+            if (responseString.compareTo("{\"status\":\"success\"}") != 0)
+                throw new IllegalCreateException();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 

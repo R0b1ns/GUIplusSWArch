@@ -44,11 +44,11 @@ public class Adress implements Serializable {
 	}
 
 	@Column(name = "plz")
-	public int getPLZ() {
+	public int getPlz() {
 		return plz;
 	}
 	
-	public void setPLZ(int plz) {
+	public void setPlz(int plz) {
 	    this.plz=plz;
 	}
 

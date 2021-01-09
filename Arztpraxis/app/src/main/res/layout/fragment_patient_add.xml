@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ui.patient.PatientAddFragment">
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -86,6 +89,13 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/female" />
+
+        <RadioButton
+            android:id="@+id/patientGenderOther"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/other"/>
     </RadioGroup>
 
     <TextView
@@ -114,6 +124,50 @@
         android:inputType="text"
         android:hint="@string/health_insurance_number" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/address" />
+
+    <EditText
+        android:id="@+id/patientAddressPLZ"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:inputType="number"
+        android:hint="@string/address_plz"/>
+
+    <EditText
+        android:id="@+id/patientAddressCity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:inputType="text"
+        android:hint="@string/address_city"/>
+
+    <EditText
+        android:id="@+id/patientAddressStreet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:inputType="text"
+        android:hint="@string/address_street"/>
+
+    <EditText
+        android:id="@+id/patientAddressNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:inputType="text"
+        android:hint="@string/address_number"/>
+
     <Button
         android:id="@+id/patientAddSubmit"
         android:layout_width="match_parent"
@@ -124,3 +178,4 @@
         android:text="@string/create_patient" />
 
 </LinearLayout>
+</ScrollView>
