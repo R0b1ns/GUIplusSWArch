@@ -1,10 +1,12 @@
 package com.example.arztpraxis.ws;
 
 import com.example.arztpraxis.model.Adress;
+import com.example.arztpraxis.model.Disease;
 import com.example.arztpraxis.model.Employee;
 import com.example.arztpraxis.model.HealthInsurance;
 import com.example.arztpraxis.model.Patient;
 import com.example.arztpraxis.model.Person;
+import com.example.arztpraxis.model.Prescription;
 import com.example.arztpraxis.model.Schedule;
 import com.example.arztpraxis.model.ScheduleRequest;
 import com.example.arztpraxis.model.Treatment;
@@ -635,6 +637,98 @@ public class InfrastructureWebservice {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public Collection<Prescription> getAllPrescriptions() {
+        urlString = URL + "/prescriptions";
+        Request request = new Request.Builder()
+                .url(urlString)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            String output;
+            Prescription[] prescriptions = null;
+            if ((output = response.body().string()) != null)
+                prescriptions = gson.fromJson(output, Prescription[].class);
+            Collection<Prescription> allPrescriptions = new ArrayList<Prescription>();
+            for (int i = 0; i < prescriptions.length; i++)
+                allPrescriptions.add(prescriptions[i]);
+            return allPrescriptions;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Disease getDisease(long id) throws NoSuchRowException {
+        //System.out.println("Status: in getHealthInsurance("+id+")");
+        urlString = URL + "/diseases/" + id;
+        Request request = new Request.Builder()
+                .url(urlString)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            String output;
+            Disease disease= null;
+            //System.out.println("Status: in in request");
+            //System.out.println("Response-Body:"+response.body().string());
+            if ((output = response.body().string()) != null) {
+                //System.out.println("Status: in if");
+                disease = gson.fromJson(output, Disease.class);
+            }
+
+            //System.out.println("Status: in request2");
+            return disease;
+        } catch (IOException e) { // zu newCall(request).execute() und response.body().string();
+            e.printStackTrace();
+        } catch (com.google.gson.JsonSyntaxException e) {
+            throw new NoSuchRowException();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Collection<Prescription> getPrescriptionOf(long id) {
+        urlString = URL + "/prescriptions/"+id;
+        Request request = new Request.Builder()
+                .url(urlString)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            String output;
+            Prescription[] prescriptions = null;
+            if ((output = response.body().string()) != null)
+                prescriptions = gson.fromJson(output, Prescription[].class);
+            Collection<Prescription> allPrescriptions = new ArrayList<Prescription>();
+            for (int i = 0; i < prescriptions.length; i++)
+                allPrescriptions.add(prescriptions[i]);
+            return allPrescriptions;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Collection<Prescription> getPrescriptionFrom(long id) {
+        urlString = URL + "/prescriptions/employee/"+id;
+        Request request = new Request.Builder()
+                .url(urlString)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            String output;
+            Prescription[] prescriptions = null;
+            if ((output = response.body().string()) != null)
+                prescriptions = gson.fromJson(output, Prescription[].class);
+            Collection<Prescription> allPrescriptions = new ArrayList<Prescription>();
+            for (int i = 0; i < prescriptions.length; i++)
+                allPrescriptions.add(prescriptions[i]);
+            return allPrescriptions;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
 

@@ -15,15 +15,25 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.arztpraxis.R;
+import com.example.arztpraxis.helper.MyApplication;
+import com.example.arztpraxis.model.Prescription;
 
 public class PrescriptionFragment extends Fragment {
 
     private PrescriptionViewModel prescriptionViewModel;
 
+    private long[] prescriptionId;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        prescriptionViewModel =
-                new ViewModelProvider(this).get(PrescriptionViewModel.class);
+//        prescriptionViewModel =
+//                new ViewModelProvider(this).get(PrescriptionViewModel.class);
+
+        long id=((MyApplication) getActivity().getApplication()).getUserId();
+        boolean isAdmin=((MyApplication) getActivity().getApplication()).isAdmin();
+
+        prescriptionViewModel = new ViewModelProvider(
+                this,new PrescriptionViewModelFactory(id,isAdmin)).get(PrescriptionViewModel.class);
         View root = inflater.inflate(R.layout.fragment_prescription, container, false);
 
         //Preload via Database / XHRequest
@@ -48,6 +58,28 @@ public class PrescriptionFragment extends Fragment {
                 //textView.setText(s);
             }
         });
+
+        prescriptionViewModel.getPrescriptionStringList().observe(getViewLifecycleOwner(), new Observer<String[]>() {
+            @Override
+            public void onChanged(String[] prescriptionItems) {
+                ArrayAdapter<String> listViewAdapter = new ArrayAdapter<>(
+                        getActivity(),
+                        android.R.layout.simple_list_item_1,
+                        prescriptionItems
+                );
+                listView.setAdapter(listViewAdapter);
+            }
+        });
+
+        prescriptionViewModel.getPrescriptionId().observe(getViewLifecycleOwner(), new Observer<long[]>() {
+            @Override
+            public void onChanged(long[] longs) {
+                prescriptionId=longs;
+            }
+        });
+
         return root;
     }
+
+
 }

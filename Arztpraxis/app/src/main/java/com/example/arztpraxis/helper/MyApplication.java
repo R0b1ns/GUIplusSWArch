@@ -41,4 +41,8 @@ public class MyApplication extends Application {
             return 0;
         }
     }
+
+    public boolean isAdmin(){
+        return employee!=null;
+    }
 }

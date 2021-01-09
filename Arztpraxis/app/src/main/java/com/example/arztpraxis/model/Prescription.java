@@ -12,15 +12,15 @@ public class Prescription implements Serializable {
 
 	private long id;
 	
-	private int patient_id;
+	private int patientId;
 
-	private int employee_id;
+	private int employeeId;
 	
-	private int drug_id;
+	private int drugId;
 	
-	private int disease_id;
+	private int diseaseId;
 	
-	private Date prescription_date;
+	private Date prescriptionDate;
 
 	
 
@@ -29,11 +29,11 @@ public class Prescription implements Serializable {
 
 	public Prescription(long id, int patient_id, int employee_id, int drug_id, int disease_id, Date prescription_date) {
 		this.id = id;
-	    this.patient_id = patient_id;
-		this.employee_id = employee_id;
-		this.drug_id = drug_id;
-		this.disease_id =disease_id;
-		this.prescription_date = prescription_date;
+	    this.patientId = patient_id;
+		this.employeeId = employee_id;
+		this.drugId = drug_id;
+		this.diseaseId =disease_id;
+		this.prescriptionDate = prescription_date;
 	}
 
 	//@Id
@@ -48,61 +48,61 @@ public class Prescription implements Serializable {
 	
 	//@Column(name = "patientid")
 	public int getPatientId() {
-		return patient_id;
+		return patientId;
 	}
 
 	public void setPatientId(int patient_id) {
-		this.patient_id = patient_id;
+		this.patientId = patient_id;
 	}
 
 	//@Column(name = "mitarbeiterid")
 	public int getEmployeeId() {
-		return employee_id;
+		return employeeId;
 	}
 
 	public void setEmployeeId(int employee_id) {
-		this.employee_id = employee_id;
+		this.employeeId = employee_id;
 	}
 
 	//@Column(name = "medikamentid")
 	public int getDrugId() {
-	    return drug_id;
+	    return drugId;
 	}
 	
 	public void setDrugId( int drug_id) {
-	    this.drug_id = drug_id;
+	    this.drugId = drug_id;
 	}
 	
 	//@Column(name = "krankheitid")
     public int getDiseaseId() {
-        return disease_id;
+        return diseaseId;
     }
     
     public void setDiseaseId( int disease_id) {
-        this.disease_id = disease_id;
+        this.diseaseId = disease_id;
     }
 	
 	//@Column(name= "ausstelldatum")
 	public Date getPrescriptionDate() {
-	    return prescription_date;
+	    return prescriptionDate;
 	}
 	
 	public void setPrescriptionDate(Date prescription_date) {
-	    this.prescription_date = prescription_date;
+	    this.prescriptionDate = prescription_date;
 	}
 	
 	public void copyData(Prescription copy) {
 	  this.id = copy.id;
-      this.patient_id = copy.patient_id;
-      this.employee_id = copy.employee_id;
-      this.drug_id = copy.drug_id;
-      this.disease_id = copy.disease_id;
-      this.prescription_date = copy.prescription_date;
+      this.patientId = copy.patientId;
+      this.employeeId = copy.employeeId;
+      this.drugId = copy.drugId;
+      this.diseaseId = copy.diseaseId;
+      this.prescriptionDate = copy.prescriptionDate;
     }
 
 	@Override
 	public String toString() {
-		return "Prescription [id=" + id + "patient_id=" + patient_id + ", employee_id=" + employee_id + ", drug_id=" + drug_id + ", disease_id=" + disease_id + ", prescription_date=" + prescription_date + "]";
+		return "Prescription [id=" + id + "patient_id=" + patientId + ", employee_id=" + employeeId + ", drug_id=" + drugId + ", disease_id=" + diseaseId + ", prescription_date=" + prescriptionDate + "]";
 	}
 
 }
