@@ -1,5 +1,6 @@
 package com.example.arztpraxis.ui.appointment;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,6 +15,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.example.arztpraxis.R;
+import com.example.arztpraxis.model.ScheduleRequest;
+import com.example.arztpraxis.ws.InfrastructureWebservice;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -82,6 +85,10 @@ public class AppointmentNewFragment extends Fragment {
                 appointmentNewAnnotation.getText();
                 selectedPressure.getText();
 
+                new AsyncSendScheduleAppointment().execute(
+                        new String[]{appointmentNewAnnotation.getText().toString(),
+                                selectedPressure.getText().toString()});
+
                 //if sent successful
                     Snackbar.make(v, "Appointment was requested successfully", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
@@ -89,5 +96,43 @@ public class AppointmentNewFragment extends Fragment {
         });
 
         return root;
+    }
+
+    private class AsyncSendScheduleAppointment extends AsyncTask<String[],Void,Void> {
+        @Override
+        protected Void doInBackground(String[]... strings) {
+            String s_annotation=strings[0][0];
+            String s_pressure=strings[0][1];
+
+            switch (s_pressure){
+                case "low":
+                    s_pressure="niedrig";
+                    break;
+                case "medium":
+                    s_pressure="mittel";
+                    break;
+                case "high":
+                    s_pressure="hoch";
+            }
+
+
+            InfrastructureWebservice service = new InfrastructureWebservice();
+            ScheduleRequest scheduleRequest;
+            int scheduleRequestLength;
+
+
+            try {
+                    scheduleRequestLength=service.getAllScheduleRequests().size();
+                    // last two values should be changed to something different, called with method
+                    scheduleRequest= new ScheduleRequest(scheduleRequestLength+1,s_pressure,s_annotation,1,1);
+                    service.createScheduleRequest(scheduleRequest);
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+
+            return null;
+        }
     }
 }

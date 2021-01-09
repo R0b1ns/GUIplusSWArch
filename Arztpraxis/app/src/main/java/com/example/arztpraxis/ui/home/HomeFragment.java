@@ -26,6 +26,8 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         if (((MyApplication) getActivity().getApplication()).isLoggedIn()){
+            //((MyApplication) ((MyApplication) getActivity().getApplication()).setPatient());
+        }else{
             //TODO: jump to settings;
         }
 

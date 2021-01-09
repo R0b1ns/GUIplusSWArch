@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.arztpraxis.helper.Helper;
+import com.example.arztpraxis.helper.MyApplication;
 import com.example.arztpraxis.model.HealthInsurance;
 import com.example.arztpraxis.model.Patient;
 import com.example.arztpraxis.model.Person;
@@ -37,7 +38,7 @@ public class HomeViewModel extends ViewModel {
         mHealthInsuranceNumber = new MutableLiveData<>();
         mHealthInsuranceNumber.setValue("no data found");
 
-        new AsyncLoadPerson().execute();
+        new AsyncLoadPerson().execute(this);
     }
 
     public LiveData<String> getText() {
@@ -66,10 +67,10 @@ public class HomeViewModel extends ViewModel {
 
 
 
-    private class AsyncLoadPerson extends AsyncTask<Void, Void, Void> {
-        @SuppressLint("WrongThread")
+    private class AsyncLoadPerson extends AsyncTask<ViewModel, Void, Void> {
         @Override
-        protected Void doInBackground(Void...voids) {
+        protected Void doInBackground(ViewModel...viewModels) {
+            ViewModel viewModel=viewModels[0];
 
             InfrastructureWebservice service = null;
             service = new InfrastructureWebservice();

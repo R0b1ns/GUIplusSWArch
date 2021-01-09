@@ -5,6 +5,7 @@ import com.example.arztpraxis.model.HealthInsurance;
 import com.example.arztpraxis.model.Patient;
 import com.example.arztpraxis.model.Person;
 import com.example.arztpraxis.model.Schedule;
+import com.example.arztpraxis.model.ScheduleRequest;
 import com.example.arztpraxis.model.Treatment;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -399,6 +400,50 @@ public class InfrastructureWebservice {
         } catch (com.google.gson.JsonSyntaxException e) {
             throw new NoSuchRowException();
         } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void createScheduleRequest(ScheduleRequest scheduleRequest) throws IllegalCreateException {
+        urlString = URL + "/schedule/requests";
+        OkHttpClient client = new OkHttpClient();
+
+        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),
+                gson.toJson(scheduleRequest));
+        //System.out.println(body);
+        Request request = new Request.Builder()
+                .url(urlString)
+                .post(body)
+                .build();
+        System.out.println(gson.toJson(scheduleRequest).toString());
+        Response response = null;
+        try {
+            response = client.newCall(request).execute();
+            String responseString = response.body().string();
+            if (responseString.compareTo("{\"status\":\"success\"}") != 0)
+                throw new IllegalCreateException();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Collection<ScheduleRequest> getAllScheduleRequests() {
+        urlString = URL + "/schedule/requests";
+        Request request = new Request.Builder()
+                .url(urlString)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            String output;
+            ScheduleRequest[] scheduleRequests = null;
+            if ((output = response.body().string()) != null)
+                scheduleRequests = gson.fromJson(output, ScheduleRequest[].class);
+            Collection<ScheduleRequest> allScheduleRequests = new ArrayList<ScheduleRequest>();
+            for (int i = 0; i < scheduleRequests.length; i++)
+                allScheduleRequests.add(scheduleRequests[i]);
+            return allScheduleRequests;
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
