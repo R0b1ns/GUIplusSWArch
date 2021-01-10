@@ -35,12 +35,11 @@ import okhttp3.Response;
 
 public class InfrastructureWebservice {
     private static final String URL
-            //unten ist die richtige adresse, muss aber nach jedem reconnect geändert werden!
-            //141.87.68.X mit X= aktuelle IP, andere Teile bleiben gleich!
+            //Bitte aktuelle VPN Netzwerkadresse beachten!
+            //### 141.87.68.X ###
             = "http://141.87.68.55:8080/BuildingREST2/rest/app";
 
-
-    private GsonBuilder gsonBuilder = new GsonBuilder().setDateFormat("EEE,yyyy MM dd");//führt evtl später zu Problemen
+    private GsonBuilder gsonBuilder = new GsonBuilder().setDateFormat("EEE,yyyy MM dd");
     private Gson gson = gsonBuilder.create();
 
     private GsonBuilder gsonBuilderOtherDate = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z[UTC]'");
@@ -88,7 +87,7 @@ public class InfrastructureWebservice {
                 prescription = gson.fromJson(output, Prescription.class);
             }
             return prescription;
-        } catch (IOException e) { // zu newCall(request).execute() und response.body().string();
+        } catch (IOException e) {
             e.printStackTrace();
         } catch (com.google.gson.JsonSyntaxException e) {
             throw new NoSuchRowException();
@@ -136,7 +135,7 @@ public class InfrastructureWebservice {
             e.printStackTrace();
         } catch (com.google.gson.JsonSyntaxException e) {
             throw new NoSuchRowException();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -151,9 +150,8 @@ public class InfrastructureWebservice {
         try {
             Response response = client.newCall(request).execute();
             String output;
-            Patient patient= null;
+            Patient patient = null;
             if ((output = response.body().string()) != null) {
-                //System.out.println("Status: in if");
                 patient = gson.fromJson(output, Patient.class);
             }
             return patient;
@@ -161,14 +159,13 @@ public class InfrastructureWebservice {
             e.printStackTrace();
         } catch (com.google.gson.JsonSyntaxException e) {
             throw new NoSuchRowException();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
 
     public HealthInsurance getHealthInsurance(long id) throws NoSuchRowException {
-        //System.out.println("Status: in getHealthInsurance("+id+")");
         urlString = URL + "/healthinsurances/" + id;
         Request request = new Request.Builder()
                 .url(urlString)
@@ -176,9 +173,9 @@ public class InfrastructureWebservice {
         try {
             Response response = client.newCall(request).execute();
             String output;
-            HealthInsurance healthInsurance= null;
+            HealthInsurance healthInsurance = null;
             if ((output = response.body().string()) != null) {
-                //System.out.println("Status: in if");
+
                 healthInsurance = gson.fromJson(output, HealthInsurance.class);
             }
             return healthInsurance;
@@ -186,14 +183,14 @@ public class InfrastructureWebservice {
             e.printStackTrace();
         } catch (com.google.gson.JsonSyntaxException e) {
             throw new NoSuchRowException();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
 
     public Collection<Schedule> getSchedulePatient(long id) {
-        urlString = URL + "/schedule/patient/"+id;
+        urlString = URL + "/schedule/patient/" + id;
         Request request = new Request.Builder()
                 .url(urlString)
                 .build();
@@ -214,7 +211,7 @@ public class InfrastructureWebservice {
     }
 
     public Collection<Schedule> getScheduleEmployee(long id) {
-        urlString = URL + "/schedule/employee/"+id;
+        urlString = URL + "/schedule/employee/" + id;
         Request request = new Request.Builder()
                 .url(urlString)
                 .build();
@@ -235,7 +232,7 @@ public class InfrastructureWebservice {
     }
 
     public Treatment getTreatment(long id) throws NoSuchRowException {
-        //System.out.println("Status: in getHealthInsurance("+id+")");
+
         urlString = URL + "/treatments/" + id;
         Request request = new Request.Builder()
                 .url(urlString)
@@ -243,7 +240,7 @@ public class InfrastructureWebservice {
         try {
             Response response = client.newCall(request).execute();
             String output;
-            Treatment treatment= null;
+            Treatment treatment = null;
             if ((output = response.body().string()) != null) {
                 treatment = gson.fromJson(output, Treatment.class);
             }
@@ -252,7 +249,7 @@ public class InfrastructureWebservice {
             e.printStackTrace();
         } catch (com.google.gson.JsonSyntaxException e) {
             throw new NoSuchRowException();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -266,19 +263,17 @@ public class InfrastructureWebservice {
         try {
             Response response = client.newCall(request).execute();
             String output;
-            Schedule schedule= null;
+            Schedule schedule = null;
             if ((output = response.body().string()) != null) {
-                //System.out.println("Status: in if");
                 schedule = gson.fromJson(output, Schedule.class);
             }
 
-            //System.out.println("Status: in request2");
             return schedule;
         } catch (IOException e) {
             e.printStackTrace();
         } catch (com.google.gson.JsonSyntaxException e) {
             throw new NoSuchRowException();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -292,19 +287,17 @@ public class InfrastructureWebservice {
         try {
             Response response = client.newCall(request).execute();
             String output;
-            Employee employee= null;
+            Employee employee = null;
             if ((output = response.body().string()) != null) {
-                //System.out.println("Status: in if");
                 employee = gson.fromJson(output, Employee.class);
             }
 
-            //System.out.println("Status: in request2");
             return employee;
         } catch (IOException e) {
             e.printStackTrace();
         } catch (com.google.gson.JsonSyntaxException e) {
             throw new NoSuchRowException();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -316,7 +309,7 @@ public class InfrastructureWebservice {
 
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),
                 gson.toJson(scheduleRequest));
-        //System.out.println(body);
+
         Request request = new Request.Builder()
                 .url(urlString)
                 .post(body)
@@ -333,18 +326,18 @@ public class InfrastructureWebservice {
         }
     }
 
-    public void createScheduleFromRequest(Schedule schedule,long id) throws IllegalCreateException {
-        urlString = URL + "/schedule/add/"+id;
+    public void createScheduleFromRequest(Schedule schedule, long id) throws IllegalCreateException {
+        urlString = URL + "/schedule/add/" + id;
         OkHttpClient client = new OkHttpClient();
 
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),
                 gsonOtherDate.toJson(schedule));
-        //System.out.println(body);
+
         Request request = new Request.Builder()
                 .url(urlString)
                 .post(body)
                 .build();
-        //System.out.println(gsonOtherDate.toJson(schedule).toString());
+
         Response response = null;
         try {
             response = client.newCall(request).execute();
@@ -378,7 +371,7 @@ public class InfrastructureWebservice {
     }
 
     public long getEmployeeOfName(String firstName, String lastName) throws NoSuchRowException {
-        //System.out.println("Status: in getHealthInsurance("+id+")");
+
         urlString = URL + "/employees/name?firstName=" + firstName + "&lastName=" + lastName;
         Request request = new Request.Builder()
                 .url(urlString)
@@ -386,28 +379,26 @@ public class InfrastructureWebservice {
         try {
             Response response = client.newCall(request).execute();
             String output;
-            long id= 0;
-            //System.out.println("Status: in in request");
-            //System.out.println("Response-Body:"+response.body().string());
+            long id = 0;
+
             if ((output = response.body().string()) != null) {
-                //System.out.println("Status: in if");
+
                 id = Long.parseLong(output);
             }
 
-            //System.out.println("Status: in request2");
             return id;
         } catch (IOException e) {
             e.printStackTrace();
         } catch (com.google.gson.JsonSyntaxException e) {
             throw new NoSuchRowException();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return 0;
     }
 
     public long getPatientOfName(String firstName, String lastName) throws NoSuchRowException {
-        //System.out.println("Status: in getHealthInsurance("+id+")");
+
         urlString = URL + "/patients/name?firstName=" + firstName + "&lastName=" + lastName;
         Request request = new Request.Builder()
                 .url(urlString)
@@ -415,21 +406,18 @@ public class InfrastructureWebservice {
         try {
             Response response = client.newCall(request).execute();
             String output;
-            long id= 0;
-            //System.out.println("Status: in in request");
-            //System.out.println("Response-Body:"+response.body().string());
+            long id = 0;
+
             if ((output = response.body().string()) != null) {
-                //System.out.println("Status: in if");
                 id = Long.parseLong(output);
             }
 
-            //System.out.println("Status: in request2");
             return id;
         } catch (IOException e) {
             e.printStackTrace();
         } catch (com.google.gson.JsonSyntaxException e) {
             throw new NoSuchRowException();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return 0;
@@ -504,12 +492,12 @@ public class InfrastructureWebservice {
 
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),
                 gsonOtherDate.toJson(person));
-        //System.out.println(body);
+
         Request request = new Request.Builder()
                 .url(urlString)
                 .post(body)
                 .build();
-        //System.out.println(gsonOtherDate.toJson(person).toString());
+
         Response response = null;
         try {
             response = client.newCall(request).execute();
@@ -590,12 +578,12 @@ public class InfrastructureWebservice {
 
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),
                 gson.toJson(patient));
-        //System.out.println(body);
+
         Request request = new Request.Builder()
                 .url(urlString)
                 .post(body)
                 .build();
-        //System.out.println(gson.toJson(person).toString());
+
         Response response = null;
         try {
             response = client.newCall(request).execute();
@@ -613,12 +601,12 @@ public class InfrastructureWebservice {
 
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),
                 gson.toJson(adress));
-        //System.out.println(body);
+
         Request request = new Request.Builder()
                 .url(urlString)
                 .post(body)
                 .build();
-        //System.out.println(gson.toJson(adress).toString());
+
         Response response = null;
         try {
             response = client.newCall(request).execute();
@@ -652,7 +640,7 @@ public class InfrastructureWebservice {
     }
 
     public Disease getDisease(long id) throws NoSuchRowException {
-        //System.out.println("Status: in getHealthInsurance("+id+")");
+
         urlString = URL + "/diseases/" + id;
         Request request = new Request.Builder()
                 .url(urlString)
@@ -660,28 +648,25 @@ public class InfrastructureWebservice {
         try {
             Response response = client.newCall(request).execute();
             String output;
-            Disease disease= null;
-            //System.out.println("Status: in in request");
-            //System.out.println("Response-Body:"+response.body().string());
+            Disease disease = null;
+
             if ((output = response.body().string()) != null) {
-                //System.out.println("Status: in if");
                 disease = gson.fromJson(output, Disease.class);
             }
 
-            //System.out.println("Status: in request2");
             return disease;
         } catch (IOException e) {
             e.printStackTrace();
         } catch (com.google.gson.JsonSyntaxException e) {
             throw new NoSuchRowException();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
 
     public Collection<Prescription> getPrescriptionOf(long id) {
-        urlString = URL + "/prescriptions/"+id;
+        urlString = URL + "/prescriptions/" + id;
         Request request = new Request.Builder()
                 .url(urlString)
                 .build();
@@ -702,7 +687,7 @@ public class InfrastructureWebservice {
     }
 
     public Collection<Prescription> getPrescriptionFrom(long id) {
-        urlString = URL + "/prescriptions/employee/"+id;
+        urlString = URL + "/prescriptions/employee/" + id;
         Request request = new Request.Builder()
                 .url(urlString)
                 .build();
@@ -730,7 +715,7 @@ public class InfrastructureWebservice {
         try {
             Response response = client.newCall(request).execute();
             String output;
-            Drug[] drugs= null;
+            Drug[] drugs = null;
             if ((output = response.body().string()) != null)
                 drugs = gson.fromJson(output, Drug[].class);
             Collection<Drug> allDrugs = new ArrayList<Drug>();
@@ -751,7 +736,7 @@ public class InfrastructureWebservice {
         try {
             Response response = client.newCall(request).execute();
             String output;
-            Disease[] diseases= null;
+            Disease[] diseases = null;
             if ((output = response.body().string()) != null)
                 diseases = gson.fromJson(output, Disease[].class);
             Collection<Disease> allDiseases = new ArrayList<Disease>();
@@ -770,12 +755,12 @@ public class InfrastructureWebservice {
 
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),
                 gsonOtherDate.toJson(prescription));
-        //System.out.println(body);
+
         Request request = new Request.Builder()
                 .url(urlString)
                 .post(body)
                 .build();
-        //System.out.println(gsonOtherDate.toJson(prescription).toString());
+
         Response response = null;
         try {
             response = client.newCall(request).execute();
@@ -788,23 +773,21 @@ public class InfrastructureWebservice {
     }
 
     public String getLogin(String type, String firstName, String lastName, String number) {
-        //System.out.println("Status: in getHealthInsurance("+id+")");
-        urlString = URL + "/login?type="+type+"&firstname="+firstName+"&lastname="+lastName+"&number="+number;
+
+        urlString = URL + "/login?type=" + type + "&firstname=" + firstName + "&lastname=" + lastName + "&number=" + number;
         Request request = new Request.Builder()
                 .url(urlString)
                 .build();
         try {
             Response response = client.newCall(request).execute();
             String output;
-            //System.out.println("Status: in in request");
-            //System.out.println("Response-Body:"+response.body().string());
+
             if ((output = response.body().string()) != null) {
-                //System.out.println("Status: in if");
                 return output;
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;

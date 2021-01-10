@@ -7,7 +7,7 @@ public class Helper {
      public static String formatDateTime(Date date,boolean returnTime){
         SimpleDateFormat sdf;
         if (returnTime){
-             sdf=new SimpleDateFormat("HH:mm:ss");
+            sdf= new SimpleDateFormat("HH:mm:ss");
         }else{
             sdf= new SimpleDateFormat("dd.MM.yyyy");
         }

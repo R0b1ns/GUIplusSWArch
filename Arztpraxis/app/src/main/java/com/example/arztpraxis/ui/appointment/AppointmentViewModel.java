@@ -16,93 +16,79 @@ import java.util.Collection;
 public class AppointmentViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
-    private MutableLiveData<String[]>mSchedule;
-    private MutableLiveData<long[]>mScheduleId;
+    private MutableLiveData<String[]> mSchedule;
+    private MutableLiveData<long[]> mScheduleId;
 
     private long id;
     private boolean isAdmin;
 
     public AppointmentViewModel(long id, boolean isAdmin) {
-        this.id=id;
-        this.isAdmin=isAdmin;
+        this.id = id;
+        this.isAdmin = isAdmin;
         mText = new MutableLiveData<>();
         mText.setValue("This is gallery fragment");
 
         mSchedule = new MutableLiveData<>();
-        mSchedule.setValue(new String[] {"undefined"});
+        mSchedule.setValue(new String[]{"undefined"});
 
         mScheduleId = new MutableLiveData<>();
-        mScheduleId.setValue(new long[] {0});
+        mScheduleId.setValue(new long[]{0});
 
         new AsyncLoadScheduleAppointment().execute();
-
-
     }
 
     public LiveData<String> getText() {
         return mText;
     }
 
-    public LiveData<String[]> getSchedule(){
+    public LiveData<String[]> getSchedule() {
         return mSchedule;
     }
 
-    public LiveData<long[]> getScheduleId(){
+    public LiveData<long[]> getScheduleId() {
         return mScheduleId;
     }
 
-    private class AsyncLoadScheduleAppointment extends AsyncTask<Void,Void,Void> {
+    private class AsyncLoadScheduleAppointment extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... voids) {
             String[] appointmentItems;
-
-//            appointmentItems[0] = "10.01.2021 - Generelle Untersuchung";
-//            appointmentItems[1] = "20.01.2021 - Operation";
-//            appointmentItems[2] = "01.02.2021 - Deportation";
 
             InfrastructureWebservice service = null;
             service = new InfrastructureWebservice();
             Collection<Schedule> schedules;
             try {
-                if (isAdmin){
+                if (isAdmin) {
                     schedules = service.getScheduleEmployee(id);
-                }else {
+                } else {
                     schedules = service.getSchedulePatient(id);
                 }
 
-
-                //System.out.println(schedules.toString());
                 if (schedules != null) {
                     appointmentItems = new String[schedules.size()];
                     long[] appointmentIds = new long[schedules.size()];
-                    //System.out.println("Status: in person!=null");
-                    Schedule[] schedulesArray = schedules.toArray(new Schedule[schedules.size()]);
-                    //System.out.println(schedulesArray[0]);
-                    for (int i = 0; i < schedules.size(); i++) {
-                        //System.out.println("im in the for")
-                        Treatment t = service.getTreatment(schedulesArray[i].getTreatmentId());
-                        appointmentIds[i]=schedulesArray[i].getId();
-                        appointmentItems[i]=
-                                Helper.formatDateTime(schedulesArray[i].getDate(),false)+
-                                        " " +
-                                        Helper.formatDateTime(schedulesArray[i].getDate(), true)+
-                                        " : "+t.getDescription();
 
-                        //System.out.println("im through " + i + 1 + " loop(s)");
+                    Schedule[] schedulesArray = schedules.toArray(new Schedule[schedules.size()]);
+
+                    for (int i = 0; i < schedules.size(); i++) {
+                        Treatment t = service.getTreatment(schedulesArray[i].getTreatmentId());
+                        appointmentIds[i] = schedulesArray[i].getId();
+                        appointmentItems[i] =
+                                Helper.formatDateTime(schedulesArray[i].getDate(), false) +
+                                        " " +
+                                        Helper.formatDateTime(schedulesArray[i].getDate(), true) +
+                                        " : " + t.getDescription();
                     }
                     mSchedule.postValue(appointmentItems);
                     mScheduleId.postValue(appointmentIds);
                 }
 
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-
             return null;
         }
-
     }
 }
 

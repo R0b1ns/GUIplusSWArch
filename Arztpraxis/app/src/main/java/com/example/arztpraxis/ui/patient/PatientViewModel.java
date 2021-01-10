@@ -22,7 +22,7 @@ public class PatientViewModel extends ViewModel {
         String[] patientItems = {"undefined"};
         mPatientList.setValue(patientItems);
         mPatientId = new MutableLiveData<>();
-        mPatientId.setValue(new long[] {0});
+        mPatientId.setValue(new long[]{0});
 
         new AsyncLoadPatient().execute();
     }
@@ -31,7 +31,7 @@ public class PatientViewModel extends ViewModel {
         return mPatientList;
     }
 
-    public LiveData<long[]> getPatientId(){
+    public LiveData<long[]> getPatientId() {
         return mPatientId;
     }
 
@@ -42,24 +42,23 @@ public class PatientViewModel extends ViewModel {
             InfrastructureWebservice service = new InfrastructureWebservice();
             Collection<Patient> patients;
 
-            try{
-                patients=service.getAllPatients();
-                if (patients!=null){
-                    String[] patientItems=new String[patients.size()];
-                    long[] patientIds= new long[patients.size()];
+            try {
+                patients = service.getAllPatients();
+                if (patients != null) {
+                    String[] patientItems = new String[patients.size()];
+                    long[] patientIds = new long[patients.size()];
                     Patient[] patientsArray = patients.toArray(new Patient[patients.size()]);
-                    for (int i=0; i<patients.size();i++){
-                        Person person=service.getPerson(patientsArray[i].getPerson());
-                        patientItems[i]=person.getFirstName()+" "+person.getLastName();
-                        patientIds[i]=patientsArray[i].getId();
+                    for (int i = 0; i < patients.size(); i++) {
+                        Person person = service.getPerson(patientsArray[i].getPerson());
+                        patientItems[i] = person.getFirstName() + " " + person.getLastName();
+                        patientIds[i] = patientsArray[i].getId();
                     }
                     mPatientList.postValue(patientItems);
                     mPatientId.postValue(patientIds);
                 }
 
-
-            }catch (Exception e){
-
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             return null;
         }

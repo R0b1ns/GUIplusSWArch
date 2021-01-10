@@ -70,7 +70,7 @@ public class PatientDetailFragment extends Fragment {
         patientCreatePrescription.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                prescriptionCreateFragment = PrescriptionCreateFragment.newInstance("mParam1", "param2"); //Param1 = mParam1 ~ Should be information about patient
+                prescriptionCreateFragment = new PrescriptionCreateFragment();
                 FragmentTransaction ft = getParentFragmentManager().beginTransaction();
                 ft.replace(R.id.nav_host_fragment, prescriptionCreateFragment, "prescriptionCreate");
                 ft.addToBackStack("prescriptionCreate");
@@ -83,36 +83,36 @@ public class PatientDetailFragment extends Fragment {
         return root;
     }
 
-    private class AsyncLoadPatient extends AsyncTask<Void,Void,Void> {
+    private class AsyncLoadPatient extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... voids) {
             InfrastructureWebservice service = new InfrastructureWebservice();
 
-            TextView tvName= getView().findViewById(R.id.patientName);
-            TextView tvBirthday= getView().findViewById(R.id.patientBirthdate);
-            TextView tvGender= getView().findViewById(R.id.patientGender);
-            TextView tvHealthInsurance= getView().findViewById(R.id.patientHealthInsuranceName);
-            TextView tvHealthInsuranceNumber= getView().findViewById(R.id.patientHealthInsuranceNumber);
+            TextView tvName = getView().findViewById(R.id.patientName);
+            TextView tvBirthday = getView().findViewById(R.id.patientBirthdate);
+            TextView tvGender = getView().findViewById(R.id.patientGender);
+            TextView tvHealthInsurance = getView().findViewById(R.id.patientHealthInsuranceName);
+            TextView tvHealthInsuranceNumber = getView().findViewById(R.id.patientHealthInsuranceNumber);
 
 
             try {
-                Patient patient= service.getPatient(mParam1);
-                if (patient!=null){
-                    //System.out.println(patient.toString());
+                Patient patient = service.getPatient(mParam1);
+                if (patient != null) {
+
                     Person person = service.getPerson(patient.getPerson());
-                    //System.out.println(person.toString());
+
                     HealthInsurance healthInsurance = service.getHealthInsurance(patient.getHealthInsurance());
-                    //System.out.println(healthInsurance.toString());
-                    if (person != null && healthInsurance!=null){
-                        //System.out.println("Status: in person!=null");
-                        tvName.setText(person.getFirstName()+" "+person.getLastName());
-                        tvBirthday.setText(Helper.formatDateTime(person.getBirthday(),false));
+
+                    if (person != null && healthInsurance != null) {
+
+                        tvName.setText(person.getFirstName() + " " + person.getLastName());
+                        tvBirthday.setText(Helper.formatDateTime(person.getBirthday(), false));
                         tvGender.setText(Helper.getGender(person.getGender()));
                         tvHealthInsurance.setText(healthInsurance.getName());
                         tvHealthInsuranceNumber.setText(String.valueOf(patient.getSSN()));
                     }
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 

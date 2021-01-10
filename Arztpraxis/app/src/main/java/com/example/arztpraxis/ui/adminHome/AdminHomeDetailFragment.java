@@ -90,14 +90,14 @@ public class AdminHomeDetailFragment extends Fragment {
         });
 
         //Fill data
-        tvId.setText("Request: "+mParam1);
+        tvId.setText("Request: " + mParam1);
 
         new AsyncLoadAppointmentRequest().execute(root);
 
         return root;
     }
 
-    private class AsyncLoadAppointmentRequest extends AsyncTask<View,Void,Void> {
+    private class AsyncLoadAppointmentRequest extends AsyncTask<View, Void, Void> {
         @Override
         protected Void doInBackground(View... views) {
             View root = views[0];
@@ -115,45 +115,42 @@ public class AdminHomeDetailFragment extends Fragment {
             Person person_employee;
             String sPriority;
 
-
-
-
             try {
-                scheduleRequest=service.getScheduleRequest(mParam1);
-                if (scheduleRequest!=null){
-                    switch (scheduleRequest.getPriority()){
+                scheduleRequest = service.getScheduleRequest(mParam1);
+                if (scheduleRequest != null) {
+                    switch (scheduleRequest.getPriority()) {
                         case "hoch":
-                            sPriority=getResources().getString(R.string.priority_high);
+                            sPriority = getResources().getString(R.string.priority_high);
                             break;
                         case "mittel":
-                            sPriority=getResources().getString(R.string.priority_medium);
+                            sPriority = getResources().getString(R.string.priority_medium);
                             break;
                         case "niedrig":
-                            sPriority=getResources().getString(R.string.priority_low);
+                            sPriority = getResources().getString(R.string.priority_low);
                             break;
                         default:
-                            sPriority=getResources().getString(R.string.undefined);
+                            sPriority = getResources().getString(R.string.undefined);
                             break;
                     }
                     tvPriority.setText(sPriority);
                     tvAnnotation.setText(scheduleRequest.getNote());
-                    patient=service.getPatient(scheduleRequest.getPatientId());
-                    employee=service.getEmployee(scheduleRequest.getEmployeeId());
-                    if (patient!=null&&employee!=null){
-                        patient_id=patient.getId();
-                        employee_id=employee.getId();
-                        person_patient=service.getPerson(patient.getPerson());
-                        person_employee=service.getPerson(employee.getPersonId());
-                        if (person_patient!=null&&person_employee!=null){
-                            tvPatient.setText(person_patient.getFirstName()+" "+person_patient.getLastName());
-                            tvDoctor.setText(person_employee.getFirstName()+" "+person_employee.getLastName());
-                            validRequest=true;
+                    patient = service.getPatient(scheduleRequest.getPatientId());
+                    employee = service.getEmployee(scheduleRequest.getEmployeeId());
+                    if (patient != null && employee != null) {
+                        patient_id = patient.getId();
+                        employee_id = employee.getId();
+                        person_patient = service.getPerson(patient.getPerson());
+                        person_employee = service.getPerson(employee.getPersonId());
+                        if (person_patient != null && person_employee != null) {
+                            tvPatient.setText(person_patient.getFirstName() + " " + person_patient.getLastName());
+                            tvDoctor.setText(person_employee.getFirstName() + " " + person_employee.getLastName());
+                            validRequest = true;
 
                         }
                     }
                 }
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -161,7 +158,7 @@ public class AdminHomeDetailFragment extends Fragment {
         }
     }
 
-    private class AsyncAcceptAppointmentRequest extends AsyncTask<View,Void,Void> {
+    private class AsyncAcceptAppointmentRequest extends AsyncTask<View, Void, Void> {
         @Override
         protected Void doInBackground(View... views) {
             View root = views[0];
@@ -171,30 +168,27 @@ public class AdminHomeDetailFragment extends Fragment {
             final EditText etTime = root.findViewById(R.id.appointmentRequestTime);
             final EditText etTreatment = root.findViewById(R.id.appointmentRequestTreatment);
 
-
-
-            if (validRequest){
+            if (validRequest) {
                 try {
                     SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-                    String appointmentDate=etDate.getText().toString();
-                    String appointmentTime=etTime.getText().toString();
-                    String[] checkAppointmentDate=appointmentDate.split("\\.");
-                    String[] checkAppointmentTime=appointmentTime.split(":");
+                    String appointmentDate = etDate.getText().toString();
+                    String appointmentTime = etTime.getText().toString();
+                    String[] checkAppointmentDate = appointmentDate.split("\\.");
+                    String[] checkAppointmentTime = appointmentTime.split(":");
 
-                    if (checkAppointmentDate.length!=3||checkAppointmentDate[0].length()!=2||checkAppointmentDate[1].length()!=2||checkAppointmentDate[2].length()!=4){
+                    if (checkAppointmentDate.length != 3 || checkAppointmentDate[0].length() != 2 || checkAppointmentDate[1].length() != 2 || checkAppointmentDate[2].length() != 4) {
                         Snackbar.make(getView(), "Date must be dd.MM.yyyy", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
                         return null;
                     }
 
-                    if (checkAppointmentTime.length!=2||checkAppointmentTime[0].length()!=2||checkAppointmentTime[1].length()!=2){
+                    if (checkAppointmentTime.length != 2 || checkAppointmentTime[0].length() != 2 || checkAppointmentTime[1].length() != 2) {
                         Snackbar.make(getView(), "Time must be HH:mm", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
                         return null;
                     }
 
-
-                    String appointmentDateTime = appointmentDate+" "+appointmentTime;
+                    String appointmentDateTime = appointmentDate + " " + appointmentTime;
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(sdf.parse(appointmentDateTime));
                     Collection<Treatment> treatments = service.getAllTreatments();
@@ -224,15 +218,14 @@ public class AdminHomeDetailFragment extends Fragment {
                         }
                     });
 
-                }catch (ParseException e){
+                } catch (ParseException e) {
                     Snackbar.make(getView(), "Invalid Date or Time (use dd.MM.yyyy HH:mm)!", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
 
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-
 
             return null;
         }

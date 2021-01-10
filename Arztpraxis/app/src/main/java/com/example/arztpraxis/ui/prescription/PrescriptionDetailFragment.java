@@ -82,7 +82,7 @@ public class PrescriptionDetailFragment extends Fragment {
         return root;
     }
 
-    private class AsyncLoadPrescription extends AsyncTask<View,Void,Void> {
+    private class AsyncLoadPrescription extends AsyncTask<View, Void, Void> {
         @Override
         protected Void doInBackground(View... views) {
             View root = views[0];
@@ -102,28 +102,27 @@ public class PrescriptionDetailFragment extends Fragment {
             final TextView tvDate = root.findViewById(R.id.prescriptionDate);
 
 
-
-            try{
-                prescription=service.getPrescription(mParam1);
-                if (prescription!=null){
-                    employee=service.getEmployee(prescription.getEmployeeId());
-                    patient=service.getPatient(prescription.getPatientId());
-                    disease=service.getDisease(prescription.getDiseaseId());
-                    drug=service.getDrug(prescription.getDrugId());
-                    tvDate.setText(Helper.formatDateTime(new Date(prescription.getPrescriptionDate().getTime()),false));
-                    if (patient!=null&&employee!=null&&disease!=null&&drug!=null){
+            try {
+                prescription = service.getPrescription(mParam1);
+                if (prescription != null) {
+                    employee = service.getEmployee(prescription.getEmployeeId());
+                    patient = service.getPatient(prescription.getPatientId());
+                    disease = service.getDisease(prescription.getDiseaseId());
+                    drug = service.getDrug(prescription.getDrugId());
+                    tvDate.setText(Helper.formatDateTime(new Date(prescription.getPrescriptionDate().getTime()), false));
+                    if (patient != null && employee != null && disease != null && drug != null) {
                         tvDisease.setText(disease.getDescription());
                         tvDrug.setText(drug.getDescription());
-                        person_employee=service.getPerson(employee.getPersonId());
-                        person_patient=service.getPerson(patient.getPerson());
-                        if (person_employee!=null&&person_patient!=null){
-                            tvDoctor.setText(person_employee.getFirstName()+" "+person_employee.getLastName());
-                            tvPatient.setText(person_patient.getFirstName()+" "+person_patient.getLastName());
+                        person_employee = service.getPerson(employee.getPersonId());
+                        person_patient = service.getPerson(patient.getPerson());
+                        if (person_employee != null && person_patient != null) {
+                            tvDoctor.setText(person_employee.getFirstName() + " " + person_employee.getLastName());
+                            tvPatient.setText(person_patient.getFirstName() + " " + person_patient.getLastName());
                         }
                     }
                 }
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 

@@ -26,55 +26,29 @@ import java.util.Objects;
 public class PrescriptionFragment extends Fragment {
 
     private PrescriptionViewModel prescriptionViewModel;
-
     private PrescriptionDetailFragment prescriptionDetailFragment;
-
     private long[] prescriptionId;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-//        prescriptionViewModel =
-//                new ViewModelProvider(this).get(PrescriptionViewModel.class);
 
-        long id=((MyApplication) getActivity().getApplication()).getUserId();
-        boolean isAdmin=((MyApplication) getActivity().getApplication()).isAdmin();
+        long id = ((MyApplication) getActivity().getApplication()).getUserId();
+        boolean isAdmin = ((MyApplication) getActivity().getApplication()).isAdmin();
 
         prescriptionViewModel = new ViewModelProvider(
-                this,new PrescriptionViewModelFactory(id,isAdmin)).get(PrescriptionViewModel.class);
+                this, new PrescriptionViewModelFactory(id, isAdmin)).get(PrescriptionViewModel.class);
         View root = inflater.inflate(R.layout.fragment_prescription, container, false);
 
-        //Preload via Database / XHRequest
-        String[] prescriptionItems = {"Rezept XY", "ItemB", "ItemX"};
-
         final ListView listView = root.findViewById(R.id.listView);
-
-        ArrayAdapter<String> listViewAdapter = new ArrayAdapter<>(
-                getActivity(),
-                android.R.layout.simple_list_item_1,
-                prescriptionItems
-        );
-
-        listView.setAdapter(listViewAdapter);
-
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 prescriptionDetailFragment = PrescriptionDetailFragment.newInstance(
-                        prescriptionId[position],null);
+                        prescriptionId[position], null);
                 FragmentTransaction ft = getParentFragmentManager().beginTransaction();
                 ft.replace(R.id.nav_host_fragment, prescriptionDetailFragment);
                 ft.addToBackStack("prescriptionDetail");
                 ft.commit();
-            }
-        });
-
-        //final TextView textView = root.findViewById(R.id.text_slideshow);
-        prescriptionViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-
-                //textView.setText(s);
             }
         });
 
@@ -93,7 +67,7 @@ public class PrescriptionFragment extends Fragment {
         prescriptionViewModel.getPrescriptionId().observe(getViewLifecycleOwner(), new Observer<long[]>() {
             @Override
             public void onChanged(long[] longs) {
-                prescriptionId=longs;
+                prescriptionId = longs;
             }
         });
 

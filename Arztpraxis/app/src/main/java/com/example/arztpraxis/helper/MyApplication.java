@@ -6,11 +6,6 @@ import com.example.arztpraxis.model.Employee;
 import com.example.arztpraxis.model.Patient;
 import com.example.arztpraxis.model.Person;
 
-
-//just do anywhere:
-// boolean loggedin=((MyApplication) this.getApplication()).isLoggedIn();
-//or:
-// ((MyApplication) this.getApplication()).setLoggedIn(true/false);
 public class MyApplication extends Application {
     private boolean loggedIn;
 
@@ -42,17 +37,17 @@ public class MyApplication extends Application {
         return person;
     }
 
-    public long getUserId(){
-        if (patient!=null){
+    public long getUserId() {
+        if (patient != null) {
             return patient.getId();
-        }else if (employee!=null){
+        } else if (employee != null) {
             return employee.getId();
-        }else {
+        } else {
             return 0;
         }
     }
 
     public boolean isAdmin(){
-        return employee!=null;
+        return employee != null;
     }
 }

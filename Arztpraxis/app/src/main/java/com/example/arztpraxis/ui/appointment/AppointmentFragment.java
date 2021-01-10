@@ -29,39 +29,37 @@ public class AppointmentFragment extends Fragment {
     private AppointmentViewModel appointmentViewModel;
     private AppointmentNewFragment appointmentNewFragment;
     private AppointmentDetailFragment appointmentDetailFragment;
-    private ArrayAdapter <String> model;
+    private ArrayAdapter<String> model;
     private ArrayList<String> alItems;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         ///appointmentViewModel = new ViewModelProvider(this).get(AppointmentViewModel.class);
 
-        long id=((MyApplication) getActivity().getApplication()).getUserId();
-        boolean isAdmin=((MyApplication) getActivity().getApplication()).isAdmin();
+        long id = ((MyApplication) getActivity().getApplication()).getUserId();
+        boolean isAdmin = ((MyApplication) getActivity().getApplication()).isAdmin();
 
         appointmentViewModel = new ViewModelProvider(
-                this,new AppointmentViewModelFactory(id,isAdmin)).get(AppointmentViewModel.class);
+                this, new AppointmentViewModelFactory(id, isAdmin)).get(AppointmentViewModel.class);
         View root = inflater.inflate(R.layout.fragment_appointments, container, false);
 
         final ListView listView = root.findViewById(R.id.listView);
 
-        alItems=new ArrayList<String>();
-        model=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,alItems);
+        alItems = new ArrayList<String>();
+        model = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, alItems);
 
         listView.setAdapter(model);
-
 
         appointmentViewModel.getSchedule().observe(getViewLifecycleOwner(), new Observer<String[]>() {
             @Override
             public void onChanged(String[] strings) {
                 model.clear();
-                for (int i=0; i<strings.length;i++) {
+                for (int i = 0; i < strings.length; i++) {
                     model.add(strings[i]);
                 }
                 model.notifyDataSetChanged();
             }
         });
-
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -77,7 +75,7 @@ public class AppointmentFragment extends Fragment {
 
         FloatingActionButton addAppointmentBtn = root.findViewById(R.id.addAppointmentBtn);
 
-        if(((MyApplication) getActivity().getApplication()).isLoggedIn() && ((MyApplication) getActivity().getApplication()).isAdmin()) {
+        if (((MyApplication) getActivity().getApplication()).isLoggedIn() && ((MyApplication) getActivity().getApplication()).isAdmin()) {
             addAppointmentBtn.hide();
         }
 

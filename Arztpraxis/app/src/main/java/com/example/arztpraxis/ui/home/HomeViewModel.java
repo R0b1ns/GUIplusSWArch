@@ -28,7 +28,7 @@ public class HomeViewModel extends ViewModel {
     private long id;
 
     public HomeViewModel(long id) {
-        this.id=id;
+        this.id = id;
         mText = new MutableLiveData<>();
         mText.setValue("This is home fragment");
         mName = new MutableLiveData<>();
@@ -71,16 +71,15 @@ public class HomeViewModel extends ViewModel {
         return mHealthInsuranceNumber;
     }
 
-    public LiveData<Patient> getPatient(){
+    public LiveData<Patient> getPatient() {
         return mPatient;
     }
 
 
-
     private class AsyncLoadPerson extends AsyncTask<ViewModel, Void, Void> {
         @Override
-        protected Void doInBackground(ViewModel...viewModels) {
-            ViewModel viewModel=viewModels[0];
+        protected Void doInBackground(ViewModel... viewModels) {
+            ViewModel viewModel = viewModels[0];
 
             InfrastructureWebservice service = null;
             service = new InfrastructureWebservice();
@@ -88,7 +87,7 @@ public class HomeViewModel extends ViewModel {
             Patient patient;
             HealthInsurance healthInsurance;
             try {
-                if (id>0) {
+                if (id > 0) {
                     patient = service.getPatient(id);
                     if (patient != null) {
                         //System.out.println(patient.toString());
@@ -111,7 +110,7 @@ public class HomeViewModel extends ViewModel {
                 //tvName.setText("Keine Person gefunden");
                 e.printStackTrace();
             }
-           return null;
+            return null;
         }
     }
 }

@@ -43,7 +43,6 @@ public class AppointmentDetailFragment extends Fragment {
      * @param param1 ID of Appointment.
      * @return A new instance of fragment AppointmentDetailFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static AppointmentDetailFragment newInstance(long param1) {
         AppointmentDetailFragment fragment = new AppointmentDetailFragment();
         Bundle args = new Bundle();
@@ -72,14 +71,14 @@ public class AppointmentDetailFragment extends Fragment {
         final TextView annotation = root.findViewById(R.id.annotation);
 
         //Fill data
-        title.setText("Lade Termin mit ID: "+mParam1);
+        title.setText("Lade Termin mit ID: " + mParam1);
 
         new AsyncLoadScheduleAppointment().execute(root);
 
         return root;
     }
 
-    private class AsyncLoadScheduleAppointment extends AsyncTask<View,Void,Void> {
+    private class AsyncLoadScheduleAppointment extends AsyncTask<View, Void, Void> {
         @Override
         protected Void doInBackground(View... views) {
             View root = views[0];
@@ -95,39 +94,39 @@ public class AppointmentDetailFragment extends Fragment {
             final TextView doctor = root.findViewById(R.id.doctor);
             final TextView annotation = root.findViewById(R.id.annotation);
 
-            title.setText("Lade Termin mit ID: "+mParam1);
+            title.setText("Lade Termin mit ID: " + mParam1);
 
-            try{
-                schedule=service.getSchedule(mParam1);
-                if (schedule!=null){
-                    employee=service.getEmployee(schedule.getEmployeeId());
-                    treatment=service.getTreatment(schedule.getTreatmentId());
-                    if (employee!=null){
-                        person=service.getPerson(employee.getPersonId());
+            try {
+                schedule = service.getSchedule(mParam1);
+                if (schedule != null) {
+                    employee = service.getEmployee(schedule.getEmployeeId());
+                    treatment = service.getTreatment(schedule.getTreatmentId());
+                    if (employee != null) {
+                        person = service.getPerson(employee.getPersonId());
 
-                        datetime.setText(Helper.formatDateTime(schedule.getDate(),false)+
-                                " "+Helper.formatDateTime(schedule.getDate(),true));
-                        if (employee.getPosition()==1){
-                            employee_title="Doctor";
-                        }else{
-                            switch(person.getGender()){
+                        datetime.setText(Helper.formatDateTime(schedule.getDate(), false) +
+                                " " + Helper.formatDateTime(schedule.getDate(), true));
+                        if (employee.getPosition() == 1) {
+                            employee_title = "Doctor";
+                        } else {
+                            switch (person.getGender()) {
                                 case "m":
-                                    employee_title="Mr.";
+                                    employee_title = "Mr.";
                                     break;
                                 case "w":
-                                    employee_title="Ms.";
+                                    employee_title = "Ms.";
                                     break;
                                 default:
-                                    employee_title="Mx.";
+                                    employee_title = "Mx.";
                             }
                         }
-                        doctor.setText(employee_title+" "+person.getFirstName()+" "+person.getLastName());
+                        doctor.setText(employee_title + " " + person.getFirstName() + " " + person.getLastName());
                         annotation.setText(treatment.getDescription());
                     }
 
                 }
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 

@@ -45,7 +45,7 @@ public class HomeFragment extends Fragment {
     private TextView tvHealthInsurance;
     private TextView tvHealthInsuranceNumber;
 
-    private ArrayAdapter <String> model;
+    private ArrayAdapter<String> model;
     private ArrayList<String> alItems;
 
     private long[] requestIdList;
@@ -53,7 +53,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        if (((MyApplication) getActivity().getApplication()).isLoggedIn() && ((MyApplication) getActivity().getApplication()).isAdmin()){
+        if (((MyApplication) getActivity().getApplication()).isLoggedIn() && ((MyApplication) getActivity().getApplication()).isAdmin()) {
             return onCreateViewAdmin(inflater, container, savedInstanceState, inflater.inflate(R.layout.fragment_adminhome, container, false));
         }
 
@@ -62,19 +62,16 @@ public class HomeFragment extends Fragment {
 
     private View onCreateViewDefault(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState, View root) {
 
-        //homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
-
-        long id=((MyApplication) getActivity().getApplication()).getUserId();
+        long id = ((MyApplication) getActivity().getApplication()).getUserId();
 
         homeViewModel = new ViewModelProvider(
-                this,new HomeViewModelFactory(id)).get(HomeViewModel.class);
+                this, new HomeViewModelFactory(id)).get(HomeViewModel.class);
 
-        tvName=root.findViewById(R.id.textViewName);
-        tvBirthday=root.findViewById(R.id.textViewBirthdate);
-        tvGender=root.findViewById(R.id.textViewGender);
-        tvHealthInsurance=root.findViewById(R.id.textViewHealthInsurance);
-        tvHealthInsuranceNumber=root.findViewById(R.id.textViewHealthInsuranceNumber);
-
+        tvName = root.findViewById(R.id.textViewName);
+        tvBirthday = root.findViewById(R.id.textViewBirthdate);
+        tvGender = root.findViewById(R.id.textViewGender);
+        tvHealthInsurance = root.findViewById(R.id.textViewHealthInsurance);
+        tvHealthInsuranceNumber = root.findViewById(R.id.textViewHealthInsuranceNumber);
 
         homeViewModel.getName().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
@@ -114,8 +111,8 @@ public class HomeFragment extends Fragment {
         homeViewModel.getPatient().observe(getViewLifecycleOwner(), new Observer<Patient>() {
             @Override
             public void onChanged(Patient patient) {
-                ((MyApplication)getActivity().getApplication()).setPatient(patient);
-                ((MyApplication)getActivity().getApplication()).setLoggedIn(patient!=null);
+                ((MyApplication) getActivity().getApplication()).setPatient(patient);
+                ((MyApplication) getActivity().getApplication()).setLoggedIn(patient != null);
             }
         });
 
@@ -128,11 +125,10 @@ public class HomeFragment extends Fragment {
 
         final ListView listView = root.findViewById(R.id.listView);
 
-        alItems=new ArrayList<String>();
-        model=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,alItems);
+        alItems = new ArrayList<String>();
+        model = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, alItems);
 
         listView.setAdapter(model);
-
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -161,7 +157,7 @@ public class HomeFragment extends Fragment {
         adminHomeViewModel.getScheduleRequestId().observe(getViewLifecycleOwner(), new Observer<long[]>() {
             @Override
             public void onChanged(long[] longs) {
-                requestIdList=longs;
+                requestIdList = longs;
             }
         });
 
@@ -171,10 +167,8 @@ public class HomeFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class); //Checkup if admin or not
-        // TODO: Use the ViewModel
 
-        if(!((MyApplication) getActivity().getApplication()).isLoggedIn()) {
+        if (!((MyApplication) getActivity().getApplication()).isLoggedIn()) {
             System.out.println("Not logged in");
             Navigation.findNavController(getView()).navigate(R.id.nav_settings);
         }

@@ -8,8 +8,9 @@ import com.example.arztpraxis.ui.prescription.PrescriptionViewModel;
 
 public class HomeViewModelFactory implements ViewModelProvider.Factory {
     private long id;
-    public HomeViewModelFactory(long id){
-        this.id=id;
+
+    public HomeViewModelFactory(long id) {
+        this.id = id;
     }
 
     @NonNull

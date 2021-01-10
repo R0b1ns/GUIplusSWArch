@@ -2,25 +2,14 @@ package com.example.arztpraxis.model;
 
 import java.io.Serializable;
 
-
-//import javax.persistence.*;
-
-// @SuppressWarnings("serial")
-//@Entity
-//@Table(name = "app_adresse")
 public class Adress implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private long id;
-
 	private int plz;
-
 	private String city;
-	
 	private String street;
-	
 	private String number;
-
 	
 	public Adress() {
 	}

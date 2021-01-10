@@ -36,8 +36,8 @@ public class PatientFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         patientViewModel = new ViewModelProvider(this).get(PatientViewModel.class);
 
-        if (((MyApplication) getActivity().getApplication()).isLoggedIn() && !((MyApplication) getActivity().getApplication()).isAdmin()){
-            return  inflater.inflate(R.layout.fragment_no_admin, container, false);
+        if (((MyApplication) getActivity().getApplication()).isLoggedIn() && !((MyApplication) getActivity().getApplication()).isAdmin()) {
+            return inflater.inflate(R.layout.fragment_no_admin, container, false);
         }
 
         View root = inflater.inflate(R.layout.fragment_patient, container, false);
@@ -46,7 +46,7 @@ public class PatientFragment extends Fragment {
         patientList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (patientId[0]>0) {
+                if (patientId[0] > 0) {
                     patientDetailFragment = PatientDetailFragment.newInstance(patientId[position]);
                     FragmentTransaction ft = getParentFragmentManager().beginTransaction();
                     ft.replace(R.id.nav_host_fragment, patientDetailFragment);
@@ -71,7 +71,7 @@ public class PatientFragment extends Fragment {
         patientViewModel.getPatientId().observe(getViewLifecycleOwner(), new Observer<long[]>() {
             @Override
             public void onChanged(long[] longs) {
-                patientId=longs;
+                patientId = longs;
             }
         });
 
@@ -90,7 +90,7 @@ public class PatientFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         patientViewModel = new ViewModelProvider(this).get(PatientViewModel.class);
-        // TODO: Use the ViewModel
+
     }
 
 }

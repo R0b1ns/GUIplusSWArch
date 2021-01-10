@@ -20,8 +20,8 @@ import java.util.Collection;
 public class AdminHomeViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
-    private MutableLiveData<String[]>mScheduleRequest;
-    private MutableLiveData<long[]>mScheduleRequestId;
+    private MutableLiveData<String[]> mScheduleRequest;
+    private MutableLiveData<long[]> mScheduleRequestId;
 
     public AdminHomeViewModel() {
         mText = new MutableLiveData<>();
@@ -31,8 +31,8 @@ public class AdminHomeViewModel extends ViewModel {
         mScheduleRequestId = new MutableLiveData<>();
         mScheduleRequestId.setValue(new long[]{0});
         new AsyncLoadScheduleRequests().execute();
-
     }
+
     public LiveData<String> getText() {
         return mText;
     }
@@ -45,29 +45,29 @@ public class AdminHomeViewModel extends ViewModel {
         return mScheduleRequestId;
     }
 
-    private class AsyncLoadScheduleRequests extends AsyncTask<Void,Void,Void> {
+    private class AsyncLoadScheduleRequests extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... voids) {
             String[] requests;
             long[] requestIds;
             InfrastructureWebservice service = new InfrastructureWebservice();
 
-            try{
-                Collection<ScheduleRequest> scheduleRequests=service.getAllScheduleRequests();
-                ScheduleRequest[] srArray =  scheduleRequests.toArray(new ScheduleRequest[scheduleRequests.size()]);
-                requests= new String[scheduleRequests.size()];
-                requestIds= new long[scheduleRequests.size()];
-                for (int i=0;i<srArray.length;i++){
-                    Employee employee= service.getEmployee(srArray[i].getEmployeeId());
-                    Person person=service.getPerson(employee.getPersonId());
-                    requests[i]="Priority: "+srArray[i].getPriority()+" Requests: "+
-                            person.getFirstName()+" "+person.getLastName();
-                    requestIds[i]=srArray[i].getId();
+            try {
+                Collection<ScheduleRequest> scheduleRequests = service.getAllScheduleRequests();
+                ScheduleRequest[] srArray = scheduleRequests.toArray(new ScheduleRequest[scheduleRequests.size()]);
+                requests = new String[scheduleRequests.size()];
+                requestIds = new long[scheduleRequests.size()];
+                for (int i = 0; i < srArray.length; i++) {
+                    Employee employee = service.getEmployee(srArray[i].getEmployeeId());
+                    Person person = service.getPerson(employee.getPersonId());
+                    requests[i] = "Priority: " + srArray[i].getPriority() + " Requests: " +
+                            person.getFirstName() + " " + person.getLastName();
+                    requestIds[i] = srArray[i].getId();
                 }
                 mScheduleRequest.postValue(requests);
                 mScheduleRequestId.postValue(requestIds);
 
-            } catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
