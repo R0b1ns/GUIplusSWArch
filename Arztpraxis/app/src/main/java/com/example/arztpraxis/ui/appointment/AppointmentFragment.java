@@ -76,6 +76,11 @@ public class AppointmentFragment extends Fragment {
         });
 
         FloatingActionButton addAppointmentBtn = root.findViewById(R.id.addAppointmentBtn);
+
+        if(((MyApplication) getActivity().getApplication()).isLoggedIn() && ((MyApplication) getActivity().getApplication()).isAdmin()) {
+            addAppointmentBtn.hide();
+        }
+
         addAppointmentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

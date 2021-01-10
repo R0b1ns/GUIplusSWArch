@@ -177,7 +177,7 @@ public class HomeFragment extends Fragment {
         //homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class); //Checkup if admin or not
         // TODO: Use the ViewModel
 
-        if(!((MyApplication) getActivity().getApplication()).isLoggedIn()){
+        if(!((MyApplication) getActivity().getApplication()).isLoggedIn()) {
             System.out.println("Not logged in");
             Navigation.findNavController(getView()).navigate(R.id.nav_settings);
         }
