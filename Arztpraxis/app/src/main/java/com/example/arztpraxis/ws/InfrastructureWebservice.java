@@ -670,7 +670,7 @@ public class InfrastructureWebservice {
                 .url(urlString)
                 .post(body)
                 .build();
-        System.out.println(gsonOtherDate.toJson(prescription).toString());
+        //System.out.println(gsonOtherDate.toJson(prescription).toString());
         Response response = null;
         try {
             response = client.newCall(request).execute();
@@ -680,6 +680,29 @@ public class InfrastructureWebservice {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getLogin(String type, String firstName, String lastName, String number) {
+        //System.out.println("Status: in getHealthInsurance("+id+")");
+        urlString = URL + "/login?type="+type+"&firstname="+firstName+"&lastname="+lastName+"&number="+number;
+        Request request = new Request.Builder()
+                .url(urlString)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            String output;
+            //System.out.println("Status: in in request");
+            //System.out.println("Response-Body:"+response.body().string());
+            if ((output = response.body().string()) != null) {
+                //System.out.println("Status: in if");
+                return output;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 }
 

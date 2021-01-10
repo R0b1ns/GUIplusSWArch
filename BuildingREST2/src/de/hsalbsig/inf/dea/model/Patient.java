@@ -79,7 +79,7 @@ public class Patient implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Patient [id=" + id + ", ssn=" + ssn + ", person_id=" + person_id + ", health_insurance_id=" + health_insurance_id + "]";
+		return "{id=" + id + ", SSN=" + ssn + ", person=" + person_id + ", healthInsurance=" + health_insurance_id + "}";
 	}
 
 }

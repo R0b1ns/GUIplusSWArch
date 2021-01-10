@@ -68,4 +68,7 @@
     <string name="prescribed_drug">prescribed_drug</string>
     <string name="diagnosed_disease">Diagnosed disease</string>
     <string name="date_of_issue">Date of issue</string>
+    <string name="enter_name">Enter your Name</string>
+    <string name="enter_id">Enter your ID(SSN/PN)</string>
+    <string name="employee">Employee</string>
 </resources>

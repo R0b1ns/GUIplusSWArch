@@ -135,8 +135,6 @@ public class PrescriptionCreateFragment extends Fragment {
                 Collection<Drug>drugs= service.getAllDrugs();
                 boolean validDrug=false;
                 for (Drug drug:drugs){
-                    System.out.println("1:"+drug.getDescription());
-                    System.out.println("2:"+drugName);
                     if (drug.getDescription().equals(drugName)){
                         validDrug=true;
                         drugId=drug.getId();

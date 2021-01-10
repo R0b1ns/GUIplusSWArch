@@ -15,6 +15,8 @@ import com.example.arztpraxis.R;
 import com.example.arztpraxis.helper.MyApplication;
 import com.example.arztpraxis.model.Employee;
 import com.example.arztpraxis.model.Patient;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class HomeFragment extends Fragment {
 
@@ -94,6 +96,17 @@ public class HomeFragment extends Fragment {
                 ((MyApplication)getActivity().getApplication()).setEmployee(new Employee(1,1,55568,1));//hans maier
             }
         });
+
+//        GsonBuilder gsonBuilder = new GsonBuilder().setDateFormat("EEE,yyyy MM dd");//führt evtl später zu Problemen
+//        Gson gson = gsonBuilder.create();
+//
+//        Employee employee = gson.fromJson("{id=1, position=1, personnalnumber=55568, personId=1}",Employee.class);
+//        System.out.println(employee.toString());
+//
+//        Patient patient = gson.fromJson("{id=1, SSN=2456987, person=3, healthInsurance=1}",Patient.class);
+//        System.out.println(patient.toString());
+
+
         return root;
     }
 }
