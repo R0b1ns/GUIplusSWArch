@@ -99,19 +99,25 @@ public class PatientAddFragment extends Fragment {
                 EditText patientAddressStreet = root.findViewById(R.id.patientAddressStreet);
                 EditText patientAddressNumber = root.findViewById(R.id.patientAddressNumber);
 
-                //Send request to server with this data
-//                patientFirstname.getText();
-//                patientLastname.getText();
-//                patientBirthdate.getText();
-//                selectedPatientGender.getText();
-//                patientHealthInsuranceName.getText();
-//                patientHealthInsuranceNumber.getText();
+                String gender="";
+
+                switch (selectedPatientGender.getId()){
+                    case R.id.patientGenderMale:
+                        gender="male";
+                        break;
+                    case R.id.patientGenderFemale:
+                        gender="female";
+                        break;
+                    case R.id.patientGenderOther:
+                        gender="other";
+
+                }
 
                 new AsyncCreatePatient().execute(
                         patientFirstname.getText().toString(),
                         patientLastname.getText().toString(),
                         patientBirthdate.getText().toString(),
-                        selectedPatientGender.getText().toString(),
+                        gender,
                         patientHealthInsuranceName.getText().toString(),
                         patientHealthInsuranceNumber.getText().toString(),
                         patientAddressPLZ.getText().toString(),
@@ -119,11 +125,6 @@ public class PatientAddFragment extends Fragment {
                         patientAddressStreet.getText().toString(),
                         patientAddressNumber.getText().toString()
                 );
-
-
-                //if sent successful
-                //Snackbar.make(v, "Patient was created successfully", Snackbar.LENGTH_LONG)
-                  //      .setAction("Action", null).show();
             }
         });
 
@@ -140,6 +141,7 @@ public class PatientAddFragment extends Fragment {
             try {
                 Date birthday = format.parse(string[2]);
                 String gender = Helper.getGender(string[3]);
+
                 String healthInsuranceName=string[4];
                 int ssn=Integer.parseInt(string[5]);
                 int address_plz=Integer.parseInt(string[6]);
@@ -149,8 +151,6 @@ public class PatientAddFragment extends Fragment {
                 boolean validHealthInsurance=false;
                 int healthInsuranceId=0;
                 for (HealthInsurance healthInsurance: service.getAllHealthInsurances()){
-                    //System.out.println("db-value:"+healthInsurance.getName());
-                    //System.out.println("test-value"+healthInsuranceName);
                     if(healthInsurance.getName().equals(healthInsuranceName)){
                         validHealthInsurance=true;
                         healthInsuranceId=(int)healthInsurance.getId();
