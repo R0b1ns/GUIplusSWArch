@@ -124,11 +124,6 @@ public class PrescriptionDetailFragment extends Fragment {
                 }
 
             }catch (Exception e){
-                tvDoctor.setText("no data found");
-                tvPatient.setText("no data found");
-                tvDrug.setText("no data found");
-                tvDisease.setText("no data found");
-                tvDate.setText("no data found");
                 e.printStackTrace();
             }
 

@@ -32,15 +32,15 @@ public class HomeViewModel extends ViewModel {
         mText = new MutableLiveData<>();
         mText.setValue("This is home fragment");
         mName = new MutableLiveData<>();
-        mName.setValue("no data found");
+        mName.setValue("undefined");
         mBirthday = new MutableLiveData<>();
-        mBirthday.setValue("no data found");
+        mBirthday.setValue("undefined");
         mGender = new MutableLiveData<>();
-        mGender.setValue("no data found");
+        mGender.setValue("undefined");
         mHealthInsurance = new MutableLiveData<>();
-        mHealthInsurance.setValue("no data found");
+        mHealthInsurance.setValue("undefined");
         mHealthInsuranceNumber = new MutableLiveData<>();
-        mHealthInsuranceNumber.setValue("no data found");
+        mHealthInsuranceNumber.setValue("undefined");
         mPatient = new MutableLiveData<>();
         mPatient.setValue(null);
 

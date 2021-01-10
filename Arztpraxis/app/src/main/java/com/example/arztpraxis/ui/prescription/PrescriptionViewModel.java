@@ -34,7 +34,7 @@ public class PrescriptionViewModel extends ViewModel {
         mText = new MutableLiveData<>();
         mText.setValue("Fragment für Rezepte");
         mPrescriptionStringList = new MutableLiveData<>();
-        mPrescriptionStringList.setValue(new String[]{"no data found"});
+        mPrescriptionStringList.setValue(new String[]{"undefined"});
         mPrescriptionId = new MutableLiveData<>();
         mPrescriptionId.setValue(new long[]{0});
 

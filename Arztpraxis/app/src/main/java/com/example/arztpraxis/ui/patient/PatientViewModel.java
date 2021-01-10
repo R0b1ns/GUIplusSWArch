@@ -19,7 +19,7 @@ public class PatientViewModel extends ViewModel {
 
     public PatientViewModel() {
         mPatientList = new MutableLiveData<>();
-        String[] patientItems = {"no data found"};
+        String[] patientItems = {"undefined"};
         mPatientList.setValue(patientItems);
         mPatientId = new MutableLiveData<>();
         mPatientId.setValue(new long[] {0});

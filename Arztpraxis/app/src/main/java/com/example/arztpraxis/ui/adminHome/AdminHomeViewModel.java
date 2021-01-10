@@ -27,7 +27,7 @@ public class AdminHomeViewModel extends ViewModel {
         mText = new MutableLiveData<>();
         mText.setValue("Fragment für Terminanfragen");
         mScheduleRequest = new MutableLiveData<>();
-        mScheduleRequest.setValue(new String[]{"no data found"});
+        mScheduleRequest.setValue(new String[]{"undefined"});
         mScheduleRequestId = new MutableLiveData<>();
         mScheduleRequestId.setValue(new long[]{0});
         new AsyncLoadScheduleRequests().execute();

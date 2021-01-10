@@ -29,7 +29,7 @@ public class AppointmentViewModel extends ViewModel {
         mText.setValue("This is gallery fragment");
 
         mSchedule = new MutableLiveData<>();
-        mSchedule.setValue(new String[] {"no data found"});
+        mSchedule.setValue(new String[] {"undefined"});
 
         mScheduleId = new MutableLiveData<>();
         mScheduleId.setValue(new long[] {0});

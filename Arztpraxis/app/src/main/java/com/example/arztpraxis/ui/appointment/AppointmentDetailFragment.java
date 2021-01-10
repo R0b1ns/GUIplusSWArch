@@ -73,9 +73,6 @@ public class AppointmentDetailFragment extends Fragment {
 
         //Fill data
         title.setText("Lade Termin mit ID: "+mParam1);
-        datetime.setText("no data found");
-        doctor.setText("no data found");
-        annotation.setText("no data found");
 
         new AsyncLoadScheduleAppointment().execute(root);
 
@@ -131,9 +128,6 @@ public class AppointmentDetailFragment extends Fragment {
                 }
 
             }catch (Exception e){
-                datetime.setText("no data found");
-                doctor.setText("no data found");
-                annotation.setText("no data found");
                 e.printStackTrace();
             }
 

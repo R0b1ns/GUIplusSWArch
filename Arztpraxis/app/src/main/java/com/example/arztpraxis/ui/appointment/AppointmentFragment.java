@@ -45,22 +45,12 @@ public class AppointmentFragment extends Fragment {
 
         final ListView listView = root.findViewById(R.id.listView);
 
-//        ArrayAdapter<String> listViewAdapter = new ArrayAdapter<>(
-//                getActivity(),
-//                android.R.layout.simple_list_item_1,
-//                appointmentItems
-//        );
-//
-//        listView.setAdapter(listViewAdapter);
-
-
         alItems=new ArrayList<String>();
         model=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,alItems);
 
         listView.setAdapter(model);
 
-//        AsyncLoadSchedulePatient myAsync = new AsyncLoadSchedulePatient();
-//        myAsync.execute();
+
         appointmentViewModel.getSchedule().observe(getViewLifecycleOwner(), new Observer<String[]>() {
             @Override
             public void onChanged(String[] strings) {
@@ -84,18 +74,6 @@ public class AppointmentFragment extends Fragment {
                 ft.commit();
             }
         });
-
-//        appointmentViewModel.getAppointments().observe(getViewLifecycleOwner(), new Observer<String[]>() {
-//            @Override
-//            public void onChanged(@Nullable String[] appointmentItems) {
-//                ArrayAdapter<String> listViewAdapter = new ArrayAdapter<>(
-//                        getActivity(),
-//                        android.R.layout.simple_list_item_1,
-//                        appointmentItems
-//                );
-//                listView.setAdapter(listViewAdapter);
-//            }
-//        });
 
         FloatingActionButton addAppointmentBtn = root.findViewById(R.id.addAppointmentBtn);
         addAppointmentBtn.setOnClickListener(new View.OnClickListener() {
