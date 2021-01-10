@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,31 +19,49 @@ import com.example.arztpraxis.R;
 import com.example.arztpraxis.helper.MyApplication;
 import com.example.arztpraxis.model.Employee;
 import com.example.arztpraxis.model.Patient;
+import com.example.arztpraxis.ui.adminHome.AdminHomeViewModel;
 import com.example.arztpraxis.ui.prescription.PrescriptionViewModel;
 import com.example.arztpraxis.ui.prescription.PrescriptionViewModelFactory;
 import com.example.arztpraxis.ui.settings.SettingsViewModel;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.ArrayList;
+
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
+    private AdminHomeViewModel adminHomeViewModel;
+
     private TextView tvName;
     private TextView tvBirthday;
     private TextView tvGender;
     private TextView tvHealthInsurance;
     private TextView tvHealthInsuranceNumber;
 
+    private ArrayAdapter <String> model;
+    private ArrayList<String> alItems;
+
+    private long[] requestIdList;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+        if (((MyApplication) getActivity().getApplication()).isLoggedIn() && ((MyApplication) getActivity().getApplication()).isAdmin()){
+            return onCreateViewAdmin(inflater, container, savedInstanceState, inflater.inflate(R.layout.fragment_adminhome, container, false));
+        }
+
+        return onCreateViewDefault(inflater, container, savedInstanceState, inflater.inflate(R.layout.fragment_home, container, false));
+    }
+
+    private View onCreateViewDefault(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState, View root) {
+
         //homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
         long id=((MyApplication) getActivity().getApplication()).getUserId();
 
         homeViewModel = new ViewModelProvider(
                 this,new HomeViewModelFactory(id)).get(HomeViewModel.class);
-
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         tvName=root.findViewById(R.id.textViewName);
         tvBirthday=root.findViewById(R.id.textViewBirthdate);
@@ -98,16 +118,47 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
+    private View onCreateViewAdmin(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState, View root) {
+
+        adminHomeViewModel = new ViewModelProvider(this).get(AdminHomeViewModel.class);
+
+        final ListView listView = root.findViewById(R.id.listView);
+
+        alItems=new ArrayList<String>();
+        model=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,alItems);
+
+        listView.setAdapter(model);
+
+        adminHomeViewModel.getScheduleRequest().observe(getViewLifecycleOwner(), new Observer<String[]>() {
+            @Override
+            public void onChanged(String[] strings) {
+                ArrayAdapter<String> listViewAdapter = new ArrayAdapter<>(
+                        getActivity(),
+                        android.R.layout.simple_list_item_1,
+                        strings
+                );
+                listView.setAdapter(listViewAdapter);
+            }
+        });
+
+        adminHomeViewModel.getScheduleRequestId().observe(getViewLifecycleOwner(), new Observer<long[]>() {
+            @Override
+            public void onChanged(long[] longs) {
+                requestIdList=longs;
+            }
+        });
+
+        return root;
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        //homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class); //Checkup if admin or not
         // TODO: Use the ViewModel
 
-        if (((MyApplication) getActivity().getApplication()).isLoggedIn()){
-            //((MyApplication) ((MyApplication) getActivity().getApplication()).setPatient());
-        } else{
-            System.out.println("Du bist nicht angemeldet");
+        if(!((MyApplication) getActivity().getApplication()).isLoggedIn()){
+            System.out.println("Not logged in");
             Navigation.findNavController(getView()).navigate(R.id.nav_settings);
         }
 

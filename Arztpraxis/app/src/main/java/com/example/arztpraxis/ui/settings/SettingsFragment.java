@@ -86,14 +86,11 @@ public class SettingsFragment extends Fragment {
             String loginID=strings[1];
             String loginType=strings[2].toLowerCase();
 
-
             try{
                 String[] loginNames=loginName.split(" ");
                 String loginFirstName=loginNames[0];
                 String loginLastName=loginNames[1];
                 String loginData=service.getLogin(loginType,loginFirstName,loginLastName,loginID);
-
-
 
                 System.out.println(loginData);
 
@@ -114,14 +111,12 @@ public class SettingsFragment extends Fragment {
                         ((MyApplication)getActivity().getApplication()).setPerson(service.getPerson(patient.getPerson()));
                     }
 
-                    System.out.println("Springe weg von Hier");
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             Navigation.findNavController(getView()).navigate(R.id.nav_home);
                         }
                     });
-
                 }
 
             } catch (ArrayIndexOutOfBoundsException e){
