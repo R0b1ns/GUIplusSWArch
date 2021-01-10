@@ -36,4 +36,5 @@
     <string name="menu_settings">Einstellungen</string>
     <string name="nav_appointment_new">Termin anfragen</string>
     <string name="nav_patient_add">Patient anlegen</string>
+    <string name="no_service">Sie haben keine Rechte diese Seite zu sehen</string>
 </resources>

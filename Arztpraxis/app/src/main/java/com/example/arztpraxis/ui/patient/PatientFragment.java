@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.arztpraxis.R;
+import com.example.arztpraxis.helper.MyApplication;
 import com.example.arztpraxis.ui.appointment.AppointmentNewFragment;
 import com.example.arztpraxis.ui.appointment.AppointmentViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -34,6 +35,11 @@ public class PatientFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         patientViewModel = new ViewModelProvider(this).get(PatientViewModel.class);
+
+        if (((MyApplication) getActivity().getApplication()).isLoggedIn() && !((MyApplication) getActivity().getApplication()).isAdmin()){
+            return  inflater.inflate(R.layout.fragment_no_admin, container, false);
+        }
+
         View root = inflater.inflate(R.layout.fragment_patient, container, false);
 
         final ListView patientList = root.findViewById(R.id.patientList);
