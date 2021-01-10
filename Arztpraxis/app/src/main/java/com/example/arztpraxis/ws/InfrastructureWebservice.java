@@ -75,6 +75,27 @@ public class InfrastructureWebservice {
         return null;
     }
 
+    public Prescription getPrescription(long id) throws NoSuchRowException {
+        urlString = URL + "/prescriptions/id/" + id;
+        Request request = new Request.Builder()
+                .url(urlString)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            String output;
+            Prescription prescription = null;
+            if ((output = response.body().string()) != null) {
+                prescription = gson.fromJson(output, Prescription.class);
+            }
+            return prescription;
+        } catch (IOException e) { // zu newCall(request).execute() und response.body().string();
+            e.printStackTrace();
+        } catch (com.google.gson.JsonSyntaxException e) {
+            throw new NoSuchRowException();
+        }
+        return null;
+    }
+
     public Person getPerson(long id) throws NoSuchRowException {
         //System.out.println("Status: in getPerson("+id+")");
         urlString = URL + "/persons/" + id;

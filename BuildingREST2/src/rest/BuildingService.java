@@ -295,6 +295,15 @@ public class BuildingService implements java.io.Serializable {
 	}
 	
 	@GET
+    @Path("/prescriptions/id/{id}")
+    public Prescription getPrescription(@PathParam("id")long id)throws NoSuchRowException{
+      System.out.println("\n\n---------------------------------");
+      System.out.println("App :: GET getPrescriptionOf("+id+")");
+      System.out.println("\n\n---------------------------------");
+      return infrastructureRemote.getPrescription(id);
+    }
+	
+	@GET
     @Path("/prescriptions/employee/{id}")
     public Collection<Prescription> getPrescriptionFrom(@PathParam("id")String id){
       System.out.println("\n\n---------------------------------");

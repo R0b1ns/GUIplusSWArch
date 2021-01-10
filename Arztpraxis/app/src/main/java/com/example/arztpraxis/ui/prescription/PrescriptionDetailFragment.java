@@ -1,5 +1,6 @@
 package com.example.arztpraxis.ui.prescription;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,8 +8,21 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.arztpraxis.R;
+import com.example.arztpraxis.helper.Helper;
+import com.example.arztpraxis.model.Disease;
+import com.example.arztpraxis.model.Drug;
+import com.example.arztpraxis.model.Employee;
+import com.example.arztpraxis.model.Patient;
+import com.example.arztpraxis.model.Person;
+import com.example.arztpraxis.model.Prescription;
+import com.example.arztpraxis.model.Schedule;
+import com.example.arztpraxis.model.Treatment;
+import com.example.arztpraxis.ws.InfrastructureWebservice;
+
+import java.sql.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,7 +37,7 @@ public class PrescriptionDetailFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
+    private long mParam1;
     private String mParam2;
 
     public PrescriptionDetailFragment() {
@@ -39,10 +53,10 @@ public class PrescriptionDetailFragment extends Fragment {
      * @return A new instance of fragment PrescriptionDetailFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static PrescriptionDetailFragment newInstance(String param1, String param2) {
+    public static PrescriptionDetailFragment newInstance(long param1, String param2) {
         PrescriptionDetailFragment fragment = new PrescriptionDetailFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
+        args.putLong(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
@@ -52,7 +66,7 @@ public class PrescriptionDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam1 = getArguments().getLong(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
@@ -61,6 +75,64 @@ public class PrescriptionDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_prescription_detail, container, false);
+        View root = inflater.inflate(R.layout.fragment_prescription_detail, container, false);
+
+        new AsyncLoadPrescription().execute(root);
+
+        return root;
+    }
+
+    private class AsyncLoadPrescription extends AsyncTask<View,Void,Void> {
+        @Override
+        protected Void doInBackground(View... views) {
+            View root = views[0];
+            InfrastructureWebservice service = new InfrastructureWebservice();
+            Prescription prescription;
+            Employee employee;
+            Disease disease;
+            Drug drug;
+            Patient patient;
+            Person person_patient;
+            Person person_employee;
+
+            final TextView tvDoctor = root.findViewById(R.id.prescriptionDoctor);
+            final TextView tvPatient = root.findViewById(R.id.prescriptionPatient);
+            final TextView tvDrug = root.findViewById(R.id.prescriptionDrug);
+            final TextView tvDisease = root.findViewById(R.id.prescriptionDisease);
+            final TextView tvDate = root.findViewById(R.id.prescriptionDate);
+
+
+
+            try{
+                prescription=service.getPrescription(mParam1);
+                if (prescription!=null){
+                    employee=service.getEmployee(prescription.getEmployeeId());
+                    patient=service.getPatient(prescription.getPatientId());
+                    disease=service.getDisease(prescription.getDiseaseId());
+                    drug=service.getDrug(prescription.getDrugId());
+                    tvDate.setText(Helper.formatDateTime(new Date(prescription.getPrescriptionDate().getTime()),false));
+                    if (patient!=null&&employee!=null&&disease!=null&&drug!=null){
+                        tvDisease.setText(disease.getDescription());
+                        tvDrug.setText(drug.getDescription());
+                        person_employee=service.getPerson(employee.getPersonId());
+                        person_patient=service.getPerson(patient.getPerson());
+                        if (person_employee!=null&&person_patient!=null){
+                            tvDoctor.setText(person_employee.getFirstName()+" "+person_employee.getLastName());
+                            tvPatient.setText(person_patient.getFirstName()+" "+person_patient.getLastName());
+                        }
+                    }
+                }
+
+            }catch (Exception e){
+                tvDoctor.setText("no data found");
+                tvPatient.setText("no data found");
+                tvDrug.setText("no data found");
+                tvDisease.setText("no data found");
+                tvDate.setText("no data found");
+                e.printStackTrace();
+            }
+
+            return null;
+        }
     }
 }
