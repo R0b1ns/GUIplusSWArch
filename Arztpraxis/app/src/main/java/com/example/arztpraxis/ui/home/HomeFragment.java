@@ -116,8 +116,6 @@ public class HomeFragment extends Fragment {
             public void onChanged(Patient patient) {
                 ((MyApplication)getActivity().getApplication()).setPatient(patient);
                 ((MyApplication)getActivity().getApplication()).setLoggedIn(patient!=null);
-                //TODO: remove below me in function
-                //((MyApplication)getActivity().getApplication()).setEmployee(new Employee(1,1,55568,1));//hans maier
             }
         });
 
@@ -142,7 +140,6 @@ public class HomeFragment extends Fragment {
                 adminHomeDetailFragment = AdminHomeDetailFragment.newInstance(
                         requestIdList[position]);
                 FragmentTransaction ft = getParentFragmentManager().beginTransaction();
-                //TODO: check if nav_host_fragment is right one
                 ft.replace(R.id.nav_host_fragment, adminHomeDetailFragment);
                 ft.addToBackStack("adminHomeDetail");
                 ft.commit();

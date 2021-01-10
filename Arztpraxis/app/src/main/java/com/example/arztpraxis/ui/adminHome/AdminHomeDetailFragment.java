@@ -219,7 +219,6 @@ public class AdminHomeDetailFragment extends Fragment {
 
                     Snackbar.make(getView(), "Appointment created!", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
-                    //TODO: return to AdminHome
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

@@ -67,7 +67,7 @@ public class InfrastructureWebservice {
                 drug = gson.fromJson(output, Drug.class);
             }
             return drug;
-        } catch (IOException e) { // zu newCall(request).execute() und response.body().string();
+        } catch (IOException e) {
             e.printStackTrace();
         } catch (com.google.gson.JsonSyntaxException e) {
             throw new NoSuchRowException();
@@ -109,7 +109,7 @@ public class InfrastructureWebservice {
                 scheduleRequest = gson.fromJson(output, ScheduleRequest.class);
             }
             return scheduleRequest;
-        } catch (IOException e) { // zu newCall(request).execute() und response.body().string();
+        } catch (IOException e) {
             e.printStackTrace();
         } catch (com.google.gson.JsonSyntaxException e) {
             throw new NoSuchRowException();
@@ -118,7 +118,7 @@ public class InfrastructureWebservice {
     }
 
     public Person getPerson(long id) throws NoSuchRowException {
-        //System.out.println("Status: in getPerson("+id+")");
+
         urlString = URL + "/persons/" + id;
         Request request = new Request.Builder()
                 .url(urlString)
@@ -127,16 +127,12 @@ public class InfrastructureWebservice {
             Response response = client.newCall(request).execute();
             String output;
             Person person = null;
-            //System.out.println("Status: in in request");
-            //System.out.println("Response-Body:"+response.body().string());
+
             if ((output = response.body().string()) != null) {
-              //System.out.println("Status: in if");
                 person = gson.fromJson(output, Person.class);
             }
-            //person=gson.fromJson(response.peekBody(2048).string(),Person.class);
-            //System.out.println("Status: in request2");
             return person;
-        } catch (IOException e) { // zu newCall(request).execute() und response.body().string();
+        } catch (IOException e) {
             e.printStackTrace();
         } catch (com.google.gson.JsonSyntaxException e) {
             throw new NoSuchRowException();
@@ -147,7 +143,7 @@ public class InfrastructureWebservice {
     }
 
     public Patient getPatient(long id) throws NoSuchRowException {
-        //System.out.println("Status: in getPatient("+id+")");
+
         urlString = URL + "/patients/" + id;
         Request request = new Request.Builder()
                 .url(urlString)
@@ -156,16 +152,12 @@ public class InfrastructureWebservice {
             Response response = client.newCall(request).execute();
             String output;
             Patient patient= null;
-            //System.out.println("Status: in in request");
-            //System.out.println("Response-Body:"+response.body().string());
             if ((output = response.body().string()) != null) {
                 //System.out.println("Status: in if");
                 patient = gson.fromJson(output, Patient.class);
             }
-            //person=gson.fromJson(response.peekBody(2048).string(),Person.class);
-            //System.out.println("Status: in request2");
             return patient;
-        } catch (IOException e) { // zu newCall(request).execute() und response.body().string();
+        } catch (IOException e) {
             e.printStackTrace();
         } catch (com.google.gson.JsonSyntaxException e) {
             throw new NoSuchRowException();
@@ -185,16 +177,12 @@ public class InfrastructureWebservice {
             Response response = client.newCall(request).execute();
             String output;
             HealthInsurance healthInsurance= null;
-            //System.out.println("Status: in in request");
-            //System.out.println("Response-Body:"+response.body().string());
             if ((output = response.body().string()) != null) {
                 //System.out.println("Status: in if");
                 healthInsurance = gson.fromJson(output, HealthInsurance.class);
             }
-
-            //System.out.println("Status: in request2");
             return healthInsurance;
-        } catch (IOException e) { // zu newCall(request).execute() und response.body().string();
+        } catch (IOException e) {
             e.printStackTrace();
         } catch (com.google.gson.JsonSyntaxException e) {
             throw new NoSuchRowException();
@@ -256,16 +244,11 @@ public class InfrastructureWebservice {
             Response response = client.newCall(request).execute();
             String output;
             Treatment treatment= null;
-            //System.out.println("Status: in in request");
-            //System.out.println("Response-Body:"+response.body().string());
             if ((output = response.body().string()) != null) {
-                //System.out.println("Status: in if");
                 treatment = gson.fromJson(output, Treatment.class);
             }
-
-            //System.out.println("Status: in request2");
             return treatment;
-        } catch (IOException e) { // zu newCall(request).execute() und response.body().string();
+        } catch (IOException e) {
             e.printStackTrace();
         } catch (com.google.gson.JsonSyntaxException e) {
             throw new NoSuchRowException();
@@ -276,7 +259,6 @@ public class InfrastructureWebservice {
     }
 
     public Schedule getSchedule(long id) throws NoSuchRowException {
-        //System.out.println("Status: in getHealthInsurance("+id+")");
         urlString = URL + "/schedule/" + id;
         Request request = new Request.Builder()
                 .url(urlString)
@@ -285,8 +267,6 @@ public class InfrastructureWebservice {
             Response response = client.newCall(request).execute();
             String output;
             Schedule schedule= null;
-            //System.out.println("Status: in in request");
-            //System.out.println("Response-Body:"+response.body().string());
             if ((output = response.body().string()) != null) {
                 //System.out.println("Status: in if");
                 schedule = gson.fromJson(output, Schedule.class);
@@ -294,7 +274,7 @@ public class InfrastructureWebservice {
 
             //System.out.println("Status: in request2");
             return schedule;
-        } catch (IOException e) { // zu newCall(request).execute() und response.body().string();
+        } catch (IOException e) {
             e.printStackTrace();
         } catch (com.google.gson.JsonSyntaxException e) {
             throw new NoSuchRowException();
@@ -305,7 +285,6 @@ public class InfrastructureWebservice {
     }
 
     public Employee getEmployee(long id) throws NoSuchRowException {
-        //System.out.println("Status: in getHealthInsurance("+id+")");
         urlString = URL + "/employees/" + id;
         Request request = new Request.Builder()
                 .url(urlString)
@@ -314,8 +293,6 @@ public class InfrastructureWebservice {
             Response response = client.newCall(request).execute();
             String output;
             Employee employee= null;
-            //System.out.println("Status: in in request");
-            //System.out.println("Response-Body:"+response.body().string());
             if ((output = response.body().string()) != null) {
                 //System.out.println("Status: in if");
                 employee = gson.fromJson(output, Employee.class);
@@ -323,7 +300,7 @@ public class InfrastructureWebservice {
 
             //System.out.println("Status: in request2");
             return employee;
-        } catch (IOException e) { // zu newCall(request).execute() und response.body().string();
+        } catch (IOException e) {
             e.printStackTrace();
         } catch (com.google.gson.JsonSyntaxException e) {
             throw new NoSuchRowException();
@@ -419,7 +396,7 @@ public class InfrastructureWebservice {
 
             //System.out.println("Status: in request2");
             return id;
-        } catch (IOException e) { // zu newCall(request).execute() und response.body().string();
+        } catch (IOException e) {
             e.printStackTrace();
         } catch (com.google.gson.JsonSyntaxException e) {
             throw new NoSuchRowException();
@@ -448,7 +425,7 @@ public class InfrastructureWebservice {
 
             //System.out.println("Status: in request2");
             return id;
-        } catch (IOException e) { // zu newCall(request).execute() und response.body().string();
+        } catch (IOException e) {
             e.printStackTrace();
         } catch (com.google.gson.JsonSyntaxException e) {
             throw new NoSuchRowException();
@@ -693,7 +670,7 @@ public class InfrastructureWebservice {
 
             //System.out.println("Status: in request2");
             return disease;
-        } catch (IOException e) { // zu newCall(request).execute() und response.body().string();
+        } catch (IOException e) {
             e.printStackTrace();
         } catch (com.google.gson.JsonSyntaxException e) {
             throw new NoSuchRowException();
