@@ -15,7 +15,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:text="@string/name"
-        android:textColor="@color/grey"
         android:textSize="12sp" />
     <TextView
         android:id="@+id/textViewName"
@@ -23,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:text="Max Mustermann"
+        android:text="@string/undefined"
         android:textColor="@color/black"
         android:textSize="16sp" />
 
@@ -35,7 +34,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:text="@string/birthdate"
-        android:textColor="@color/grey"
         android:textSize="12sp" />
     <TextView
         android:id="@+id/textViewBirthdate"
@@ -43,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:text="01.01.1990"
+        android:text="@string/undefined"
         android:textColor="@color/black"
         android:textSize="16sp" />
 
@@ -55,7 +53,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:text="@string/gender"
-        android:textColor="@color/grey"
         android:textSize="12sp" />
     <TextView
         android:id="@+id/textViewGender"
@@ -63,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:text="male"
+        android:text="@string/undefined"
         android:textColor="@color/black"
         android:textSize="16sp" />
 
@@ -75,7 +72,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:text="@string/health_insurance"
-        android:textColor="@color/grey"
         android:textSize="12sp" />
 
     <LinearLayout
@@ -90,7 +86,7 @@
             android:layout_weight="1"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:text="Audi BKK"
+            android:text="@string/undefined"
             android:textColor="@color/black"
             android:textSize="16sp" />
         <TextView
@@ -100,7 +96,7 @@
             android:layout_weight="1"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:text="A123456789"
+            android:text="@string/undefined"
             android:textColor="@color/grey"
             android:textSize="16sp" />
     </LinearLayout>

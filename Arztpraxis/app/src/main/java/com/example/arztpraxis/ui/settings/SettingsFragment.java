@@ -123,10 +123,6 @@ public class SettingsFragment extends Fragment {
                             TextView sideBarID = hView.findViewById(R.id.sideBarID);
                             sideBarID.setText(loginID);
 
-                            if(navigationView == null) {
-                                System.out.println("Hallo");
-                            }
-
                             Navigation.findNavController(getView()).navigate(R.id.nav_home);
                         }
                     });

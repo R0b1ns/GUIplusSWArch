@@ -37,4 +37,25 @@
     <string name="nav_appointment_new">Termin anfragen</string>
     <string name="nav_patient_add">Patient anlegen</string>
     <string name="no_service">Sie haben keine Rechte diese Seite zu sehen</string>
+    <string name="priority">Dringlichkeit</string>
+    <string name="treatment">Behandlung</string>
+    <string name="priority_low">gering</string>
+    <string name="priority_medium">mittel</string>
+    <string name="priority_high">hoch</string>
+    <string name="accept_appointment_request">Anfrage bestätigen</string>
+    <string name="employee">Mitarbeiter</string>
+    <string name="enter_name">Geben Sie Ihren Namen ein</string>
+    <string name="enter_id">Geben Sie Ihre ID(SSN/PN) ein</string>
+    <string name="address_number">Telefonnummer</string>
+    <string name="address_street">Strasse</string>
+    <string name="address_city">Stadt</string>
+    <string name="address_plz">Postleitzahl</string>
+    <string name="address">Adresse</string>
+    <string name="other">divers</string>
+    <string name="doctor">Doktor</string>
+    <string name="requested_doctor">Angefragter Arzt (Vor- und Nachname)</string>
+    <string name="datetime">Datum und Uhrzeit</string>
+    <string name="title">Titel</string>
+    <string name="menu_home">Home</string>
+    <string name="undefined">Undefiniert</string>
 </resources>

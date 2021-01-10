@@ -17,11 +17,8 @@ import com.example.arztpraxis.helper.Helper;
 import com.example.arztpraxis.model.HealthInsurance;
 import com.example.arztpraxis.model.Patient;
 import com.example.arztpraxis.model.Person;
-import com.example.arztpraxis.ui.appointment.AppointmentCreateFragment;
-import com.example.arztpraxis.ui.appointment.AppointmentNewFragment;
 import com.example.arztpraxis.ui.prescription.PrescriptionCreateFragment;
 import com.example.arztpraxis.ws.InfrastructureWebservice;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,7 +28,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class PatientDetailFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
-    private AppointmentCreateFragment appointmentCreateFragment;
     private PrescriptionCreateFragment prescriptionCreateFragment;
 
     private long mParam1;
@@ -69,18 +65,6 @@ public class PatientDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_patient_detail, container, false);
-
-        Button patientCreateAppointment = root.findViewById(R.id.patientCreateAppointment);
-        patientCreateAppointment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                appointmentCreateFragment = AppointmentCreateFragment.newInstance("mParam1", "param2"); //Param1 = mParam1 ~ Should be information about patient
-                FragmentTransaction ft = getParentFragmentManager().beginTransaction();
-                ft.replace(R.id.nav_host_fragment, appointmentCreateFragment, "appointmentCreate");
-                ft.addToBackStack("appointmentCreate");
-                ft.commit();
-            }
-        });
 
         Button patientCreatePrescription = root.findViewById(R.id.patientCreatePrescription);
         patientCreatePrescription.setOnClickListener(new View.OnClickListener() {

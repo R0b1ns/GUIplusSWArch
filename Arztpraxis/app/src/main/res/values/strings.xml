@@ -30,7 +30,6 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="personnel_number">Personnel number</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="emergencylevel">Pressure</string>
     <string name="low">low</string>
     <string name="medium">medium</string>
@@ -47,7 +46,6 @@
     <string name="login">Login</string>
     <string name="menu_patient">Patients</string>
     <!-- No connection Info-->
-    <string name="no_data_found">no data found</string>
     <string name="firstname">Firstname</string>
     <string name="lastname">Lastname</string>
     <string name="male">male</string>
@@ -56,7 +54,7 @@
     <string name="health_insurance_name">health_insurance_name</string>
     <string name="health_insurance_number">health_insurance_number</string>
     <string name="address">Address</string>
-    <string name="address_plz">PLZ</string>
+    <string name="address_plz">Postcode</string>
     <string name="address_city">City</string>
     <string name="address_street">Street</string>
     <string name="address_number">Number</string>
