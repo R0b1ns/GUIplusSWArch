@@ -109,6 +109,7 @@ public class HomeFragment extends Fragment {
         if (((MyApplication) getActivity().getApplication()).isLoggedIn()){
             //((MyApplication) ((MyApplication) getActivity().getApplication()).setPatient());
         } else{
+            System.out.println("Du bist nicht angemeldet");
             Navigation.findNavController(getView()).navigate(R.id.nav_settings);
         }
 

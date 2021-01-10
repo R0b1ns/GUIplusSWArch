@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,8 +49,6 @@ public class SettingsFragment extends Fragment {
         EditText etName= root.findViewById(R.id.loginName);
         EditText etId=root.findViewById(R.id.loginID);
         RadioGroup rgType= root.findViewById(R.id.loginType);
-
-
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,10 +111,12 @@ public class SettingsFragment extends Fragment {
                         ((MyApplication)getActivity().getApplication()).setPatient(patient);
                         ((MyApplication)getActivity().getApplication()).setPerson(service.getPerson(patient.getPerson()));
                     }
+
+                    System.out.println("Springe weg von Hier");
+                    Navigation.findNavController(getView()).navigate(R.id.nav_home);
                 }
 
-
-            }catch (ArrayIndexOutOfBoundsException e){
+            } catch (ArrayIndexOutOfBoundsException e){
                 Snackbar.make(getView(), "Invalid Name!", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 //e.printStackTrace();
@@ -124,8 +125,7 @@ public class SettingsFragment extends Fragment {
                 e.printStackTrace();
             }
 
-
-            return  null;
+            return null;
         }
     }
 
