@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.example.arztpraxis.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -91,11 +92,7 @@ public class AppointmentFragment extends Fragment {
         addAppointmentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                appointmentNewFragment = new AppointmentNewFragment();
-                FragmentTransaction ft = getParentFragmentManager().beginTransaction();
-                ft.replace(R.id.nav_host_fragment, appointmentNewFragment, "appointmentNew");
-                ft.addToBackStack("appointmentNew");
-                ft.commit();
+                Navigation.findNavController(view).navigate(R.id.nav_appointmentNew);
             }
         });
 

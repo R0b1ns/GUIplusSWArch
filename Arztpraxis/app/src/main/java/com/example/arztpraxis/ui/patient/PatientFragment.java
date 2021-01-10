@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +26,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class PatientFragment extends Fragment {
 
     private PatientViewModel patientViewModel;
-    private PatientAddFragment patientAddFragment;
     private PatientDetailFragment patientDetailFragment;
 
     private long[] patientId;
@@ -73,11 +73,7 @@ public class PatientFragment extends Fragment {
         patientAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                patientAddFragment = new PatientAddFragment();
-                FragmentTransaction ft = getParentFragmentManager().beginTransaction();
-                ft.replace(R.id.nav_host_fragment, patientAddFragment, "patientAdd");
-                ft.addToBackStack("patientAdd");
-                ft.commit();
+                Navigation.findNavController(view).navigate(R.id.nav_patientAdd);
             }
         });
 

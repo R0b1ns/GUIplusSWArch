@@ -34,4 +34,6 @@
     <string name="diagnosed_disease">Diagnostizierte Krankheit</string>
     <string name="date_of_issue">Ausstellungsdatum</string>
     <string name="menu_settings">Einstellungen</string>
+    <string name="nav_appointment_new">Termin anfragen</string>
+    <string name="nav_patient_add">Patient anlegen</string>
 </resources>

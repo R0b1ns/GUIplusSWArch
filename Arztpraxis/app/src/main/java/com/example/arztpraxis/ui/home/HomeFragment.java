@@ -109,7 +109,7 @@ public class HomeFragment extends Fragment {
         if (((MyApplication) getActivity().getApplication()).isLoggedIn()){
             //((MyApplication) ((MyApplication) getActivity().getApplication()).setPatient());
         } else{
-            Navigation.findNavController(getView()).navigate(R.id.nav_settings);
+            //Navigation.findNavController(getView()).navigate(R.id.nav_settings);
         }
 
     }

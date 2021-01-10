@@ -37,7 +37,7 @@ public class InfrastructureWebservice {
     private static final String URL
             //unten ist die richtige adresse, muss aber nach jedem reconnect geändert werden!
             //141.87.68.X mit X= aktuelle IP, andere Teile bleiben gleich!
-            = "http://141.87.68.40:8080/BuildingREST2/rest/app";
+            = "http://141.87.68.94:8080/BuildingREST2/rest/app";
 
 
     private GsonBuilder gsonBuilder = new GsonBuilder().setDateFormat("EEE,yyyy MM dd");//führt evtl später zu Problemen
