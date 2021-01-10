@@ -25,7 +25,10 @@ public class HomeViewModel extends ViewModel {
     private MutableLiveData<String> mHealthInsuranceNumber;
     private MutableLiveData<Patient> mPatient;
 
-    public HomeViewModel() {
+    private long id;
+
+    public HomeViewModel(long id) {
+        this.id=id;
         mText = new MutableLiveData<>();
         mText.setValue("This is home fragment");
         mName = new MutableLiveData<>();
@@ -85,7 +88,7 @@ public class HomeViewModel extends ViewModel {
             Patient patient;
             HealthInsurance healthInsurance;
             try {
-                patient = service.getPatient(1);
+                patient = service.getPatient(id);
                 if (patient!=null){
                     //System.out.println(patient.toString());
                     person = service.getPerson(patient.getPerson());

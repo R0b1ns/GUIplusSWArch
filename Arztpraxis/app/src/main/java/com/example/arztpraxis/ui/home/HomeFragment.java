@@ -17,6 +17,8 @@ import com.example.arztpraxis.R;
 import com.example.arztpraxis.helper.MyApplication;
 import com.example.arztpraxis.model.Employee;
 import com.example.arztpraxis.model.Patient;
+import com.example.arztpraxis.ui.prescription.PrescriptionViewModel;
+import com.example.arztpraxis.ui.prescription.PrescriptionViewModelFactory;
 import com.example.arztpraxis.ui.settings.SettingsViewModel;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -32,7 +34,13 @@ public class HomeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        //homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+
+        long id=((MyApplication) getActivity().getApplication()).getUserId();
+
+        homeViewModel = new ViewModelProvider(
+                this,new HomeViewModelFactory(id)).get(HomeViewModel.class);
+
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         tvName=root.findViewById(R.id.textViewName);

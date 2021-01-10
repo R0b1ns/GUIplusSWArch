@@ -95,6 +95,8 @@ public class SettingsFragment extends Fragment {
 
 
 
+                System.out.println(loginData);
+
                 if (loginData!=null){
                     GsonBuilder gsonBuilder = new GsonBuilder();
                     Gson gson = gsonBuilder.create();
@@ -113,7 +115,13 @@ public class SettingsFragment extends Fragment {
                     }
 
                     System.out.println("Springe weg von Hier");
-                    Navigation.findNavController(getView()).navigate(R.id.nav_home);
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Navigation.findNavController(getView()).navigate(R.id.nav_home);
+                        }
+                    });
+
                 }
 
             } catch (ArrayIndexOutOfBoundsException e){
