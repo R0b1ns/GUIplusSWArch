@@ -91,19 +91,9 @@ public class HomeFragment extends Fragment {
                 ((MyApplication)getActivity().getApplication()).setPatient(patient);
                 ((MyApplication)getActivity().getApplication()).setLoggedIn(patient!=null);
                 //TODO: remove below me in function
-                ((MyApplication)getActivity().getApplication()).setEmployee(new Employee(1,1,55568,1));//hans maier
+                //((MyApplication)getActivity().getApplication()).setEmployee(new Employee(1,1,55568,1));//hans maier
             }
         });
-
-//        GsonBuilder gsonBuilder = new GsonBuilder().setDateFormat("EEE,yyyy MM dd");//führt evtl später zu Problemen
-//        Gson gson = gsonBuilder.create();
-//
-//        Employee employee = gson.fromJson("{id=1, position=1, personnalnumber=55568, personId=1}",Employee.class);
-//        System.out.println(employee.toString());
-//
-//        Patient patient = gson.fromJson("{id=1, SSN=2456987, person=3, healthInsurance=1}",Patient.class);
-//        System.out.println(patient.toString());
-
 
         return root;
     }

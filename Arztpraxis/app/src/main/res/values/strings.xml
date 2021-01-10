@@ -74,4 +74,6 @@
     <string name="menu_settings">Settings</string>
     <string name="nav_appointment_new">Request Appointment</string>
     <string name="nav_patient_add">Add Patient</string>
+    <string name="priority">Priority</string>
+    <string name="accept_appointment_request">Accept Request</string>
 </resources>
