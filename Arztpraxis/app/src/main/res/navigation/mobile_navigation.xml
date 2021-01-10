@@ -40,11 +40,11 @@
         android:name="com.example.arztpraxis.ui.appointment.AppointmentNewFragment"
         android:label="@string/nav_appointment_new"
         tools:layout="@layout/fragment_appointment_new" />
+
     <fragment
         android:id="@+id/nav_patientAdd"
         android:name="com.example.arztpraxis.ui.patient.PatientAddFragment"
         android:label="@string/nav_patient_add"
         tools:layout="@layout/fragment_patient_add" />
-
 
 </navigation>
