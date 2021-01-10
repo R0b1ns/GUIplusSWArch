@@ -12,6 +12,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.example.arztpraxis.R;
 import com.example.arztpraxis.helper.MyApplication;
@@ -33,7 +37,33 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+
+        View root = inflater.inflate(R.layout.fragment_settings, container, false);
+
+        Button loginButton = root.findViewById(R.id.loginButton);
+        EditText etName= root.findViewById(R.id.loginName);
+        EditText etId=root.findViewById(R.id.loginID);
+        RadioGroup rgType= root.findViewById(R.id.loginType);
+
+
+
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RadioButton rbType = root.findViewById(rgType.getCheckedRadioButtonId());
+                String type= "patient";
+                if (rbType.getId()==R.id.loginTypeEmployee){
+                    type="employee";
+                }
+                new AsyncLogin().execute(
+                        etName.getText().toString(),
+                        etId.getText().toString(),
+                        type
+                );
+            }
+        });
+
+        return root;
     }
 
     @Override
@@ -43,13 +73,15 @@ public class SettingsFragment extends Fragment {
         // TODO: Use the ViewModel
     }
 
+
+
     private class AsyncLogin extends AsyncTask<String,Void,Void> {
         @Override
         protected Void doInBackground(String... strings) {
             InfrastructureWebservice service = new InfrastructureWebservice();
             String loginName=strings[0];
             String loginID=strings[1];
-            String loginType=strings[2];
+            String loginType=strings[2].toLowerCase();
 
 
             try{
@@ -69,21 +101,20 @@ public class SettingsFragment extends Fragment {
                     if (loginType.equals("employee")){
                         Employee employee = gson.fromJson(loginData,Employee.class);
                         ((MyApplication)getActivity().getApplication()).setEmployee(employee);
+                        ((MyApplication)getActivity().getApplication()).setPerson(service.getPerson(employee.getPersonId()));
                     }
-                    else{
+                    else if (loginType.equals("patient")){
                         Patient patient = gson.fromJson(loginData,Patient.class);
                         ((MyApplication)getActivity().getApplication()).setPatient(patient);
+                        ((MyApplication)getActivity().getApplication()).setPerson(service.getPerson(patient.getPerson()));
                     }
-                    Snackbar.make(getView(), "Logged In!", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                    return null;
                 }
 
 
             }catch (ArrayIndexOutOfBoundsException e){
                 Snackbar.make(getView(), "Invalid Name!", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                e.printStackTrace();
+                //e.printStackTrace();
             }
             catch(Exception e){
                 e.printStackTrace();

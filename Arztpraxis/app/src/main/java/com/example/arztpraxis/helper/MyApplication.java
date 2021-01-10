@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.example.arztpraxis.model.Employee;
 import com.example.arztpraxis.model.Patient;
+import com.example.arztpraxis.model.Person;
 
 
 //just do anywhere:
@@ -15,6 +16,7 @@ public class MyApplication extends Application {
 
     private Patient patient;
     private Employee employee;
+    private Person person;
 
     public void setLoggedIn(boolean loggedIn) {
         this.loggedIn = loggedIn;
@@ -30,6 +32,14 @@ public class MyApplication extends Application {
 
     public void setPatient(Patient patient) {
         this.patient = patient;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    public Person getPerson() {
+        return person;
     }
 
     public long getUserId(){
