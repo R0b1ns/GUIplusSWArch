@@ -76,4 +76,8 @@
     <string name="nav_patient_add">Add Patient</string>
     <string name="priority">Priority</string>
     <string name="accept_appointment_request">Accept Request</string>
+    <string name="treatment">Treatment</string>
+    <string name="priority_low">low</string>
+    <string name="priority_medium">medium</string>
+    <string name="priority_high">high</string>
 </resources>
