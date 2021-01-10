@@ -67,10 +67,9 @@ public class AdminHomeViewModel extends ViewModel {
                 mScheduleRequest.postValue(requests);
                 mScheduleRequestId.postValue(requestIds);
 
-            }catch(Exception e){
+            } catch(Exception e){
                 e.printStackTrace();
             }
-
 
             return null;
         }

@@ -89,10 +89,8 @@ public class AdminHomeDetailFragment extends Fragment {
             }
         });
 
-
         //Fill data
         tvId.setText("Request: "+mParam1);
-
 
         new AsyncLoadAppointmentRequest().execute(root);
 
