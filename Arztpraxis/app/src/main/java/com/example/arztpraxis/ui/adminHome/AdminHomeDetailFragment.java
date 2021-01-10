@@ -21,6 +21,13 @@ import com.example.arztpraxis.model.ScheduleRequest;
 import com.example.arztpraxis.model.Treatment;
 import com.example.arztpraxis.ws.InfrastructureWebservice;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,6 +39,10 @@ public class AdminHomeDetailFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
 
     private long mParam1;
+
+    private boolean validRequest;
+    private long patient_id;
+    private long employee_id;
 
     public AdminHomeDetailFragment() {
         // Required empty public constructor
@@ -73,7 +84,7 @@ public class AdminHomeDetailFragment extends Fragment {
         btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AsyncAcceptAppointmentRequest().execute(v);
+                new AsyncAcceptAppointmentRequest().execute(root);
             }
         });
 
@@ -130,9 +141,14 @@ public class AdminHomeDetailFragment extends Fragment {
                     patient=service.getPatient(scheduleRequest.getPatientId());
                     employee=service.getEmployee(scheduleRequest.getEmployeeId());
                     if (patient!=null&&employee!=null){
+                        patient_id=patient.getId();
+                        employee_id=employee.getId();
                         person_patient=service.getPerson(patient.getPerson());
                         person_employee=service.getPerson(employee.getPersonId());
                         if (person_patient!=null&&person_employee!=null){
+                            tvPatient.setText(person_patient.getFirstName()+" "+person_patient.getLastName());
+                            tvDoctor.setText(person_employee.getFirstName()+" "+person_employee.getLastName());
+                            validRequest=true;
 
                         }
                     }
@@ -152,8 +168,67 @@ public class AdminHomeDetailFragment extends Fragment {
             View root = views[0];
             InfrastructureWebservice service = new InfrastructureWebservice();
 
-            final EditText etDatetime = root.findViewById(R.id.appointmentRequestDate);
+            final EditText etDate = root.findViewById(R.id.appointmentRequestDate);
+            final EditText etTime = root.findViewById(R.id.appointmentRequestTime);
             final EditText etTreatment = root.findViewById(R.id.appointmentRequestTreatment);
+
+
+
+            if (validRequest){
+                try {
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+                    String appointmentDate=etDate.getText().toString();
+                    String appointmentTime=etTime.getText().toString();
+                    String[] checkAppointmentDate=appointmentDate.split("\\.");
+                    String[] checkAppointmentTime=appointmentTime.split(":");
+
+                    if (checkAppointmentDate.length!=3||checkAppointmentDate[0].length()!=2||checkAppointmentDate[1].length()!=2||checkAppointmentDate[2].length()!=4){
+                        Snackbar.make(getView(), "Date must be dd.MM.yyyy", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                        return null;
+                    }
+
+                    if (checkAppointmentTime.length!=2||checkAppointmentTime[0].length()!=2||checkAppointmentTime[1].length()!=2){
+                        Snackbar.make(getView(), "Time must be HH:mm", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                        return null;
+                    }
+
+
+                    String appointmentDateTime = appointmentDate+" "+appointmentTime;
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(sdf.parse(appointmentDateTime));
+                    Collection<Treatment> treatments = service.getAllTreatments();
+                    boolean validTreatment = false;
+                    long treatmentId = 0;
+
+                    for (Treatment treatment : treatments) {
+
+                        if (treatment.getDescription().equals(etTreatment.getText().toString())) {
+                            validTreatment = true;
+                            treatmentId = treatment.getId();
+                        }
+                    }
+
+                    if (validTreatment) {
+                        long next_id = service.getAllSchedule().size() + 1;
+                        Schedule schedule = new Schedule(next_id, (int) patient_id, (int) employee_id, new java.sql.Date(calendar.getTimeInMillis()), (int) treatmentId);
+                        service.createScheduleFromRequest(schedule, mParam1);
+                    }
+                    
+                    Snackbar.make(getView(), "Appointment created!", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    //TODO: return to AdminHome
+
+                }catch (ParseException e){
+                    Snackbar.make(getView(), "Invalid Date or Time (use dd.MM.yyyy HH:mm)!", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
 
             return null;
         }

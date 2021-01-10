@@ -335,6 +335,29 @@ public class InfrastructureWebservice {
         }
     }
 
+    public void createScheduleFromRequest(Schedule schedule,long id) throws IllegalCreateException {
+        urlString = URL + "/schedule/add/"+id;
+        OkHttpClient client = new OkHttpClient();
+
+        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),
+                gsonOtherDate.toJson(schedule));
+        //System.out.println(body);
+        Request request = new Request.Builder()
+                .url(urlString)
+                .post(body)
+                .build();
+        //System.out.println(gsonOtherDate.toJson(schedule).toString());
+        Response response = null;
+        try {
+            response = client.newCall(request).execute();
+            String responseString = response.body().string();
+            if (responseString.compareTo("{\"status\":\"success\"}") != 0)
+                throw new IllegalCreateException();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public Collection<ScheduleRequest> getAllScheduleRequests() {
         urlString = URL + "/schedule/requests";
         Request request = new Request.Builder()
@@ -429,6 +452,48 @@ public class InfrastructureWebservice {
             for (int i = 0; i < patients.length; i++)
                 allPatients.add(patients[i]);
             return allPatients;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Collection<Schedule> getAllSchedule() {
+        urlString = URL + "/schedule";
+        Request request = new Request.Builder()
+                .url(urlString)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            String output;
+            Schedule[] schedules = null;
+            if ((output = response.body().string()) != null)
+                schedules = gson.fromJson(output, Schedule[].class);
+            Collection<Schedule> allSchedules = new ArrayList<Schedule>();
+            for (int i = 0; i < schedules.length; i++)
+                allSchedules.add(schedules[i]);
+            return allSchedules;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Collection<Treatment> getAllTreatments() {
+        urlString = URL + "/treatments";
+        Request request = new Request.Builder()
+                .url(urlString)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            String output;
+            Treatment[] treatments = null;
+            if ((output = response.body().string()) != null)
+                treatments = gson.fromJson(output, Treatment[].class);
+            Collection<Treatment> allTreatments = new ArrayList<Treatment>();
+            for (int i = 0; i < treatments.length; i++)
+                allTreatments.add(treatments[i]);
+            return allTreatments;
         } catch (IOException e) {
             e.printStackTrace();
         }

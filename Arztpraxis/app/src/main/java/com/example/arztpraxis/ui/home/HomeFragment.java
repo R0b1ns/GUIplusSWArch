@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -19,7 +21,9 @@ import com.example.arztpraxis.R;
 import com.example.arztpraxis.helper.MyApplication;
 import com.example.arztpraxis.model.Employee;
 import com.example.arztpraxis.model.Patient;
+import com.example.arztpraxis.ui.adminHome.AdminHomeDetailFragment;
 import com.example.arztpraxis.ui.adminHome.AdminHomeViewModel;
+import com.example.arztpraxis.ui.appointment.AppointmentDetailFragment;
 import com.example.arztpraxis.ui.prescription.PrescriptionViewModel;
 import com.example.arztpraxis.ui.prescription.PrescriptionViewModelFactory;
 import com.example.arztpraxis.ui.settings.SettingsViewModel;
@@ -27,11 +31,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
     private AdminHomeViewModel adminHomeViewModel;
+    private AdminHomeDetailFragment adminHomeDetailFragment;
 
     private TextView tvName;
     private TextView tvBirthday;
@@ -128,6 +134,20 @@ public class HomeFragment extends Fragment {
         model=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,alItems);
 
         listView.setAdapter(model);
+
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                adminHomeDetailFragment = AdminHomeDetailFragment.newInstance(
+                        requestIdList[position]);
+                FragmentTransaction ft = getParentFragmentManager().beginTransaction();
+                //TODO: check if nav_host_fragment is right one
+                ft.replace(R.id.nav_host_fragment, adminHomeDetailFragment);
+                ft.addToBackStack("adminHomeDetail");
+                ft.commit();
+            }
+        });
 
         adminHomeViewModel.getScheduleRequest().observe(getViewLifecycleOwner(), new Observer<String[]>() {
             @Override

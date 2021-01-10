@@ -30,6 +30,7 @@ public class AdminHomeViewModel extends ViewModel {
         mScheduleRequest.setValue(new String[]{"no data found"});
         mScheduleRequestId = new MutableLiveData<>();
         mScheduleRequestId.setValue(new long[]{0});
+        new AsyncLoadScheduleRequests().execute();
 
     }
     public LiveData<String> getText() {
@@ -59,13 +60,12 @@ public class AdminHomeViewModel extends ViewModel {
                 for (int i=0;i<srArray.length;i++){
                     Employee employee= service.getEmployee(srArray[i].getEmployeeId());
                     Person person=service.getPerson(employee.getPersonId());
-                    requests[i]="Priority: "+srArray[i].getPriority()+"Requests: "+
+                    requests[i]="Priority: "+srArray[i].getPriority()+" Requests: "+
                             person.getFirstName()+" "+person.getLastName();
                     requestIds[i]=srArray[i].getId();
                 }
                 mScheduleRequest.postValue(requests);
                 mScheduleRequestId.postValue(requestIds);
-
 
             }catch(Exception e){
                 e.printStackTrace();
