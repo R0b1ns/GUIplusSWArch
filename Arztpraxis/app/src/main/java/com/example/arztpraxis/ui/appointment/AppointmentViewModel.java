@@ -19,7 +19,12 @@ public class AppointmentViewModel extends ViewModel {
     private MutableLiveData<String[]>mSchedule;
     private MutableLiveData<long[]>mScheduleId;
 
-    public AppointmentViewModel() {
+    private long id;
+    private boolean isAdmin;
+
+    public AppointmentViewModel(long id, boolean isAdmin) {
+        this.id=id;
+        this.isAdmin=isAdmin;
         mText = new MutableLiveData<>();
         mText.setValue("This is gallery fragment");
 
@@ -59,7 +64,13 @@ public class AppointmentViewModel extends ViewModel {
             service = new InfrastructureWebservice();
             Collection<Schedule> schedules;
             try {
-                schedules = service.getSchedulePatient(1);
+                if (isAdmin){
+                    schedules = service.getScheduleEmployee(id);
+                }else {
+                    schedules = service.getSchedulePatient(id);
+                }
+
+
                 //System.out.println(schedules.toString());
                 if (schedules != null) {
                     appointmentItems = new String[schedules.size()];

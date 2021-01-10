@@ -225,6 +225,27 @@ public class InfrastructureWebservice {
         return null;
     }
 
+    public Collection<Schedule> getScheduleEmployee(long id) {
+        urlString = URL + "/schedule/employee/"+id;
+        Request request = new Request.Builder()
+                .url(urlString)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            String output;
+            Schedule[] schedules = null;
+            if ((output = response.body().string()) != null)
+                schedules = gson.fromJson(output, Schedule[].class);
+            Collection<Schedule> allSchedules = new ArrayList<Schedule>();
+            for (int i = 0; i < schedules.length; i++)
+                allSchedules.add(schedules[i]);
+            return allSchedules;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public Treatment getTreatment(long id) throws NoSuchRowException {
         //System.out.println("Status: in getHealthInsurance("+id+")");
         urlString = URL + "/treatments/" + id;

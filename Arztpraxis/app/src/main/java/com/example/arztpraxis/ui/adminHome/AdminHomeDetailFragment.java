@@ -216,7 +216,7 @@ public class AdminHomeDetailFragment extends Fragment {
                         Schedule schedule = new Schedule(next_id, (int) patient_id, (int) employee_id, new java.sql.Date(calendar.getTimeInMillis()), (int) treatmentId);
                         service.createScheduleFromRequest(schedule, mParam1);
                     }
-                    
+
                     Snackbar.make(getView(), "Appointment created!", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                     //TODO: return to AdminHome

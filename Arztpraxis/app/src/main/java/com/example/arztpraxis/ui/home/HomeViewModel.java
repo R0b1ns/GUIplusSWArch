@@ -88,21 +88,23 @@ public class HomeViewModel extends ViewModel {
             Patient patient;
             HealthInsurance healthInsurance;
             try {
-                patient = service.getPatient(id);
-                if (patient!=null){
-                    //System.out.println(patient.toString());
-                    person = service.getPerson(patient.getPerson());
-                    //System.out.println(person.toString());
-                    healthInsurance = service.getHealthInsurance(patient.getHealthInsurance());
-                    //System.out.println(healthInsurance.toString());
-                    if (person != null && healthInsurance!=null){
-                        //System.out.println("Status: in person!=null");
-                        mName.postValue(person.getFirstName()+" "+person.getLastName());
-                        mBirthday.postValue(Helper.formatDateTime(person.getBirthday(),false));
-                        mGender.postValue(Helper.getGender(person.getGender()));
-                        mHealthInsurance.postValue(healthInsurance.getName());
-                        mHealthInsuranceNumber.postValue(String.valueOf(patient.getSSN()));
-                        mPatient.postValue(patient);
+                if (id>0) {
+                    patient = service.getPatient(id);
+                    if (patient != null) {
+                        //System.out.println(patient.toString());
+                        person = service.getPerson(patient.getPerson());
+                        //System.out.println(person.toString());
+                        healthInsurance = service.getHealthInsurance(patient.getHealthInsurance());
+                        //System.out.println(healthInsurance.toString());
+                        if (person != null && healthInsurance != null) {
+                            //System.out.println("Status: in person!=null");
+                            mName.postValue(person.getFirstName() + " " + person.getLastName());
+                            mBirthday.postValue(Helper.formatDateTime(person.getBirthday(), false));
+                            mGender.postValue(Helper.getGender(person.getGender()));
+                            mHealthInsurance.postValue(healthInsurance.getName());
+                            mHealthInsuranceNumber.postValue(String.valueOf(patient.getSSN()));
+                            mPatient.postValue(patient);
+                        }
                     }
                 }
             } catch (NoSuchRowException e) {

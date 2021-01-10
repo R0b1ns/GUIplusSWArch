@@ -16,6 +16,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.example.arztpraxis.R;
+import com.example.arztpraxis.helper.MyApplication;
+import com.example.arztpraxis.ui.prescription.PrescriptionViewModel;
+import com.example.arztpraxis.ui.prescription.PrescriptionViewModelFactory;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -31,7 +34,13 @@ public class AppointmentFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        appointmentViewModel = new ViewModelProvider(this).get(AppointmentViewModel.class);
+        ///appointmentViewModel = new ViewModelProvider(this).get(AppointmentViewModel.class);
+
+        long id=((MyApplication) getActivity().getApplication()).getUserId();
+        boolean isAdmin=((MyApplication) getActivity().getApplication()).isAdmin();
+
+        appointmentViewModel = new ViewModelProvider(
+                this,new AppointmentViewModelFactory(id,isAdmin)).get(AppointmentViewModel.class);
         View root = inflater.inflate(R.layout.fragment_appointments, container, false);
 
         final ListView listView = root.findViewById(R.id.listView);
