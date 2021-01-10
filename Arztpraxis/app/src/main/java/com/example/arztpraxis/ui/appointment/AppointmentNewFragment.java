@@ -83,23 +83,26 @@ public class AppointmentNewFragment extends Fragment {
                 EditText requestedDoctor = root.findViewById(R.id.requestedDoctor);
                 EditText appointmentNewAnnotation = root.findViewById(R.id.appointmentNewAnnotation);
 
-                //Send request to server with this data
-                //appointmentNewAnnotation.getText();
-                //selectedPressure.getText();
+                String pressure = "";
 
-//                AsyncSendScheduleAppointment myAsyncTask= new AsyncSendScheduleAppointment();
-//                myAsyncTask.execute(new String[]{appointmentNewAnnotation.getText().toString(),
-//                        requestedDoctor.getText().toString(),
-//                        selectedPressure.getText().toString()});
+                switch (selectedPressure.getId()) {
+                    case R.id.appointmentNewPressureLow:
+                        pressure = "niedrig";
+                        break;
+
+                    case R.id.appointmentNewPressureMedium:
+                        pressure = "mittel";
+                        break;
+
+                    case R.id.appointmentNewPressureHigh:
+                        pressure = "hoch";
+                        break;
+                }
+
                 new AsyncSendScheduleAppointment().execute(
                         new String[]{appointmentNewAnnotation.getText().toString(),
                                 requestedDoctor.getText().toString(),
-                                selectedPressure.getText().toString()});
-
-
-                //if sent successful
-//                    Snackbar.make(v, "Appointment was requested successfully", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
+                                pressure});
             }
         });
 
@@ -113,29 +116,11 @@ public class AppointmentNewFragment extends Fragment {
             String[] s_doctor=strings[0][1].split(" ");
             String s_pressure=strings[0][2];
 
-
-            switch (s_pressure){
-                case "low":
-                    s_pressure="niedrig";
-                    break;
-                case "medium":
-                    s_pressure="mittel";
-                    break;
-                case "high":
-                    s_pressure="hoch";
-                    break;
-                default:
-                    s_pressure="niedrig";
-                    break;
-            }
-
             if (s_doctor.length==2) {
-
 
                 InfrastructureWebservice service = new InfrastructureWebservice();
                 ScheduleRequest scheduleRequest;
                 int scheduleRequestLength;
-
 
                 try {
                     scheduleRequestLength = service.getAllScheduleRequests().size();
@@ -157,7 +142,6 @@ public class AppointmentNewFragment extends Fragment {
                 Snackbar.make(getView(), "please enter a valid employee([First Name]SPACE[Last Name]", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-
 
             return null;
         }
