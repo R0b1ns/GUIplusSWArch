@@ -27,6 +27,7 @@ import com.example.arztpraxis.helper.MyApplication;
 import com.example.arztpraxis.model.Employee;
 import com.example.arztpraxis.model.Patient;
 import com.example.arztpraxis.ws.InfrastructureWebservice;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -114,6 +115,18 @@ public class SettingsFragment extends Fragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            NavigationView navigationView = getView().getRootView().findViewById(R.id.nav_view);
+                            View hView = navigationView.getHeaderView(0);
+                            TextView sideBarName = hView.findViewById(R.id.sideBarName);
+                            sideBarName.setText(loginName);
+
+                            TextView sideBarID = hView.findViewById(R.id.sideBarID);
+                            sideBarID.setText(loginID);
+
+                            if(navigationView == null) {
+                                System.out.println("Hallo");
+                            }
+
                             Navigation.findNavController(getView()).navigate(R.id.nav_home);
                         }
                     });
