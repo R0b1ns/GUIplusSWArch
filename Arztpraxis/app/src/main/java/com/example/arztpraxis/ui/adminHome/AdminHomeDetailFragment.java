@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.example.arztpraxis.R;
 import com.example.arztpraxis.helper.Helper;
@@ -219,6 +220,12 @@ public class AdminHomeDetailFragment extends Fragment {
                     Snackbar.make(getView(), "Appointment created!", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                     //TODO: return to AdminHome
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Navigation.findNavController(getView()).navigate(R.id.nav_home);
+                        }
+                    });
 
                 }catch (ParseException e){
                     Snackbar.make(getView(), "Invalid Date or Time (use dd.MM.yyyy HH:mm)!", Snackbar.LENGTH_LONG)
