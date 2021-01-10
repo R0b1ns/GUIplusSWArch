@@ -7,14 +7,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.example.arztpraxis.R;
 import com.example.arztpraxis.helper.MyApplication;
 import com.example.arztpraxis.model.Employee;
 import com.example.arztpraxis.model.Patient;
+import com.example.arztpraxis.ui.settings.SettingsViewModel;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -29,22 +32,9 @@ public class HomeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        if (((MyApplication) getActivity().getApplication()).isLoggedIn()){
-            //((MyApplication) ((MyApplication) getActivity().getApplication()).setPatient());
-        }else{
-            //TODO: jump to settings;
-        }
-
-        homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
+        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        /*final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });*/
+
         tvName=root.findViewById(R.id.textViewName);
         tvBirthday=root.findViewById(R.id.textViewBirthdate);
         tvGender=root.findViewById(R.id.textViewGender);
@@ -108,5 +98,19 @@ public class HomeFragment extends Fragment {
 
 
         return root;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        // TODO: Use the ViewModel
+
+        if (((MyApplication) getActivity().getApplication()).isLoggedIn()){
+            //((MyApplication) ((MyApplication) getActivity().getApplication()).setPatient());
+        } else{
+            Navigation.findNavController(getView()).navigate(R.id.nav_settings);
+        }
+
     }
 }

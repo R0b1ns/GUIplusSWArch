@@ -71,4 +71,5 @@
     <string name="enter_name">Enter your Name</string>
     <string name="enter_id">Enter your ID(SSN/PN)</string>
     <string name="employee">Employee</string>
+    <string name="menu_settings">Settings</string>
 </resources>

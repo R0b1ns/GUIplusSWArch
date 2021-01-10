@@ -1,17 +1,9 @@
 package com.example.arztpraxis.ui.settings;
 
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import androidx.preference.PreferenceFragmentCompat;
 
 import com.example.arztpraxis.R;
 import com.example.arztpraxis.helper.MyApplication;
@@ -22,25 +14,11 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public class SettingsFragment extends Fragment {
-
-    private SettingsViewModel mViewModel;
-
-    public static SettingsFragment newInstance() {
-        return new SettingsFragment();
-    }
+public class oldSettingsFragment extends PreferenceFragmentCompat {
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_settings, container, false);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(SettingsViewModel.class);
-        // TODO: Use the ViewModel
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        setPreferencesFromResource(R.xml.root_preferences, rootKey);
     }
 
     private class AsyncLogin extends AsyncTask<String,Void,Void> {
