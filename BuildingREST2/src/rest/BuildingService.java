@@ -8,6 +8,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 
 import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.util.Collection;
 
 @Path("app")
@@ -23,98 +24,120 @@ public class BuildingService implements Serializable {
     @EJB(mappedName = EJBNAME)
     private InfrastructureRemote infrastructureRemote;
 
-    //
-    // Bemerkung:
-    // Falls es zu Problemen mit der Injektion geben sollte hülfe ggfs.
-    // nachfolgende explizite Vereinbarung:
-    //
-//	private InitialContext ctx;
-//
-//	// statt @EJB-Injektion
-//	{
-//		try {
-//			ctx = new InitialContext();
-//			infrastructureRemote = (InfrastructureRemote) ctx.lookup(EJBNAME);
-//		} catch (NamingException e) {
-//			System.out.println("Naming Exception nach lookup");
-//			e.printStackTrace();
-//		}
-//	}
-
-    private void printInfo(String paramString) {
+    /*
+     * Bemerkung:
+     * Falls es zu Problemen mit der Injektion geben sollte hülfe ggfs.
+     * nachfolgende explizite Vereinbarung:
+     */
+    /*
+	private InitialContext ctx;
+	// statt @EJB-Injektion
+	{
+		try {
+			ctx = new InitialContext();
+			infrastructureRemote = (InfrastructureRemote) ctx.lookup(EJBNAME);
+		} catch (NamingException e) {
+			System.out.println("Naming Exception nach lookup");
+			e.printStackTrace();
+		}
+	}
+     */
+    
+    /*
+     * Only use on NOT overloaded Methods!
+     */
+    private String getRouteInfo(String methodName) {
     	String path = "undefined";
     	String mode = "undefined";
+    	String servicename = this.getClass().getAnnotation(Path.class).value();
     	
-    	StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
-    	StackTraceElement eTrace = stacktrace[2];
-    	String methodName = eTrace.getMethodName();
 		try {
-			path = BuildingService.class.getMethod(methodName).getAnnotation(Path.class).value();
+			
+			Method methods[] = this.getClass().getMethods();
+			Method m = null;
 
-			if(null != BuildingService.class.getMethod(methodName).getAnnotation(GET.class)) {
+			//Can be wrong if you have overloaded Methods
+			for(Method method : methods) {
+				if(method.getName().equals(methodName)) {
+					m = method;
+					break;
+				}
+			}
+			
+			path = m.getAnnotation(Path.class).value();
+
+			if(null != m.getAnnotation(GET.class)) {
 				mode = "GET";
 			}
-			if(null != BuildingService.class.getMethod(methodName).getAnnotation(POST.class)) {
+			if(null != m.getAnnotation(POST.class)) {
 				mode = "POST";
 			}
-			if(null != BuildingService.class.getMethod(methodName).getAnnotation(DELETE.class)) {
+			if(null != m.getAnnotation(DELETE.class)) {
 				mode = "DELETE";
 			}
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
 		} catch (SecurityException e) {
 			e.printStackTrace();
 		}
+		
+		return mode + " /" + servicename + path;
+    }
+
+    private void printRequestInfo(String paramString) {
+    	StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
+    	StackTraceElement eTrace = stacktrace[2];
+    	String methodName = eTrace.getMethodName();
+
         System.out.println("---------------------------------");
-        System.out.println("REST Request :: " + mode + " " + path + " > "+methodName+"("+paramString+")");
+        System.out.println("Request :: " + getRouteInfo(methodName) + " > "+methodName+"("+paramString+")");
+        System.out.println("---------------------------------");
+    }
+    
+    private void printRequestResult(boolean result) {
+    	StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
+    	StackTraceElement eTrace = stacktrace[2];
+    	String methodName = eTrace.getMethodName();
+    	
+    	String resultText = result ? "SUCCESS" : "FAILED";
+    	
+        System.out.println("------------RESULT---------------");
+        System.out.println(resultText + " - Request :: " + getRouteInfo(methodName) + " > "+methodName);
         System.out.println("---------------------------------");
     }
 
-    // funktioniert
     @GET
     @Path("/buildings")
     public Collection<Building> getAllBuildings() {
-        printInfo("");
-
+        printRequestInfo("");
         return infrastructureRemote.getAllBuildings();
     }
 
-    // funktioniert
     @GET
     @Path("/buildings/{id}")
     public Building getBuilding(@PathParam("id") int id) throws NoSuchRowException {
-        printInfo("id = " + id);
-
+        printRequestInfo("id = " + id);
         return infrastructureRemote.getBuilding(id);
     }
 
     @GET
     @Path("/rooms")
     public Collection<Room> getAllRooms() {
-        printInfo("");
-
+        printRequestInfo("");
         return infrastructureRemote.getAllRooms();
     }
 
     @GET
     @Path("/count")
     public long getCountRooms() {
-    	printInfo("");
-    	
+    	printRequestInfo("");
         return infrastructureRemote.getCountRooms();
     }
 
     @GET
     @Path("/rooms/{id}")
     public Room getRoom(@PathParam("id") int id) throws NoSuchRowException {
-        printInfo("id = " + id);
-
+        printRequestInfo("id = " + id);
         return infrastructureRemote.getRoom(id);
     }
-
-
-    //eigener Code ######################################################
-
 
     //############################### GET  ##############################
 
@@ -122,84 +145,84 @@ public class BuildingService implements Serializable {
     @GET
     @Path("/patients")
     public Collection<Patient> getAllPatients() {
-        printInfo("");
+        printRequestInfo("");
         return infrastructureRemote.getAllPatients();
     }
 
     @GET
     @Path("/schedule")
     public Collection<Schedule> getSchedule() {
-        printInfo("");
+        printRequestInfo("");
         return infrastructureRemote.getSchedule();
     }
 
     @GET
     @Path("/positions")
     public Collection<Position> getAllPositions() {
-        printInfo("");
+        printRequestInfo("");
         return infrastructureRemote.getAllPositions();
     }
 
     @GET
     @Path("/persons")
     public Collection<Person> getAllPersons() {
-        printInfo("");
+        printRequestInfo("");
         return infrastructureRemote.getAllPersons();
     }
 
     @GET
     @Path("/treatments")
     public Collection<Treatment> getAllTreatments() {
-        printInfo("");
+        printRequestInfo("");
         return infrastructureRemote.getAllTreatments();
     }
 
     @GET
     @Path("/healthinsurances")
     public Collection<HealthInsurance> getAllHealthInsurances() {
-        printInfo("");
+        printRequestInfo("");
         return infrastructureRemote.getAllHealthInsurances();
     }
 
     @GET
     @Path("/adresses")
     public Collection<Adress> getAllAdresses() {
-        printInfo("");
+        printRequestInfo("");
         return infrastructureRemote.getAllAdresses();
     }
 
     @GET
     @Path("/employees")
     public Collection<Employee> getAllEmployees() {
-        printInfo("");
+        printRequestInfo("");
         return infrastructureRemote.getAllEmployees();
     }
 
     @GET
     @Path("/prescriptions")
     public Collection<Prescription> getAllPrescriptions() {
-        printInfo("");
+        printRequestInfo("");
         return infrastructureRemote.getAllPrescriptions();
     }
 
     @GET
     @Path("/diseases")
     public Collection<Disease> getAllDiseases() {
-        printInfo("");
+        printRequestInfo("");
         return infrastructureRemote.getAllDiseases();
     }
 
     @GET
     @Path("/schedule/requests")
     public Collection<ScheduleRequest> getAllScheduleRequests() {
-        printInfo("");
+        printRequestInfo("");
         return infrastructureRemote.getAllScheduleRequests();
     }
 
     @GET
     @Path("/drugs")
     public Collection<Drug> getAllDrugs() {
-        printInfo("");
+        printRequestInfo("");
         return infrastructureRemote.getAllDrugs();
     }
 
@@ -207,42 +230,42 @@ public class BuildingService implements Serializable {
     @GET
     @Path("/schedule/patient/{id}")
     public Collection<Schedule> getScheduleOfPatient(@PathParam("id") String id) {
-        printInfo("id = " + id);
+        printRequestInfo("id = " + id);
         return infrastructureRemote.getScheduleOfPatient(id);
     }
 
     @GET
     @Path("/schedule/employee/{id}")
     public Collection<Schedule> getScheduleOfEmployee(@PathParam("id") String id) {
-        printInfo("id = " + id);
+        printRequestInfo("id = " + id);
         return infrastructureRemote.getScheduleOfEmployee(id);
     }
 
     @GET
     @Path("/employees/name")
     public long getEmployeeOfName(@QueryParam("firstName") String firstName, @QueryParam("lastName") String lastName) throws NoSuchRowException {
-        printInfo("firstName = " + firstName + ", lastName = " + lastName);
+        printRequestInfo("firstName = " + firstName + ", lastName = " + lastName);
         return infrastructureRemote.getEmployeeOfName(firstName, lastName);
     }
 
     @GET
     @Path("/patients/name")
     public long getPatientOfName(@QueryParam("firstName") String firstName, @QueryParam("lastName") String lastName) throws NoSuchRowException {
-        printInfo("firstName = " + firstName + ", lastName = " + lastName);
+        printRequestInfo("firstName = " + firstName + ", lastName = " + lastName);
         return infrastructureRemote.getPatientOfName(firstName, lastName);
     }
 
     @GET
     @Path("/patients/{id}")
     public Patient getPatientInfo(@PathParam("id") long id) throws NoSuchRowException {
-        printInfo("id = " + id);
+        printRequestInfo("id = " + id);
         return infrastructureRemote.getPatientInfo(id);
     }
 
     @GET
     @Path("/employees/{id}")
     public Employee getEmployeeInfo(@PathParam("id") long id) throws NoSuchRowException {
-        printInfo("id = " + id);
+        printRequestInfo("id = " + id);
         return infrastructureRemote.getEmployeeInfo(id);
     }
 
@@ -253,7 +276,7 @@ public class BuildingService implements Serializable {
                            @QueryParam("firstname") String firstName,
                            @QueryParam("lastname") String lastName,
                            @QueryParam("number") int number) {
-        printInfo("type = " + type + ", firstName = " + firstName + ", lastName = " + lastName + ", number = " + number);
+        printRequestInfo("type = " + type + ", firstName = " + firstName + ", lastName = " + lastName + ", number = " + number);
 
         return infrastructureRemote.getLoginId(type, firstName, lastName, number);
     }
@@ -264,7 +287,7 @@ public class BuildingService implements Serializable {
                         @QueryParam("firstname") String firstName,
                         @QueryParam("lastname") String lastName,
                         @QueryParam("number") int number) {
-        printInfo("type = " + type + ", firstName = " + firstName + ", lastName = " + lastName + ", number = " + number);
+        printRequestInfo("type = " + type + ", firstName = " + firstName + ", lastName = " + lastName + ", number = " + number);
 
         return infrastructureRemote.login(type, firstName, lastName, number);
     }
@@ -272,28 +295,28 @@ public class BuildingService implements Serializable {
     @GET
     @Path("/prescriptions/{id}")
     public Collection<Prescription> getPrescriptionOf(@PathParam("id") String id) {
-        printInfo("id = " + id);
+        printRequestInfo("id = " + id);
         return infrastructureRemote.getPrescriptionOf(id);
     }
 
     @GET
     @Path("/prescriptions/id/{id}")
     public Prescription getPrescription(@PathParam("id") long id) throws NoSuchRowException {
-        printInfo("id = " + id);
+        printRequestInfo("id = " + id);
         return infrastructureRemote.getPrescription(id);
     }
 
     @GET
     @Path("/prescriptions/employee/{id}")
     public Collection<Prescription> getPrescriptionFrom(@PathParam("id") String id) {
-        printInfo("id = " + id);
+        printRequestInfo("id = " + id);
         return infrastructureRemote.getPrescriptionFrom(id);
     }
 
     @GET
     @Path("/schedule/requests/")
     public Collection<ScheduleRequest> getScheduleRequests() {
-        printInfo("");
+        printRequestInfo("");
         return infrastructureRemote.getScheduleRequests();
     }
 
@@ -301,74 +324,72 @@ public class BuildingService implements Serializable {
     @GET
     @Path("/positions/{id}")
     public Position getPosition(@PathParam("id") long id) throws NoSuchRowException {
-        printInfo("id = " + id);
+        printRequestInfo("id = " + id);
         return infrastructureRemote.getPosition(id);
     }
 
     @GET
     @Path("/persons/{id}")
     public Person getPerson(@PathParam("id") long id) throws NoSuchRowException {
-        printInfo("id = " + id);
+        printRequestInfo("id = " + id);
         return infrastructureRemote.getPerson(id);
     }
 
     @GET
     @Path("/treatments/{id}")
     public Treatment getTreatment(@PathParam("id") long id) throws NoSuchRowException {
-        printInfo("id = " + id);
+        printRequestInfo("id = " + id);
         return infrastructureRemote.getTreatment(id);
     }
 
     @GET
     @Path("/drugs/{id}")
     public Drug getDrug(@PathParam("id") long id) throws NoSuchRowException {
-        printInfo("id = " + id);
+        printRequestInfo("id = " + id);
         return infrastructureRemote.getDrug(id);
     }
 
     @GET
     @Path("/healthinsurances/{id}")
     public HealthInsurance getHealthInsurance(@PathParam("id") long id) throws NoSuchRowException {
-        printInfo("id = " + id);
+        printRequestInfo("id = " + id);
         return infrastructureRemote.getHealthInsurance(id);
     }
 
     @GET
     @Path("/adresses/{id}")
     public Adress getAdress(@PathParam("id") long id) throws NoSuchRowException {
-        printInfo("id = " + id);
+        printRequestInfo("id = " + id);
         return infrastructureRemote.getAdress(id);
     }
 
     @GET
     @Path("/schedule/{id}")
     public Schedule getSchedule(@PathParam("id") long id) throws NoSuchRowException {
-        printInfo("id = " + id);
+        printRequestInfo("id = " + id);
         return infrastructureRemote.getSchedule(id);
     }
 
     @GET
     @Path("/diseases/{id}")
     public Disease getDisease(@PathParam("id") long id) throws NoSuchRowException {
-    	printInfo("id = " + id);
+    	printRequestInfo("id = " + id);
         return infrastructureRemote.getDisease(id);
     }
 
     @GET
     @Path("/schedule/requests/{id}")
     public ScheduleRequest getScheduleRequest(@PathParam("id") long id) throws NoSuchRowException {
-    	printInfo("id = " + id);
+    	printRequestInfo("id = " + id);
         return infrastructureRemote.getScheduleRequest(id);
     }
-
-    
     
     //############################### POST ##############################
 
     @POST
     @Path("/schedule/add")
     public Response addSchedule(Schedule schedule) {
-    	printInfo("schedule with: " + schedule.toString());
+    	printRequestInfo("schedule with: " + schedule.toString());
 
         boolean success = false;
         try {
@@ -377,7 +398,7 @@ public class BuildingService implements Serializable {
         } catch (Exception e) {
             success = false;
         }
-        System.out.println("App :: POST addSchedule success = " + success);
+        printRequestResult(success);
         StatusMessage msg = RestApplication.getReturnMessage(success);
         return Response.ok(msg).build();
     }
@@ -385,7 +406,7 @@ public class BuildingService implements Serializable {
     @POST
     @Path("/schedule/add/{id}")
     public Response addScheduleWithRemove(Schedule schedule, @PathParam("id") int id) {
-    	printInfo("schedule with: " + schedule.toString() + ", id = " + id);
+    	printRequestInfo("schedule with: " + schedule.toString() + ", id = " + id);
     	
         Response r_add = addSchedule(schedule);
         Response r_delete;
@@ -402,11 +423,10 @@ public class BuildingService implements Serializable {
         return r_delete;
     }
 
-
     @POST
     @Path("/prescriptions")
     public Response addPrescription(Prescription prescription) {
-    	printInfo("prescription with: " + prescription.toString());
+    	printRequestInfo("prescription with: " + prescription.toString());
 
         boolean success = false;
         try {
@@ -415,8 +435,7 @@ public class BuildingService implements Serializable {
         } catch (Exception e) {
             success = false;
         }
-        System.out.println("App :: POST addPrescription success = " + success);
-        System.out.println("\n\n---------------------------------");
+        printRequestResult(success);
         StatusMessage msg = RestApplication.getReturnMessage(success);
         return Response.ok(msg).build();
     }
@@ -425,7 +444,7 @@ public class BuildingService implements Serializable {
     @POST
     @Path("/positions")
     public Response addPosition(Position position) {
-    	printInfo("position with: " + position.toString());
+    	printRequestInfo("position with: " + position.toString());
 
         boolean success = false;
         try {
@@ -434,8 +453,7 @@ public class BuildingService implements Serializable {
         } catch (Exception e) {
             success = false;
         }
-        System.out.println("App :: POST addPosition success = " + success);
-        System.out.println("\n\n---------------------------------");
+        printRequestResult(success);
         StatusMessage msg = RestApplication.getReturnMessage(success);
         return Response.ok(msg).build();
     }
@@ -443,7 +461,7 @@ public class BuildingService implements Serializable {
     @POST
     @Path("/persons")
     public Response addPerson(Person person) {
-    	printInfo("person with: " + person.toString());
+    	printRequestInfo("person with: " + person.toString());
 
         boolean success = false;
         try {
@@ -452,8 +470,7 @@ public class BuildingService implements Serializable {
         } catch (Exception e) {
             success = false;
         }
-        System.out.println("App :: POST addPerson success = " + success);
-        System.out.println("\n\n---------------------------------");
+        printRequestResult(success);
         StatusMessage msg = RestApplication.getReturnMessage(success);
         return Response.ok(msg).build();
     }
@@ -461,7 +478,7 @@ public class BuildingService implements Serializable {
     @POST
     @Path("/treatments")
     public Response addTreatment(Treatment treatment) {
-    	printInfo("treatment with: " + treatment.toString());
+    	printRequestInfo("treatment with: " + treatment.toString());
 
         boolean success = false;
         try {
@@ -470,8 +487,7 @@ public class BuildingService implements Serializable {
         } catch (Exception e) {
             success = false;
         }
-        System.out.println("App :: POST addTreatment success = " + success);
-        System.out.println("\n\n---------------------------------");
+        printRequestResult(success);
         StatusMessage msg = RestApplication.getReturnMessage(success);
         return Response.ok(msg).build();
     }
@@ -479,7 +495,7 @@ public class BuildingService implements Serializable {
     @POST
     @Path("/drugs")
     public Response addDrug(Drug drug) {
-    	printInfo("drug with: " + drug.toString());
+    	printRequestInfo("drug with: " + drug.toString());
 
         boolean success = false;
         try {
@@ -488,8 +504,7 @@ public class BuildingService implements Serializable {
         } catch (Exception e) {
             success = false;
         }
-        System.out.println("App :: POST addDrug success = " + success);
-        System.out.println("\n\n---------------------------------");
+        printRequestResult(success);
         StatusMessage msg = RestApplication.getReturnMessage(success);
         return Response.ok(msg).build();
     }
@@ -497,7 +512,7 @@ public class BuildingService implements Serializable {
     @POST
     @Path("/healthinsurances")
     public Response addHealthInsurance(HealthInsurance healthInsurance) {
-    	printInfo("healthInsurance with: " + healthInsurance.toString());
+    	printRequestInfo("healthInsurance with: " + healthInsurance.toString());
 
         boolean success = false;
         try {
@@ -506,8 +521,7 @@ public class BuildingService implements Serializable {
         } catch (Exception e) {
             success = false;
         }
-        System.out.println("App :: POST addHealthInsurance success = " + success);
-        System.out.println("\n\n---------------------------------");
+        printRequestResult(success);
         StatusMessage msg = RestApplication.getReturnMessage(success);
         return Response.ok(msg).build();
     }
@@ -515,7 +529,7 @@ public class BuildingService implements Serializable {
     @POST
     @Path("/adresses")
     public Response addAdress(Adress adress) {
-    	printInfo("adress with: " + adress.toString());
+    	printRequestInfo("adress with: " + adress.toString());
 
         boolean success = false;
         try {
@@ -524,8 +538,7 @@ public class BuildingService implements Serializable {
         } catch (Exception e) {
             success = false;
         }
-        System.out.println("App :: POST addAdress success = " + success);
-        System.out.println("\n\n---------------------------------");
+        printRequestResult(success);
         StatusMessage msg = RestApplication.getReturnMessage(success);
         return Response.ok(msg).build();
     }
@@ -533,7 +546,7 @@ public class BuildingService implements Serializable {
     @POST
     @Path("/employees")
     public Response addEmployee(Employee employee) {
-    	printInfo("employee with: " + employee.toString());
+    	printRequestInfo("employee with: " + employee.toString());
 
         boolean success = false;
         try {
@@ -542,8 +555,7 @@ public class BuildingService implements Serializable {
         } catch (Exception e) {
             success = false;
         }
-        System.out.println("App :: POST addEmployee success = " + success);
-        System.out.println("\n\n---------------------------------");
+        printRequestResult(success);
         StatusMessage msg = RestApplication.getReturnMessage(success);
         return Response.ok(msg).build();
     }
@@ -551,7 +563,7 @@ public class BuildingService implements Serializable {
     @POST
     @Path("/patients")
     public Response addPatient(Patient patient) {
-    	printInfo("patient with: " + patient.toString());
+    	printRequestInfo("patient with: " + patient.toString());
 
         boolean success = false;
         try {
@@ -560,8 +572,7 @@ public class BuildingService implements Serializable {
         } catch (Exception e) {
             success = false;
         }
-        System.out.println("App :: POST addPatient success = " + success);
-        System.out.println("\n\n---------------------------------");
+        printRequestResult(success);
         StatusMessage msg = RestApplication.getReturnMessage(success);
         return Response.ok(msg).build();
     }
@@ -569,7 +580,7 @@ public class BuildingService implements Serializable {
     @POST
     @Path("/diseases")
     public Response addDisease(Disease disease) {
-    	printInfo("disease with: " + disease.toString());
+    	printRequestInfo("disease with: " + disease.toString());
 
         boolean success = false;
         try {
@@ -578,8 +589,7 @@ public class BuildingService implements Serializable {
         } catch (Exception e) {
             success = false;
         }
-        System.out.println("App :: POST addDisease success = " + success);
-        System.out.println("\n\n---------------------------------");
+        printRequestResult(success);
         StatusMessage msg = RestApplication.getReturnMessage(success);
         return Response.ok(msg).build();
     }
@@ -587,7 +597,7 @@ public class BuildingService implements Serializable {
     @POST
     @Path("/schedule/requests")
     public Response addScheduleRequest(ScheduleRequest scheduleRequest) {
-    	printInfo("scheduleRequest with: " + scheduleRequest.toString());
+    	printRequestInfo("scheduleRequest with: " + scheduleRequest.toString());
 
         boolean success = false;
         try {
@@ -597,8 +607,7 @@ public class BuildingService implements Serializable {
             success = false;
         }
 
-        System.out.println("App :: POST addScheduleRequest success = " + success);
-        System.out.println("\n\n---------------------------------");
+        printRequestResult(success);
         StatusMessage msg = RestApplication.getReturnMessage(success);
         return Response.ok(msg).build();
     }
@@ -608,7 +617,7 @@ public class BuildingService implements Serializable {
     @DELETE
     @Path("/schedule/requests/{id}")
     public Response removeScheduleRequest(@PathParam("id") int id) throws NoSuchRowException {
-    	printInfo("id = " + id);
+    	printRequestInfo("id = " + id);
 
         boolean success = false;
         try {
@@ -617,8 +626,7 @@ public class BuildingService implements Serializable {
         } catch (NoSuchRowException e) {
             throw new NoSuchRowException();
         }
-        System.out.println("App :: DELETE removeScheduleRequest success = " + success);
-        System.out.println("\n\n---------------------------------");
+        printRequestResult(success);
         StatusMessage msg = RestApplication.getReturnMessage(success);
         return Response.ok(msg).build();
     }
@@ -627,7 +635,7 @@ public class BuildingService implements Serializable {
     @DELETE
     @Path("/positions/{id}")
     public Response removePosition(@PathParam("id") int id) throws NoSuchRowException {
-    	printInfo("id = " + id);
+    	printRequestInfo("id = " + id);
     
         boolean success = false;
         try {
@@ -636,8 +644,7 @@ public class BuildingService implements Serializable {
         } catch (NoSuchRowException e) {
             throw new NoSuchRowException();
         }
-        System.out.println("App :: DELETE removePosition success = " + success);
-        System.out.println("\n\n---------------------------------");
+        printRequestResult(success);
         StatusMessage msg = RestApplication.getReturnMessage(success);
         return Response.ok(msg).build();
     }
@@ -645,7 +652,7 @@ public class BuildingService implements Serializable {
     @DELETE
     @Path("/persons/{id}")
     public Response removePerson(@PathParam("id") int id) throws NoSuchRowException {
-    	printInfo("id = " + id);
+    	printRequestInfo("id = " + id);
     
         boolean success = false;
         try {
@@ -654,8 +661,7 @@ public class BuildingService implements Serializable {
         } catch (NoSuchRowException e) {
             throw new NoSuchRowException();
         }
-        System.out.println("App :: DELETE removePerson success = " + success);
-        System.out.println("\n\n---------------------------------");
+        printRequestResult(success);
         StatusMessage msg = RestApplication.getReturnMessage(success);
         return Response.ok(msg).build();
     }
@@ -663,7 +669,7 @@ public class BuildingService implements Serializable {
     @DELETE
     @Path("/treatments/{id}")
     public Response removeTreatment(@PathParam("id") int id) throws NoSuchRowException {
-    	printInfo("id = " + id);
+    	printRequestInfo("id = " + id);
 
         boolean success = false;
         try {
@@ -672,8 +678,7 @@ public class BuildingService implements Serializable {
         } catch (NoSuchRowException e) {
             throw new NoSuchRowException();
         }
-        System.out.println("App :: DELETE removeTreatment success = " + success);
-        System.out.println("\n\n---------------------------------");
+        printRequestResult(success);
         StatusMessage msg = RestApplication.getReturnMessage(success);
         return Response.ok(msg).build();
     }
@@ -681,7 +686,7 @@ public class BuildingService implements Serializable {
     @DELETE
     @Path("/drugs/{id}")
     public Response removeDrug(@PathParam("id") int id) throws NoSuchRowException {
-    	printInfo("id = " + id);
+    	printRequestInfo("id = " + id);
 
         boolean success = false;
         try {
@@ -690,8 +695,7 @@ public class BuildingService implements Serializable {
         } catch (NoSuchRowException e) {
             throw new NoSuchRowException();
         }
-        System.out.println("App :: DELETE removeDrug success = " + success);
-        System.out.println("\n\n---------------------------------");
+        printRequestResult(success);
         StatusMessage msg = RestApplication.getReturnMessage(success);
         return Response.ok(msg).build();
     }
@@ -699,7 +703,7 @@ public class BuildingService implements Serializable {
     @DELETE
     @Path("/healthinsurances/{id}")
     public Response removeHealthInsurance(@PathParam("id") int id) throws NoSuchRowException {
-    	printInfo("id = " + id);
+    	printRequestInfo("id = " + id);
 
         boolean success = false;
         try {
@@ -708,8 +712,7 @@ public class BuildingService implements Serializable {
         } catch (NoSuchRowException e) {
             throw new NoSuchRowException();
         }
-        System.out.println("App :: DELETE removeHealthInsurance success = " + success);
-        System.out.println("\n\n---------------------------------");
+        printRequestResult(success);
         StatusMessage msg = RestApplication.getReturnMessage(success);
         return Response.ok(msg).build();
     }
@@ -717,7 +720,7 @@ public class BuildingService implements Serializable {
     @DELETE
     @Path("/adresses/{id}")
     public Response removeAdress(@PathParam("id") int id) throws NoSuchRowException {
-    	printInfo("id = " + id);
+    	printRequestInfo("id = " + id);
 
         boolean success = false;
         try {
@@ -726,8 +729,7 @@ public class BuildingService implements Serializable {
         } catch (NoSuchRowException e) {
             throw new NoSuchRowException();
         }
-        System.out.println("App :: DELETE removeAdress success = " + success);
-        System.out.println("\n\n---------------------------------");
+        printRequestResult(success);
         StatusMessage msg = RestApplication.getReturnMessage(success);
         return Response.ok(msg).build();
     }
@@ -735,7 +737,7 @@ public class BuildingService implements Serializable {
     @DELETE
     @Path("/employees/{id}")
     public Response removeEmployee(@PathParam("id") int id) throws NoSuchRowException {
-    	printInfo("id = " + id);
+    	printRequestInfo("id = " + id);
     	
         boolean success = false;
         try {
@@ -744,8 +746,7 @@ public class BuildingService implements Serializable {
         } catch (NoSuchRowException e) {
             throw new NoSuchRowException();
         }
-        System.out.println("App :: DELETE removeEmployee success = " + success);
-        System.out.println("\n\n---------------------------------");
+        printRequestResult(success);
         StatusMessage msg = RestApplication.getReturnMessage(success);
         return Response.ok(msg).build();
     }
@@ -753,7 +754,7 @@ public class BuildingService implements Serializable {
     @DELETE
     @Path("/patients/{id}")
     public Response removePatient(@PathParam("id") int id) throws NoSuchRowException {
-    	printInfo("id = " + id);
+    	printRequestInfo("id = " + id);
     	
         boolean success = false;
         try {
@@ -762,8 +763,7 @@ public class BuildingService implements Serializable {
         } catch (NoSuchRowException e) {
             throw new NoSuchRowException();
         }
-        System.out.println("App :: DELETE removePatient success = " + success);
-        System.out.println("\n\n---------------------------------");
+        printRequestResult(success);
         StatusMessage msg = RestApplication.getReturnMessage(success);
         return Response.ok(msg).build();
     }
@@ -771,7 +771,7 @@ public class BuildingService implements Serializable {
     @DELETE
     @Path("/schedule/{id}")
     public Response removeSchedule(@PathParam("id") int id) throws NoSuchRowException {
-    	printInfo("id = " + id);
+    	printRequestInfo("id = " + id);
 
         boolean success = false;
         try {
@@ -780,8 +780,7 @@ public class BuildingService implements Serializable {
         } catch (NoSuchRowException e) {
             throw new NoSuchRowException();
         }
-        System.out.println("App :: DELETE removeSchedule success = " + success);
-        System.out.println("\n\n---------------------------------");
+        printRequestResult(success);
         StatusMessage msg = RestApplication.getReturnMessage(success);
         return Response.ok(msg).build();
     }
@@ -789,7 +788,7 @@ public class BuildingService implements Serializable {
     @DELETE
     @Path("/prescriptions/{id}")
     public Response removePrescription(@PathParam("id") int id) throws NoSuchRowException {
-    	printInfo("id = " + id);
+    	printRequestInfo("id = " + id);
 
         boolean success = false;
         try {
@@ -798,8 +797,7 @@ public class BuildingService implements Serializable {
         } catch (NoSuchRowException e) {
             throw new NoSuchRowException();
         }
-        System.out.println("App :: DELETE removePrescription success = " + success);
-        System.out.println("\n\n---------------------------------");
+        printRequestResult(success);
         StatusMessage msg = RestApplication.getReturnMessage(success);
         return Response.ok(msg).build();
     }
@@ -807,7 +805,7 @@ public class BuildingService implements Serializable {
     @DELETE
     @Path("/diseases/{id}")
     public Response removeDisease(@PathParam("id") int id) throws NoSuchRowException {
-    	printInfo("id = " + id);
+    	printRequestInfo("id = " + id);
 
         boolean success = false;
         try {
@@ -816,14 +814,10 @@ public class BuildingService implements Serializable {
         } catch (NoSuchRowException e) {
             throw new NoSuchRowException();
         }
-        System.out.println("App :: DELETE removeDisease success = " + success);
-        System.out.println("\n\n---------------------------------");
+        printRequestResult(success);
         StatusMessage msg = RestApplication.getReturnMessage(success);
         return Response.ok(msg).build();
     }
-
-    //eigener Code Ende #################################################
-
 
 //	@GET
 //	@Path("/buildings/create")
@@ -840,7 +834,7 @@ public class BuildingService implements Serializable {
     @POST
     @Path("/buildings")
     public Response createBuilding(Building building) {
-    	printInfo("building with: " + building.toString());
+    	printRequestInfo("building with: " + building.toString());
 
         boolean success = false;
         try {
@@ -849,7 +843,7 @@ public class BuildingService implements Serializable {
         } catch (Exception e) {
             success = false;
         }
-        System.out.println("BuildingRestProject:: POST createBuilding success = " + success);
+        printRequestResult(success);
         StatusMessage msg = RestApplication.getReturnMessage(success);
         return Response.ok(msg).build();
     }
@@ -857,7 +851,7 @@ public class BuildingService implements Serializable {
     @DELETE
     @Path("/buildings/{id}")
     public Response remove(@PathParam("id") int id) throws NoSuchRowException {
-        printInfo("id = " + id);
+        printRequestInfo("id = " + id);
 
         boolean success = false;
         try {
@@ -867,6 +861,7 @@ public class BuildingService implements Serializable {
             throw new NoSuchRowException();
         }
         StatusMessage msg = RestApplication.getReturnMessage(success);
+
         return Response.ok(msg).build();
     }
 }
