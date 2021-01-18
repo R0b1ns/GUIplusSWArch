@@ -14,10 +14,7 @@ public class HealthInsurance implements Serializable {
 	private long id;
 
 	private String name;
-
 	private int adress;
-
-	
 
 	public HealthInsurance() {
 	}
@@ -55,7 +52,6 @@ public class HealthInsurance implements Serializable {
 	public void setAdress(int adress) {
 		this.adress = adress;
 	}
-
 	
 	public void copyData(HealthInsurance copy) {
 	  this.id = copy.id;

@@ -9,10 +9,7 @@ public class RestApplication extends Application {
 	private static final StatusMessage ERROR_MSG = new StatusMessage("error");
 	
 	public static StatusMessage getReturnMessage(boolean status) {
-		if(status)
-			return SUCCESS_MSG;
-		else
-			return ERROR_MSG;
+		return status ? SUCCESS_MSG : ERROR_MSG;
 	}
 }
 

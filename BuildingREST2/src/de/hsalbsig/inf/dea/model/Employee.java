@@ -14,9 +14,7 @@ public class Employee implements Serializable {
 	private long id;
 
 	private int position_id;
-	
 	private int personnalnumber;
-	
 	private int person_id;
 
 	public Employee() {
@@ -38,7 +36,6 @@ public class Employee implements Serializable {
 	public void setId(long id) {
 		this.id = id;
 	}
-
 	
 	@Column(name = "pos_id")
 	public int getPosition(){

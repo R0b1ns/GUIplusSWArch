@@ -15,8 +15,6 @@ public class Drug implements Serializable {
 
 	private String description;
 
-
-
 	public Drug() {
 	}
 

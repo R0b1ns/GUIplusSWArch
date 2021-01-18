@@ -9,58 +9,55 @@ import javax.persistence.*;
 @Entity
 @Table(name = "app_terminanfragen")
 public class ScheduleRequest implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private long id;
+    private long id;
 
-	private String priority;
+    private String priority;
+    private String note;
+    private int patient_id;
+    private int employee_id;
 
-	private String note;
-	
-	private int patient_id;
-	
-	private int employee_id;
+    public ScheduleRequest() {
+    }
 
-	public ScheduleRequest() {
-	}
+    public ScheduleRequest(long id, String priority, String note, int patient_id, int employee_id) {
+        this.id = id;
+        this.priority = priority;
+        this.note = note;
+        this.patient_id = patient_id;
+        this.employee_id = employee_id;
+    }
 
-	public ScheduleRequest(long id, String priority, String note, int patient_id, int employee_id) {
-		this.id = id;
-		this.priority = priority;
-		this.note = note;
-		this.patient_id = patient_id;
-		this.employee_id = employee_id;
-	}
+    @Id
+    @Column(name = "id")
+    public long getId() {
+        return id;
+    }
 
-	@Id
-	@Column(name = "id")
-	public long getId() {
-		return id;
-	}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    @Column(name = "prioritaet")
+    public String getPriority() {
+        return priority;
+    }
 
-	@Column(name = "prioritaet")
-	public String getPriority() {
-		return priority;
-	}
+    public void setPriority(String priority) {
+        this.priority = priority;
+    }
 
-	public void setPriority(String priority) {
-		this.priority = priority;
-	}
+    @Column(name = "notiz")
+    public String getNote() {
+        return note;
+    }
 
-	@Column(name = "notiz")
-	public String getNote() {
-		return note;
-	}
+    public void setNote(String note) {
+        this.note = note;
+    }
 
-	public void setNote(String note) {
-		this.note = note;
-	}
-
-	@Column(name = "patientid")
+    @Column(name = "patientid")
     public int getPatientId() {
         return patient_id;
     }
@@ -77,18 +74,18 @@ public class ScheduleRequest implements Serializable {
     public void setEmployeeId(int employee_id) {
         this.employee_id = employee_id;
     }
-    
-    public void copyData(ScheduleRequest copy) {
-      this.id = copy.id;
-      this.priority = copy.priority;
-      this.note = copy.note;
-      this.patient_id = copy.patient_id;
-      this.employee_id = copy.employee_id;
-	}
 
-	@Override
-	public String toString() {
-		return "Building [id=" + id + ", number=" + priority + ", street=" + note + "]";
-	}
+    public void copyData(ScheduleRequest copy) {
+        this.id = copy.id;
+        this.priority = copy.priority;
+        this.note = copy.note;
+        this.patient_id = copy.patient_id;
+        this.employee_id = copy.employee_id;
+    }
+
+    @Override
+    public String toString() {
+        return "Building [id=" + id + ", number=" + priority + ", street=" + note + "]";
+    }
 
 }

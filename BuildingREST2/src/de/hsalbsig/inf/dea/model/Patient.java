@@ -15,9 +15,7 @@ public class Patient implements Serializable {
 	private long id;
 
 	private int ssn;
-	
 	private int person_id;
-	
 	private int health_insurance_id;
 
 	public Patient() {
@@ -40,7 +38,6 @@ public class Patient implements Serializable {
 		this.id = id;
 	}
 
-	
 	@Column(name = "versicherungsnr")
 	public int getSSN() {
 	    return ssn;
@@ -49,7 +46,6 @@ public class Patient implements Serializable {
 	public void setSSN(int ssn) {
 	    this.ssn = ssn;
 	}
-	
 	
 	@Column(name = "personid")
     public int getPerson() {
@@ -68,8 +64,7 @@ public class Patient implements Serializable {
     public void setHealthInsurance(int health_insurance_id) {
         this.health_insurance_id = health_insurance_id;
     }
-		
-	
+
 	public void copyData(Patient copy) {
 	  this.id = copy.id;
       this.ssn = copy.ssn;

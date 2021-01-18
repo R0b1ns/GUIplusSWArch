@@ -15,9 +15,7 @@ public class Building implements Serializable {
 	private long id;
 
 	private String number;
-
 	private String street;
-
 	private Collection<Room> allRooms;
 
 	public Building() {
