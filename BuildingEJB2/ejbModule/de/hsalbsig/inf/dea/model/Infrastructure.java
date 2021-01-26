@@ -1,6 +1,5 @@
 package de.hsalbsig.inf.dea.model;
 
-import java.sql.Date;
 import java.util.Collection;
 
 import javax.ejb.LocalBean;
@@ -16,69 +15,6 @@ public class Infrastructure implements InfrastructureRemote {
 
 	public Infrastructure() {
 	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public Collection<Building> getAllBuildings() {
-		return em.createQuery("SELECT b FROM Building b").getResultList();
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public Collection<Room> getAllRooms() {
-		return em.createQuery("SELECT r FROM Room r").getResultList();
-	}
-
-	@Override
-	public long getCountRooms() {
-		return (long) em.createQuery("SELECT count(*) FROM Room r").getSingleResult();
-	}
-
-	@Override
-	public Room getRoom(long id) throws NoSuchRowException {
-		Room room = em.find(Room.class, id);
-		if (room != null)
-			return room;
-		else
-			throw new NoSuchRowException();
-	}
-
-	@Override
-	public Building getBuilding(long id) throws NoSuchRowException {
-		Building building = em.find(Building.class, id);
-		if (building != null)
-			return building;
-		else
-			throw new NoSuchRowException();
-	}
-
-	@Override
-	public void save(Building building) {
-		Building b = em.find(Building.class, building.getId());
-
-		if (b != null) {
-			b.copyData(building); // b := building (deep copy)
-			em.merge(b);
-		} else
-			em.persist(building);
-	}
-
-	@Override
-	public void removeBuilding(Building building) throws NoSuchRowException {
-		removeBuilding(building.getId());
-	}
-
-	@Override
-	public void removeBuilding(long primaryKey) throws NoSuchRowException {
-		Building b = em.find(Building.class, primaryKey);
-		if (b != null)
-			em.remove(b);
-		else
-			throw new NoSuchRowException();
-	}
-	
-	
-	//###############################eigener Code:#######################
 	
 	//############################### GET ###############################
 	

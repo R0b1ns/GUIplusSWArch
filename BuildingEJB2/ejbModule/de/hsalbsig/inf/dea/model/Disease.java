@@ -42,8 +42,6 @@ public class Disease implements Serializable {
 		this.description = description;
 	}
 
-	
-
 	public void copyData(Disease copy) {
 		this.id = copy.id;
 		this.description = copy.description;

@@ -104,41 +104,6 @@ public class BuildingService implements Serializable {
         System.out.println("---------------------------------");
     }
 
-    @GET
-    @Path("/buildings")
-    public Collection<Building> getAllBuildings() {
-        printRequestInfo("");
-        return infrastructureRemote.getAllBuildings();
-    }
-
-    @GET
-    @Path("/buildings/{id}")
-    public Building getBuilding(@PathParam("id") int id) throws NoSuchRowException {
-        printRequestInfo("id = " + id);
-        return infrastructureRemote.getBuilding(id);
-    }
-
-    @GET
-    @Path("/rooms")
-    public Collection<Room> getAllRooms() {
-        printRequestInfo("");
-        return infrastructureRemote.getAllRooms();
-    }
-
-    @GET
-    @Path("/count")
-    public long getCountRooms() {
-    	printRequestInfo("");
-        return infrastructureRemote.getCountRooms();
-    }
-
-    @GET
-    @Path("/rooms/{id}")
-    public Room getRoom(@PathParam("id") int id) throws NoSuchRowException {
-        printRequestInfo("id = " + id);
-        return infrastructureRemote.getRoom(id);
-    }
-
     //############################### GET  ##############################
 
     //getAll[in Table]
@@ -816,52 +781,6 @@ public class BuildingService implements Serializable {
         }
         printRequestResult(success);
         StatusMessage msg = RestApplication.getReturnMessage(success);
-        return Response.ok(msg).build();
-    }
-
-//	@GET
-//	@Path("/buildings/create")
-//	public Response createBuilding() {
-
-//	@POST
-//	@Path("/buildings")
-
-//	@GET
-//	@Path("/buildings/create")
-//	public Response createBuilding(@QueryParam("buildingid") int buildingid, @QueryParam("number") String number,
-//			@QueryParam("street") String street) {
-
-    @POST
-    @Path("/buildings")
-    public Response createBuilding(Building building) {
-    	printRequestInfo("building with: " + building.toString());
-
-        boolean success = false;
-        try {
-            infrastructureRemote.save(building);
-            success = true;
-        } catch (Exception e) {
-            success = false;
-        }
-        printRequestResult(success);
-        StatusMessage msg = RestApplication.getReturnMessage(success);
-        return Response.ok(msg).build();
-    }
-
-    @DELETE
-    @Path("/buildings/{id}")
-    public Response remove(@PathParam("id") int id) throws NoSuchRowException {
-        printRequestInfo("id = " + id);
-
-        boolean success = false;
-        try {
-            success = true;
-            infrastructureRemote.removeBuilding(id);
-        } catch (NoSuchRowException e) {
-            throw new NoSuchRowException();
-        }
-        StatusMessage msg = RestApplication.getReturnMessage(success);
-
         return Response.ok(msg).build();
     }
 }

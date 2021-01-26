@@ -15,8 +15,6 @@ public class Position implements Serializable {
 
 	private String description;
 
-
-
 	public Position() {
 	}
 

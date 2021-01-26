@@ -15,8 +15,6 @@ public class Treatment implements Serializable {
 
 	private String description;
 
-
-
 	public Treatment() {
 	}
 
@@ -49,7 +47,6 @@ public class Treatment implements Serializable {
         this.description = copy.description;
     }
 	
-
 	@Override
 	public String toString() {
 		return "Treatment [id=" + id + ", description=" + description + "]";

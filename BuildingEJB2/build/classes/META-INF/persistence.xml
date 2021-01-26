@@ -4,8 +4,18 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 	<persistence-unit name="BuildingEJB" transaction-type="JTA">
 		<jta-data-source>java:jboss/datasources/OracleDSWindb</jta-data-source>
-		<class>de.hsalbsig.inf.dea.model.Room</class>
-		<class>de.hsalbsig.inf.dea.model.Building</class>
+		<class>de.hsalbsig.inf.dea.model.Adress</class>
+		<class>de.hsalbsig.inf.dea.model.Disease</class>
+		<class>de.hsalbsig.inf.dea.model.Drug</class>
+		<class>de.hsalbsig.inf.dea.model.Employee</class>
+		<class>de.hsalbsig.inf.dea.model.HealthInsurance</class>
+		<class>de.hsalbsig.inf.dea.model.Patient</class>
+		<class>de.hsalbsig.inf.dea.model.Person</class>
+		<class>de.hsalbsig.inf.dea.model.Position</class>
+		<class>de.hsalbsig.inf.dea.model.Prescripion</class>
+		<class>de.hsalbsig.inf.dea.model.Schedule</class>
+		<class>de.hsalbsig.inf.dea.model.ScheduleRequest</class>
+		<class>de.hsalbsig.inf.dea.model.Treatment</class>
 		<properties>
 			<property name="hibernate.hbm2ddl.auto" value="none"/>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>

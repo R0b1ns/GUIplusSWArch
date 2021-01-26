@@ -1,34 +1,13 @@
 package de.hsalbsig.inf.dea.model;
 
-import java.sql.Date;
 import java.util.Collection;
 
 import javax.ejb.Remote;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.core.Response;
 
 @Remote
 public interface InfrastructureRemote {
-	public Collection<Building> getAllBuildings();
-
-	public Collection<Room> getAllRooms();
-
-	public long getCountRooms();
-
-	public Room getRoom(long id) throws NoSuchRowException;
-
-	public Building getBuilding(long id)throws NoSuchRowException;
-
-	public void save(Building building);
-
-	public void removeBuilding(Building building) throws NoSuchRowException;
-
-	public void removeBuilding(long primaryKey) throws NoSuchRowException;
-	
-	//eigener Code:
-	
 	//GET
-	
+
 	//getAll[in Table]
 	public Collection<Patient> getAllPatients();
 	
