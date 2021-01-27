@@ -12,7 +12,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:text="Ausgestellt von"
+        android:text="@string/issuedBy"
         android:textSize="12sp" />
     <TextView
         android:id="@+id/prescriptionDoctor"

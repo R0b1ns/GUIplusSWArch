@@ -310,7 +310,7 @@ public class Infrastructure implements InfrastructureRemote {
         Schedule s = em.find(Schedule.class, schedule.getId());
 
         if (s != null) {
-            s.copyData(schedule); // s := schedule (deep copy)
+            s.copyData(schedule);
             em.merge(s);
         } else
             em.persist(schedule);
@@ -321,7 +321,7 @@ public class Infrastructure implements InfrastructureRemote {
         Prescription p = em.find(Prescription.class, prescription.getId());
 
         if (p != null) {
-            p.copyData(prescription); // p := prescription (deep copy)
+            p.copyData(prescription);
             em.merge(p);
         } else
             em.persist(prescription);
@@ -333,7 +333,7 @@ public class Infrastructure implements InfrastructureRemote {
         Position p = em.find(Position.class, position.getId());
 
         if (p != null) {
-            p.copyData(position); // p := prescription (deep copy)
+            p.copyData(position);
             em.merge(p);
         } else
             em.persist(position);
@@ -344,7 +344,7 @@ public class Infrastructure implements InfrastructureRemote {
         Person p = em.find(Person.class, person.getId());
 
         if (p != null) {
-            p.copyData(person); // p := prescription (deep copy)
+            p.copyData(person); 
             em.merge(p);
         } else
             em.persist(person);
@@ -355,7 +355,7 @@ public class Infrastructure implements InfrastructureRemote {
         Treatment t = em.find(Treatment.class, treatment.getId());
 
         if (t != null) {
-            t.copyData(treatment); // p := prescription (deep copy)
+            t.copyData(treatment);
             em.merge(t);
         } else
             em.persist(treatment);
@@ -366,7 +366,7 @@ public class Infrastructure implements InfrastructureRemote {
         HealthInsurance hi = em.find(HealthInsurance.class, healthInsurance.getId());
 
         if (hi != null) {
-            hi.copyData(healthInsurance); // p := prescription (deep copy)
+            hi.copyData(healthInsurance);
             em.merge(hi);
         } else
             em.persist(healthInsurance);
@@ -377,7 +377,7 @@ public class Infrastructure implements InfrastructureRemote {
         Adress a = em.find(Adress.class, adress.getId());
 
         if (a != null) {
-            a.copyData(adress); // p := prescription (deep copy)
+            a.copyData(adress);
             em.merge(a);
         } else
             em.persist(adress);
@@ -388,7 +388,7 @@ public class Infrastructure implements InfrastructureRemote {
         Employee e = em.find(Employee.class, employee.getId());
 
         if (e != null) {
-            e.copyData(employee); // p := prescription (deep copy)
+            e.copyData(employee);
             em.merge(e);
         } else
             em.persist(employee);
@@ -399,7 +399,7 @@ public class Infrastructure implements InfrastructureRemote {
         Patient p = em.find(Patient.class, patient.getId());
 
         if (p != null) {
-            p.copyData(patient); // p := prescription (deep copy)
+            p.copyData(patient);
             em.merge(p);
         } else
             em.persist(patient);
@@ -410,7 +410,7 @@ public class Infrastructure implements InfrastructureRemote {
         Disease d = em.find(Disease.class, disease.getId());
 
         if (d != null) {
-            d.copyData(disease); // p := prescription (deep copy)
+            d.copyData(disease);
             em.merge(d);
         } else
             em.persist(disease);
@@ -421,7 +421,7 @@ public class Infrastructure implements InfrastructureRemote {
         ScheduleRequest sr = em.find(ScheduleRequest.class, scheduleRequest.getId());
 
         if (sr != null) {
-            sr.copyData(scheduleRequest); // p := prescription (deep copy)
+            sr.copyData(scheduleRequest);
             em.merge(sr);
         } else
             em.persist(scheduleRequest);
@@ -432,7 +432,7 @@ public class Infrastructure implements InfrastructureRemote {
         Drug d = em.find(Drug.class, drug.getId());
 
         if (d != null) {
-            d.copyData(drug); // p := prescription (deep copy)
+            d.copyData(drug);
             em.merge(d);
         } else
             em.persist(drug);
